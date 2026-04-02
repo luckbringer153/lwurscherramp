@@ -4,7 +4,7 @@ This repo contains an in-progress migration of Ramp's developer documentation in
 
 ## What's here
 
-- [mint.json](mint.json) — Mintlify site configuration, navigation structure, and branding
+- [docs.json](docs.json) — Mintlify site configuration, navigation structure, and branding
 - [introduction.mdx](introduction.mdx), [getting-started.mdx](getting-started.mdx), [changelog.mdx](changelog.mdx) — top-level guide pages
 - [api-reference/](api-reference/) — API reference pages organized by resource (accounting, cards, transactions, users, etc.)
 - [ramp-docs-full.txt](ramp-docs-full.txt) — source material for the migration

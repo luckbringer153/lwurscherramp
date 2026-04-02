@@ -1,0 +1,48 @@
+---
+title: "List cashback payments"
+description: "Retrieve a paginated list of cashback payments."
+api: "GET https://api.ramp.com/developer/v1/cashbacks"
+---
+
+**Required scope:** `cashbacks:read`
+
+## Query Parameters
+
+<ParamField query="sync_status" type="string">
+  Filter by sync status: `NOT_SYNC_READY` | `SYNC_READY` | `SYNCED`
+</ParamField>
+
+<ParamField query="start" type="string">
+  Pagination cursor from `page.next`.
+</ParamField>
+
+<ParamField query="page_size" type="integer">
+  Number of results per page.
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  Array of cashback payment objects.
+
+  <Expandable title="Cashback object">
+    <ResponseField name="id" type="string">Cashback payment UUID.</ResponseField>
+    <ResponseField name="amount" type="object">
+      Cashback amount.
+      <Expandable title="CurrencyAmount">
+        <ResponseField name="amount" type="integer">Amount in smallest denomination.</ResponseField>
+        <ResponseField name="currency_code" type="string">ISO 4217 currency code.</ResponseField>
+        <ResponseField name="minor_unit_conversion_rate" type="number">Conversion rate.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="sync_status" type="string">`NOT_SYNC_READY` | `SYNC_READY` | `SYNCED`</ResponseField>
+    <ResponseField name="entity_id" type="string">Business entity UUID.</ResponseField>
+    <ResponseField name="created_at" type="string">Payment timestamp.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page.</ResponseField>
+  </Expandable>
+</ResponseField>

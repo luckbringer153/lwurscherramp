@@ -1,0 +1,16 @@
+---
+title: "Fetch a department"
+description: "Retrieve a single department by ID."
+api: "GET https://api.ramp.com/developer/v1/departments/{department_id}"
+---
+
+**Required scope:** `departments:read`
+
+## Path Parameters
+
+<ParamField path="department_id" type="string" required>The department UUID.</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Department UUID.</ResponseField>
+<ResponseField name="name" type="string">Department name.</ResponseField>

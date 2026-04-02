@@ -1,0 +1,29 @@
+---
+title: "Update a user"
+description: "Update a user's profile, role, or organizational assignments."
+api: "PATCH https://api.ramp.com/developer/v1/users/{user_id}"
+---
+
+**Required scope:** `users:write`
+
+## Path Parameters
+
+<ParamField path="user_id" type="string" required>The user UUID.</ParamField>
+
+## Body
+
+<ParamField body="first_name" type="string">Updated first name.</ParamField>
+<ParamField body="last_name" type="string">Updated last name.</ParamField>
+<ParamField body="role" type="string">
+  Updated role: `AUDITOR` | `BUSINESS_ADMIN` | `BUSINESS_BOOKKEEPER` | `BUSINESS_OWNER` | `BUSINESS_USER` | `GUEST_USER` | `IT_ADMIN`
+</ParamField>
+<ParamField body="department_id" type="string">Updated department UUID.</ParamField>
+<ParamField body="location_id" type="string">Updated location UUID.</ParamField>
+<ParamField body="direct_manager_id" type="string">Updated manager UUID.</ParamField>
+<ParamField body="is_manager" type="boolean">Updated manager status.</ParamField>
+<ParamField body="scheduled_deactivation_date" type="string">Updated scheduled deactivation date.</ParamField>
+<ParamField body="auto_promote" type="boolean">Whether to auto-promote the user based on org chart.</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

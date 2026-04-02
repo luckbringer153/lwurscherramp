@@ -1,0 +1,21 @@
+---
+title: "Add users to a limit"
+description: "Add new users to a shared fund (limit)."
+api: "POST https://api.ramp.com/developer/v1/limits/{spend_limit_id}/add-users"
+---
+
+**Required scope:** `limits:write`
+
+## Path Parameters
+
+<ParamField path="spend_limit_id" type="string" required>The limit UUID.</ParamField>
+
+## Body
+
+<ParamField body="user_ids" type="array">
+  Array of user UUIDs to add to this shared limit.
+</ParamField>
+
+## Response
+
+Returns the updated limit object with the new users included.

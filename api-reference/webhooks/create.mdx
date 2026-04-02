@@ -1,0 +1,37 @@
+---
+title: "Create a webhook subscription"
+description: "Register a new webhook endpoint to receive event notifications."
+api: "POST https://api.ramp.com/developer/v1/webhooks"
+---
+
+<Note>
+  The newly registered subscription will be in `pending_verification` state. You must verify your endpoint using the challenge provided by Ramp.
+</Note>
+
+See the [Webhooks guide](/guides/webhooks) for setup instructions and signature verification.
+
+## Body
+
+<ParamField body="endpoint_url" type="string" required>
+  Your HTTPS endpoint URL. Must be publicly accessible and return 2xx within 10 seconds.
+</ParamField>
+
+<ParamField body="event_types" type="array" required>
+  Event types to subscribe to. One or more of:
+  - `applications.status_updated`
+  - `bills.approved`, `bills.archived`, `bills.created`, `bills.paid`, `bills.rejected`
+  - `item_receipts.created`
+  - `purchase_orders.archived`, `purchase_orders.created`, `purchase_orders.updated`
+  - `reimbursements.batch_payment_reimbursed`, `reimbursements.ready_for_review`, `reimbursements.ready_to_sync`, `reimbursements.sync_requested`
+  - `transactions.authorized`, `transactions.cleared`, `transactions.ready_for_review`, `transactions.ready_to_sync`, `transactions.sync_requested`
+  - `vendors.activated`
+  - `tests.test_event`
+</ParamField>
+
+<ParamField body="additional_headers" type="object">
+  Custom HTTP headers to include in all webhook deliveries to your endpoint (e.g., for authentication).
+</ParamField>
+
+## Response
+
+Returns `204 No Content`. Ramp sends a verification challenge to your endpoint. Call [Verify a webhook subscription](/api-reference/webhooks/verify) to complete setup.

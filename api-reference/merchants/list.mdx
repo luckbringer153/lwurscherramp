@@ -1,0 +1,22 @@
+---
+title: "List merchants"
+description: "Retrieve a paginated list of merchants associated with the business."
+api: "GET https://api.ramp.com/developer/v1/merchants"
+---
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="Merchant object">
+    <ResponseField name="id" type="string">Merchant UUID.</ResponseField>
+    <ResponseField name="merchant_name" type="string">Merchant display name.</ResponseField>
+    <ResponseField name="sk_category_name" type="string">Merchant category name.</ResponseField>
+    <ResponseField name="is_auto_approved" type="boolean">Whether transactions from this merchant are automatically approved.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page. Pass as `start` query parameter.</ResponseField>
+  </Expandable>
+</ResponseField>

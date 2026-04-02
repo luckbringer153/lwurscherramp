@@ -1,0 +1,55 @@
+---
+title: "Create a virtual card"
+description: "Create an async task to request a new virtual card."
+api: "POST https://api.ramp.com/developer/v1/cards/deferred/virtual"
+---
+
+**Required scope:** `cards:write`
+
+This is a [deferred task](/concepts/deferred-tasks) endpoint. It returns a task ID immediately; poll `GET /developer/v1/cards/deferred/status/{task_id}` to get the card ID.
+
+## Body
+
+<ParamField body="user_id" type="string" required>
+  UUID of the user who will own the card.
+</ParamField>
+
+<ParamField body="idempotency_key" type="string" required>
+  Unique key to safely retry without creating duplicates.
+</ParamField>
+
+<ParamField body="display_name" type="string">
+  Display name for the card.
+</ParamField>
+
+<ParamField body="entity_id" type="string">
+  Business entity UUID.
+</ParamField>
+
+<ParamField body="is_temporary" type="boolean">
+  Whether this is a temporary card.
+</ParamField>
+
+<ParamField body="spending_restrictions" type="object">
+  Spend controls for this card.
+  <Expandable title="Spending restrictions">
+    <ParamField body="amount" type="number" required>Spending limit amount.</ParamField>
+    <ParamField body="interval" type="string" required>
+      `DAILY` | `WEEKLY` | `MONTHLY` | `QUARTERLY` | `ANNUAL` | `YEARLY` | `TERTIARY` | `TOTAL`
+    </ParamField>
+    <ParamField body="categories" type="array">Allowed MCC category codes.</ParamField>
+    <ParamField body="blocked_mcc_codes" type="array">Blocked MCC codes.</ParamField>
+    <ParamField body="transaction_amount_limit" type="number">Per-transaction limit.</ParamField>
+    <ParamField body="lock_date" type="string">Auto-lock date.</ParamField>
+    <ParamField body="vendor_whitelist" type="array">Allowed merchant IDs.</ParamField>
+    <ParamField body="vendor_blacklist" type="array">Blocked merchant IDs.</ParamField>
+    <ParamField body="currency" type="string">Limit currency code.</ParamField>
+    <ParamField body="policy_id" type="string">Associated policy UUID.</ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">
+  Deferred task ID. Poll `GET /developer/v1/cards/deferred/status/{id}` to retrieve the card ID once created.
+</ResponseField>

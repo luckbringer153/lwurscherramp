@@ -1,0 +1,19 @@
+---
+title: "Create a location"
+description: "Create a new business location."
+api: "POST https://api.ramp.com/developer/v1/locations"
+---
+
+## Body
+
+<ParamField body="name" type="string" required>
+  Location name.
+</ParamField>
+
+<ParamField body="entity_id" type="string">
+  Entity UUID to associate this location with.
+</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

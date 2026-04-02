@@ -1,0 +1,130 @@
+---
+title: "List transactions"
+description: "Retrieve a paginated list of card transactions."
+api: "GET https://api.ramp.com/developer/v1/transactions"
+---
+
+**Required scope:** `transactions:read`
+
+<Note>
+  If `state` is not set, all transactions except declined transactions will be returned. Setting multiple ordering parameters is unsupported.
+</Note>
+
+## Query Parameters
+
+<ParamField query="state" type="string">
+  Filter by transaction state: `ALL` | `CLEARED` | `COMPLETION` | `DECLINED` | `ERROR` | `PENDING` | `PENDING_INITIATION`
+</ParamField>
+
+<ParamField query="sync_status" type="string">
+  Filter by sync status: `NOT_SYNC_READY` | `SYNC_READY` | `SYNCED`
+</ParamField>
+
+<ParamField query="requested_to_sync" type="boolean">
+  Filter to transactions that have been requested to sync (used with [Sync Button](/guides/sync-button)).
+</ParamField>
+
+<ParamField query="spend_limit_id" type="string">
+  Filter by fund (limit) UUID.
+</ParamField>
+
+<ParamField query="card_id" type="string">
+  Filter by card UUID.
+</ParamField>
+
+<ParamField query="user_id" type="string">
+  Filter by cardholder UUID.
+</ParamField>
+
+<ParamField query="entity_id" type="string">
+  Filter by business entity UUID.
+</ParamField>
+
+<ParamField query="from_date" type="string">
+  Filter transactions from this date (ISO 8601).
+</ParamField>
+
+<ParamField query="to_date" type="string">
+  Filter transactions up to this date (ISO 8601).
+</ParamField>
+
+<ParamField query="order_by_date_asc" type="boolean">
+  Order results by date ascending.</ParamField>
+
+<ParamField query="order_by_date_desc" type="boolean">
+  Order results by date descending.
+</ParamField>
+
+<ParamField query="start" type="string">
+  Pagination cursor from `page.next`.
+</ParamField>
+
+<ParamField query="page_size" type="integer">
+  Number of results per page (default: 100, max: 100).
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="Transaction object">
+    <ResponseField name="id" type="string">Transaction UUID.</ResponseField>
+    <ResponseField name="amount" type="number">Legacy amount field (use `original_transaction_amount` for canonical values).</ResponseField>
+    <ResponseField name="original_transaction_amount" type="object">Transaction amount (CurrencyAmount).</ResponseField>
+    <ResponseField name="currency_code" type="string">Transaction currency code.</ResponseField>
+    <ResponseField name="minor_unit_conversion_rate" type="number">Conversion rate for currency.</ResponseField>
+    <ResponseField name="state" type="string">Transaction state: `CLEARED` | `DECLINED` | `PENDING` | etc.</ResponseField>
+    <ResponseField name="sync_status" type="string">`NOT_SYNC_READY` | `SYNC_READY` | `SYNCED`</ResponseField>
+    <ResponseField name="synced_at" type="string">Timestamp when transaction was synced.</ResponseField>
+    <ResponseField name="user_transaction_time" type="string">Timestamp of transaction.</ResponseField>
+    <ResponseField name="settlement_date" type="string">Settlement date.</ResponseField>
+    <ResponseField name="accounting_date" type="string">Accounting date.</ResponseField>
+    <ResponseField name="card_id" type="string">Card UUID used for transaction.</ResponseField>
+    <ResponseField name="limit_id" type="string">Fund (limit) UUID.</ResponseField>
+    <ResponseField name="entity_id" type="string">Business entity UUID.</ResponseField>
+    <ResponseField name="statement_id" type="string">Statement UUID.</ResponseField>
+    <ResponseField name="spend_program_id" type="string">Spend program UUID.</ResponseField>
+    <ResponseField name="trip_id" type="string">Associated trip UUID.</ResponseField>
+    <ResponseField name="trip_name" type="string">Associated trip name.</ResponseField>
+    <ResponseField name="card_present" type="boolean">Whether the physical card was present.</ResponseField>
+    <ResponseField name="memo" type="string">Transaction memo.</ResponseField>
+    <ResponseField name="merchant_id" type="string">Merchant ID.</ResponseField>
+    <ResponseField name="merchant_name" type="string">Merchant display name.</ResponseField>
+    <ResponseField name="merchant_descriptor" type="string">Merchant descriptor from card network.</ResponseField>
+    <ResponseField name="merchant_category_code" type="string">MCC code.</ResponseField>
+    <ResponseField name="merchant_category_code_description" type="string">MCC description.</ResponseField>
+    <ResponseField name="sk_category_id" type="number">Ramp's spend category ID.</ResponseField>
+    <ResponseField name="sk_category_name" type="string">Ramp's spend category name.</ResponseField>
+    <ResponseField name="merchant_location" type="object">Merchant city, state, country, postal code.</ResponseField>
+    <ResponseField name="card_holder" type="object">
+      Cardholder details (user_id, first_name, last_name, department_id, location_id).
+    </ResponseField>
+    <ResponseField name="accounting_field_selections" type="array">
+      Accounting coding selections.
+    </ResponseField>
+    <ResponseField name="line_items" type="array">
+      Split line items with per-item accounting coding.
+    </ResponseField>
+    <ResponseField name="accounting_categories" type="array">
+      Legacy accounting categories (use `accounting_field_selections` for new integrations).
+    </ResponseField>
+    <ResponseField name="receipts" type="array">Receipt IDs attached to transaction.</ResponseField>
+    <ResponseField name="attendees" type="array">Meeting attendees (name, user_id).</ResponseField>
+    <ResponseField name="policy_violations" type="array">Policy violations on the transaction.</ResponseField>
+    <ResponseField name="disputes" type="array">Active disputes on the transaction.</ResponseField>
+    <ResponseField name="decline_details" type="object">
+      Decline reason and amount (for declined transactions).
+    </ResponseField>
+    <ResponseField name="merchant_data" type="object">
+      Rich merchant data for travel (flight, lodging, auto rental, receipt items).
+    </ResponseField>
+    <ResponseField name="requires_accounting_vendor_creation_to_sync" type="boolean">
+      Whether an accounting vendor must be created before this transaction can sync.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page.</ResponseField>
+  </Expandable>
+</ResponseField>

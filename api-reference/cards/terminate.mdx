@@ -1,0 +1,31 @@
+---
+title: "Terminate a card"
+description: "Create an async task to permanently terminate a card."
+api: "POST https://api.ramp.com/developer/v1/cards/{card_id}/deferred/termination"
+---
+
+**Required scope:** `cards:write`
+
+<Warning>
+  This action is irreversible. The card will be permanently disabled and cannot be reactivated.
+</Warning>
+
+This is a [deferred task](/concepts/deferred-tasks) endpoint.
+
+## Path Parameters
+
+<ParamField path="card_id" type="string" required>
+  The Ramp UUID of the card to terminate.
+</ParamField>
+
+## Body
+
+<ParamField body="idempotency_key" type="string" required>
+  Unique key to safely retry the request.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">
+  Deferred task ID. Poll `GET /developer/v1/cards/deferred/status/{id}` for completion.
+</ResponseField>

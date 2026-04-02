@@ -1,0 +1,32 @@
+---
+title: "Add line items"
+description: "Add line items to an existing purchase order."
+api: "POST https://api.ramp.com/developer/v1/purchase-orders/{purchase_order_id}/line-items"
+---
+
+## Path Parameters
+
+<ParamField path="purchase_order_id" type="string" required>The purchase order UUID.</ParamField>
+
+## Body
+
+<ParamField body="line_items" type="array" required>
+  Line items to add.
+  <Expandable title="Line item">
+    <ParamField body="unit_price" type="string | number" required>Unit price per item.</ParamField>
+    <ParamField body="unit_quantity" type="number" required>Quantity.</ParamField>
+    <ParamField body="description" type="string">Line item description.</ParamField>
+    <ParamField body="accounting_field_selections" type="array">
+      Accounting categorizations for this line item.
+      <Expandable title="Accounting field selection">
+        <ParamField body="field_external_id" type="string" required>External ID of the accounting field.</ParamField>
+        <ParamField body="field_option_external_id" type="string">External ID of the selected option.</ParamField>
+        <ParamField body="free_form_text" type="string">Free-form text value.</ParamField>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

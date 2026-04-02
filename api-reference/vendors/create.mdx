@@ -1,0 +1,67 @@
+---
+title: "Create a vendor"
+description: "Create a new bill pay vendor."
+api: "POST https://api.ramp.com/developer/v1/vendors"
+---
+
+**Required scope:** `vendors:write`
+
+<Note>
+  Vendors created via the API are approved by default and are not subject to existing approval policies.
+</Note>
+
+## Body
+
+<ParamField body="business_vendor_contacts" type="object" required>
+  Primary contact information.
+  <Expandable title="Contact">
+    <ParamField body="email" type="string" required>Contact email address.</ParamField>
+    <ParamField body="first_name" type="string">Contact first name.</ParamField>
+    <ParamField body="last_name" type="string">Contact last name.</ParamField>
+    <ParamField body="phone" type="string">Contact phone number.</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="country" type="string" required>
+  Vendor country code (ISO 3166-1 alpha-2).
+</ParamField>
+
+<ParamField body="name" type="string">
+  Vendor display name.
+</ParamField>
+
+<ParamField body="address" type="object">
+  Vendor address (address_line_1, city, state, postal_code, country).
+</ParamField>
+
+<ParamField body="external_vendor_id" type="string">
+  External vendor identifier from your system.
+</ParamField>
+
+<ParamField body="accounting_vendor_remote_id" type="string">
+  Accounting vendor ERP ID to link this vendor to.
+</ParamField>
+
+<ParamField body="vendor_owner_id" type="string">
+  UUID of the Ramp user who will own this vendor.
+</ParamField>
+
+<ParamField body="state" type="string">
+  Vendor US state code.
+</ParamField>
+
+<ParamField body="request_payment_details" type="boolean">
+  Whether to send an email requesting bank account details from the vendor.
+</ParamField>
+
+<ParamField body="request_tax_details" type="boolean">
+  Whether to send an email requesting tax information from the vendor.
+</ParamField>
+
+<ParamField body="vendor_tracking_category_option_id" type="string">
+  Spend category option ID to associate with this vendor.
+</ParamField>
+
+## Response
+
+Returns the created vendor object. See [List vendors](/api-reference/vendors/list) for the full response schema.

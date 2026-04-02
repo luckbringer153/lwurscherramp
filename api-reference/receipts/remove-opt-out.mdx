@@ -1,0 +1,13 @@
+---
+title: "Remove receipt opt-out"
+description: "Remove an email from the receipt integrations opt-out list, re-enabling receipt integration for that email."
+api: "DELETE https://api.ramp.com/developer/v1/receipt-integrations/opt-out/{mailbox_opted_out_email_uuid}"
+---
+
+## Path Parameters
+
+<ParamField path="mailbox_opted_out_email_uuid" type="string" required>The opt-out entry UUID to remove.</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

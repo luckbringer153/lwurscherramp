@@ -1,0 +1,61 @@
+---
+title: "List cards"
+description: "Retrieve a paginated list of cards."
+api: "GET https://api.ramp.com/developer/v1/cards"
+---
+
+**Required scope:** `cards:read`
+
+## Query Parameters
+
+<ParamField query="start" type="string">
+  Pagination cursor from `page.next`.
+</ParamField>
+
+<ParamField query="page_size" type="integer">
+  Number of results per page (default: 100, max: 100).
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  Array of card objects.
+
+  <Expandable title="Card object">
+    <ResponseField name="id" type="string">Card UUID.</ResponseField>
+    <ResponseField name="display_name" type="string">Card display name.</ResponseField>
+    <ResponseField name="last_four" type="string">Last four digits of the card number.</ResponseField>
+    <ResponseField name="expiration" type="string">Card expiration date (MM/YYYY).</ResponseField>
+    <ResponseField name="state" type="string">
+      `ACTIVE` | `CHIP_LOCKED` | `SUSPENDED` | `TERMINATED` | `UNACTIVATED`
+    </ResponseField>
+    <ResponseField name="is_physical" type="boolean">Whether this is a physical card.</ResponseField>
+    <ResponseField name="cardholder_id" type="string">UUID of the cardholder user.</ResponseField>
+    <ResponseField name="cardholder_name" type="string">Cardholder display name.</ResponseField>
+    <ResponseField name="card_program_id" type="string">Associated card program UUID.</ResponseField>
+    <ResponseField name="entity_id" type="string">Business entity UUID.</ResponseField>
+    <ResponseField name="created_at" type="string">Card creation timestamp.</ResponseField>
+    <ResponseField name="has_program_overridden" type="boolean">Whether the card has overridden its program settings.</ResponseField>
+    <ResponseField name="spending_restrictions" type="object">
+      Spend controls applied to this card.
+      <Expandable title="Spending restrictions">
+        <ResponseField name="amount" type="number">Spending limit amount.</ResponseField>
+        <ResponseField name="interval" type="string">Limit interval: `DAILY` | `WEEKLY` | `MONTHLY` | `QUARTERLY` | `ANNUAL` | `YEARLY` | `TERTIARY` | `TOTAL`</ResponseField>
+        <ResponseField name="auto_lock_date" type="string">Date when card automatically locks.</ResponseField>
+        <ResponseField name="categories" type="array">Allowed MCC category codes.</ResponseField>
+        <ResponseField name="blocked_categories" type="array">Blocked MCC category codes.</ResponseField>
+        <ResponseField name="transaction_amount_limit" type="number">Per-transaction limit.</ResponseField>
+        <ResponseField name="suspended" type="boolean">Whether card is currently suspended.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="fulfillment" type="object">
+      Physical card fulfillment details (shipping, status, personalization).
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page.</ResponseField>
+  </Expandable>
+</ResponseField>

@@ -1,0 +1,159 @@
+---
+title: "Ramp MCP"
+description: "Connect Claude, ChatGPT, Cursor, and other AI assistants directly to your Ramp account."
+---
+
+<Warning>
+  Ramp MCP is subject to change. Feedback and questions can be submitted via a [Developer API support ticket](https://ramp.com/developer-api/support).
+</Warning>
+
+Ramp MCP allows you to securely connect Ramp with AI assistants like Claude and ChatGPT, so you can query Ramp data and take actions using natural language. Admins can analyze spend trends and forecasting insights, while employees can check balances, request reimbursements, or get policy answers directly from their daily tools.
+
+**Prerequisites:**
+- A Ramp production or sandbox account
+- Access to your chosen AI platform (Claude, ChatGPT, Cursor, etc.)
+
+<Note>
+  To use demo/sample data instead of live Ramp data, replace `https://mcp.ramp.com/mcp` with `https://demo-mcp.ramp.com/mcp` in any config below.
+</Note>
+
+## Setup
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http ramp https://mcp.ramp.com/mcp
+    ```
+    Run `/mcp` in your session to verify the connection.
+  </Tab>
+  <Tab title="Claude Desktop">
+    Add to your Claude Desktop config file:
+    - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+    - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+    ```json
+    {
+      "mcpServers": {
+        "ramp": {
+          "command": "npx",
+          "args": ["mcp-remote", "https://mcp.ramp.com/mcp"]
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Cursor">
+    Add to `~/.cursor/mcp.json`:
+    ```json
+    {
+      "mcpServers": {
+        "ramp": {
+          "command": "npx",
+          "args": ["mcp-remote", "https://mcp.ramp.com/mcp"]
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="VS Code">
+    Add to your VS Code MCP settings:
+    ```json
+    {
+      "mcp": {
+        "servers": {
+          "ramp": {
+            "url": "https://mcp.ramp.com/mcp"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Other clients">
+    Use the server URL directly:
+    - **Production:** `https://mcp.ramp.com/mcp`
+    - **Demo:** `https://demo-mcp.ramp.com/mcp`
+
+    Check your tool's MCP documentation for configuration format.
+  </Tab>
+</Tabs>
+
+**Test your connection:**
+```
+"What Ramp cards do I have?"
+"Show me my recent transactions"
+```
+
+## Access Control
+
+Admins can control which employees have access to Ramp MCP:
+
+1. Navigate to **Company → Integrations → Ramp MCP**
+2. Select **Manage Access**
+3. Set restrictions based on roles, departments, or specific users
+
+## Available Tools
+
+### Employee Tools
+Available to all Ramp users (respect individual user permissions):
+
+| Tool | Description |
+|---|---|
+| `ramp_activate_card` | Activate a physical Ramp card |
+| `ramp_answer_policy_question` | Answer natural-language questions about company policies |
+| `ramp_approve_or_reject_bill` | Approve or reject a bill |
+| `ramp_approve_or_reject_reimbursement` | Approve or reject a reimbursement |
+| `ramp_approve_or_reject_request` | Approve or reject a request |
+| `ramp_approve_or_reject_transaction` | Approve or reject a transaction |
+| `ramp_ask_help_center` | Answer questions using Ramp Help Center content |
+| `ramp_create_trip` | Create a trip in Ramp Travel |
+| `ramp_edit_reimbursement` | Edit a reimbursement before submission |
+| `ramp_edit_transaction` | Edit transaction details such as coding or notes |
+| `ramp_get_bill_details` | Get detailed information for a specific bill |
+| `ramp_get_bills_for_approval` | List bills awaiting the current user's review |
+| `ramp_get_bookings` | Retrieve travel bookings for the current user |
+| `ramp_get_decline_explanation` | Explain why a transaction or request was declined |
+| `ramp_get_draft_bill_details` | Get detailed information for a draft bill |
+| `ramp_get_funds` | List all funds, stipends, or budgets available to the current user |
+| `ramp_get_org_chart` | Get the org chart around a user |
+| `ramp_get_reimbursements` | Get reimbursements for the current user |
+| `ramp_get_reimbursements_for_approval` | List reimbursements awaiting review |
+| `ramp_get_simplified_user_detail` | Get current user's basic Ramp profile |
+| `ramp_get_transactions` | Get transaction history for the current user |
+| `ramp_list_cards` | List all Ramp cards available to the current user |
+| `ramp_lock_or_unlock_card` | Lock or unlock a specific Ramp card |
+| `ramp_post_comment` | Post a comment on a supported Ramp workflow item |
+| `ramp_search_bills` | Search bills the current user can access |
+| `ramp_search_user` | Search for users in the Ramp account |
+| `ramp_submit_reimbursement` | Submit a reimbursement |
+
+### Data Analysis Tools (Admin)
+
+| Tool | Description |
+|---|---|
+| `execute_query` | Run SQL queries on loaded data |
+| `load_spend_export` | Load transactions, reimbursements, and bills |
+| `load_purchase_orders` | Load purchase order data |
+| `load_cards` | Load card information |
+| `load_limits` | Load spending limit data |
+| `load_users` | Load user/employee data |
+| `load_departments` | Load department data |
+| `load_vendors` | Load vendor information |
+
+<Note>
+  Agent card tools (`ramp_get_agent_card_creds` and `ramp_get_agent_card_funds`) are currently in beta. Join the waitlist at [agents.ramp.com/cards](https://agents.ramp.com/cards).
+</Note>
+
+## Troubleshooting
+
+**Authentication fails or connection drops:**
+- **Claude Code:** Run `/mcp`, select Ramp, and choose "Clear authentication"
+- **Cursor / Claude Desktop:** Remove and re-add the server in your config, then restart the app
+- Ensure you're logged into the correct Ramp account
+
+**"ETL operation limit reached":**
+- Wait for current data operations to complete
+- Ask the AI to clear unused tables to free up resources
+
+**"Query returned more than 100 rows":**
+- The AI will automatically add more specific filters and retry

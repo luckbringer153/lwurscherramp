@@ -1,0 +1,79 @@
+---
+title: "Create a limit"
+description: "Create a new fund (limit) as an async task."
+api: "POST https://api.ramp.com/developer/v1/limits/deferred"
+---
+
+**Required scope:** `limits:write`
+
+This is a [deferred task](/concepts/deferred-tasks) endpoint. Poll `GET /developer/v1/limits/deferred/status/{task_id}` to get the limit ID.
+
+A limit may be created:
+- **With a `spend_program_id`** — inherits restrictions from the spend program (you may override `display_name` and `spending_restrictions`)
+- **Without a `spend_program_id`** — requires `display_name`, `spending_restrictions`, and `permitted_spend_types`
+
+## Body
+
+<ParamField body="user_id" type="string" required>
+  UUID of the user who owns this limit.
+</ParamField>
+
+<ParamField body="idempotency_key" type="string" required>
+  Unique key to safely retry without creating duplicates.
+</ParamField>
+
+<ParamField body="display_name" type="string">
+  Display name for the fund.
+</ParamField>
+
+<ParamField body="spend_program_id" type="string">
+  Spend program UUID to inherit restrictions from.
+</ParamField>
+
+<ParamField body="spending_restrictions" type="object">
+  Spending controls for this fund.
+  <Expandable title="Spending restrictions">
+    <ParamField body="limit" type="object" required>
+      <Expandable title="Limit amount">
+        <ParamField body="amount" type="number" required>Amount in smallest denomination.</ParamField>
+        <ParamField body="currency_code" type="string">Currency code (default: USD).</ParamField>
+      </Expandable>
+    </ParamField>
+    <ParamField body="interval" type="string" required>
+      `DAILY` | `WEEKLY` | `MONTHLY` | `QUARTERLY` | `ANNUAL` | `YEARLY` | `TERTIARY` | `TOTAL`
+    </ParamField>
+    <ParamField body="allowed_categories" type="array">Allowed MCC category codes.</ParamField>
+    <ParamField body="blocked_categories" type="array">Blocked MCC category codes.</ParamField>
+    <ParamField body="blocked_mcc_codes" type="array">Blocked MCC codes.</ParamField>
+    <ParamField body="allowed_vendors" type="array">Allowed vendor IDs.</ParamField>
+    <ParamField body="blocked_vendors" type="array">Blocked vendor IDs.</ParamField>
+    <ParamField body="transaction_amount_limit" type="object">Per-transaction limit (amount + currency_code).</ParamField>
+    <ParamField body="lock_date" type="string">Auto-lock date (ISO 8601).</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="permitted_spend_types" type="object">
+  Whether card spending and/or reimbursements are enabled.
+  <Expandable title="Permitted spend types">
+    <ParamField body="primary_card_enabled" type="boolean">Enable card spending.</ParamField>
+    <ParamField body="reimbursements_enabled" type="boolean">Enable reimbursements.</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="is_shareable" type="boolean">
+  Whether multiple users can share this limit.
+</ParamField>
+
+<ParamField body="accounting_rules" type="array">
+  Accounting field rules applied to transactions on this limit.
+  <Expandable title="Accounting rule">
+    <ParamField body="field_id" type="string" required>Accounting field UUID.</ParamField>
+    <ParamField body="field_option_id" type="string" required>Field option UUID to auto-apply.</ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">
+  Deferred task ID. Poll `GET /developer/v1/limits/deferred/status/{id}` to retrieve the limit ID.
+</ResponseField>

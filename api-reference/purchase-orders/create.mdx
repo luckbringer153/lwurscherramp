@@ -1,0 +1,77 @@
+---
+title: "Create a purchase order"
+description: "Create a new purchase order."
+api: "POST https://api.ramp.com/developer/v1/purchase-orders"
+---
+
+## Body
+
+<ParamField body="entity_id" type="string" required>
+  Entity UUID for this purchase order.
+</ParamField>
+
+<ParamField body="currency" type="string" required>
+  ISO 4217 currency code (e.g. `USD`, `EUR`, `GBP`).
+</ParamField>
+
+<ParamField body="three_way_match_enabled" type="boolean" required>
+  Whether three-way matching (PO → receipt → invoice) is required before payment.
+</ParamField>
+
+<ParamField body="line_items" type="array" required>
+  Line items for this purchase order.
+  <Expandable title="Line item">
+    <ParamField body="unit_price" type="string | number" required>Unit price per item.</ParamField>
+    <ParamField body="unit_quantity" type="number" required>Quantity.</ParamField>
+    <ParamField body="description" type="string">Line item description.</ParamField>
+    <ParamField body="accounting_field_selections" type="array">
+      Accounting categorizations for this line item.
+      <Expandable title="Accounting field selection">
+        <ParamField body="field_external_id" type="string" required>External ID of the accounting field.</ParamField>
+        <ParamField body="field_option_external_id" type="string">External ID of the selected option.</ParamField>
+        <ParamField body="free_form_text" type="string">Free-form text value (for text fields).</ParamField>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="vendor_id" type="string">
+  Vendor UUID.
+</ParamField>
+
+<ParamField body="purchase_order_number" type="string">
+  Custom PO number. Auto-generated if omitted.
+</ParamField>
+
+<ParamField body="memo" type="string">
+  Memo or notes.
+</ParamField>
+
+<ParamField body="net_payment_terms" type="number">
+  Payment terms in days (e.g. `30` for Net-30).
+</ParamField>
+
+<ParamField body="promise_date" type="string">
+  Expected delivery date (ISO 8601).
+</ParamField>
+
+<ParamField body="spend_start_date" type="string">
+  Spend period start date (ISO 8601).
+</ParamField>
+
+<ParamField body="spend_end_date" type="string">
+  Spend period end date (ISO 8601).
+</ParamField>
+
+<ParamField body="accounting_field_selections" type="array">
+  Accounting categorizations for the PO header.
+  <Expandable title="Accounting field selection">
+    <ParamField body="field_external_id" type="string" required>External ID of the accounting field.</ParamField>
+    <ParamField body="field_option_external_id" type="string">External ID of the selected option.</ParamField>
+    <ParamField body="free_form_text" type="string">Free-form text value.</ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

@@ -1,0 +1,288 @@
+---
+title: "Accounting Integration"
+description: "Keep data in sync between Ramp and your external accounting or ERP system."
+---
+
+This guide is targeted towards developers building a connection between Ramp and a remote accounting/ERP system.
+
+By following this guide, you'll enable seamless data flow between Ramp and your ERP, keeping vendors, GL accounts, and transaction data synchronized.
+
+Building an accounting integration involves three main steps: configuring the connection, uploading your chart of accounts, and implementing object sync.
+
+## Overview
+
+<CardGroup cols={3}>
+  <Card title="Configure Connection" icon="plug">
+    Establish an accounting connection between Ramp and your ERP system.
+  </Card>
+  <Card title="Chart of Accounts" icon="list">
+    Import GL accounts, custom fields, field options, and vendors from your ERP into Ramp.
+  </Card>
+  <Card title="Object Sync" icon="arrows-rotate">
+    Fetch ready-to-sync objects from Ramp, transfer them to your ERP, and mark them as synced.
+  </Card>
+</CardGroup>
+
+## Step 1: Create Accounting Connection
+
+Before syncing your chart of accounts, you need to establish an accounting connection between Ramp and your ERP system. This connection serves as the foundation for all accounting data synchronization.
+
+Check if a connection already exists:
+
+```bash
+GET /developer/v1/accounting/connection
+```
+
+To create a new connection:
+
+```bash
+POST /developer/v1/accounting/connection
+{
+  "remote_provider_name": "Your ERP Name"
+}
+```
+
+The `remote_provider_name` field identifies your accounting system in the Ramp UI.
+
+<Warning>
+  Disconnecting an existing accounting connection will remove all associated custom fields, GL accounts, and vendors. See the [ERP Migration](/guides/accounting-erp-migration) guide for guidance on preserving data during connection changes.
+</Warning>
+
+To disconnect an existing connection:
+
+```bash
+DELETE /developer/v1/accounting/connection
+```
+
+## Step 2: Upload Chart of Accounts
+
+When integrating your ERP with Ramp, one of the first setup steps is syncing your chart of accounts — the list of general ledger accounts, vendors, and classification fields that ensure every Ramp transaction is properly coded in your ERP.
+
+### GL Accounts
+
+GL accounts define the categories under which your company records transactions (expenses, revenue, assets). These are **always required**.
+
+```bash
+POST /developer/v1/accounting/accounts
+{
+  "gl_accounts": [
+    { "id": "6410", "name": "Employees: Salaries & Wages", "classification": "EXPENSE" },
+    { "id": "418",  "name": "Office/Admin: Phone & Internet", "classification": "EXPENSE" },
+    { "id": "425",  "name": "Sales", "classification": "REVENUE" }
+  ]
+}
+```
+
+### Custom Fields
+
+Custom fields let you import classifications from your ERP like Department, Cost Center, or Location. These are optional.
+
+```bash
+POST /developer/v1/accounting/fields
+{
+  "name": "Department",
+  "input_type": "SINGLE_CHOICE"
+}
+```
+
+The response returns a `ramp_id` — use it when uploading field options.
+
+### Custom Field Options
+
+```bash
+POST /developer/v1/accounting/field-options
+{
+  "field_options": [
+    { "id": "dept-eng", "name": "Engineering & Design", "accounting_field_id": "<ramp_id>" },
+    { "id": "dept-sales", "name": "Sales & Marketing", "accounting_field_id": "<ramp_id>" }
+  ]
+}
+```
+
+### Vendors
+
+Vendors represent suppliers or payees from your ERP and allow users to tag bills, transactions, or purchase orders in Ramp.
+
+```bash
+POST /developer/v1/accounting/vendors
+{
+  "vendors": [
+    { "id": "V-5500-0130", "name": "AirTable" },
+    { "id": "V-5500-0135", "name": "Slack Technologies, LLC" },
+    { "id": "V-5500-0142", "name": "Microsoft" }
+  ]
+}
+```
+
+<Note>
+  Chart of accounts cannot be modified via API when using a **direct accounting connection** (e.g., NetSuite native). GL accounts, custom fields, and vendors become read-only in that case.
+</Note>
+
+### Batch Limits
+
+All batch operations use all-or-nothing processing — if any item fails validation, the entire batch is rejected. Limits apply per API call, not as totals.
+
+| Resource | Per-call limit |
+|---|---|
+| GL Accounts | 500 |
+| Accounting Vendors | 500 |
+| Custom Field Options | 500 |
+| Accounting Syncs | 5,000 |
+
+### Entities
+
+For organizations with multiple business entities (subsidiaries, divisions), entities are created and managed in the Ramp UI. When fetching objects via API, scope requests to a specific entity using the `entity_id` parameter.
+
+## Deactivating vs Hiding COA Items
+
+When managing your chart of accounts, you have two ways to remove items from user selection:
+
+| | Delete (deactivate) | Hide |
+|---|---|---|
+| Use when | You never want to sync this item again | You want to stop new coding but preserve historical values |
+| Effect on `is_active` | Sets to `false` | Remains `true` |
+| Visible to cardholders | No | No |
+| Existing codings preserved | Yes, but cannot be synced | Yes, and can still be synced |
+| How to reverse | `PATCH` with `"reactivate": true` | `PATCH` with `"visibility": "VISIBLE"` |
+| Applies to | Fields, field options, GL accounts, vendors | Field options only |
+
+<Tip>
+  When in doubt, prefer hiding over deleting for field options. Hiding is less disruptive because it keeps the option active for sync purposes.
+</Tip>
+
+## Linking Accounting Vendors to Ramp Vendors
+
+Accounting vendors (ERP-side identifiers) and Ramp vendors are separate entities that can be linked together:
+
+**1. Create accounting vendors:**
+```bash
+POST /developer/v1/accounting/vendors
+{ "vendors": [{ "id": "V-5500-0130", "name": "AirTable" }] }
+```
+
+**2. Link the Ramp vendor to the accounting vendor:**
+```bash
+PATCH /developer/v1/vendors/{vendor_id}
+{ "accounting_vendor_remote_id": "V-5500-0130" }
+```
+
+**3. (Optional) Set a vendor code:**
+```bash
+PATCH /developer/v1/accounting/vendors/{vendor_id}
+{ "code": "AIRTABLE-001" }
+```
+
+## Step 3: Implement Object Sync
+
+To sync accounting data between Ramp and your ERP, implement an object sync process:
+
+1. Fetch ready-to-sync objects from Ramp
+2. Transfer the data to your ERP
+3. Mark objects as synced in Ramp via the Sync Status endpoint
+
+Once an object is marked as synced, it will no longer appear in the primary Accounting View.
+
+### When Objects Become Ready to Sync
+
+| Object | Trigger |
+|---|---|
+| Bills | Automatic — approved or created (based on settings), not yet synced |
+| Bill Payments | Automatic — fully paid (`payment_status=PAID`) |
+| Transfers | Automatic — transfer payment accepted |
+| Cashback | Automatic — no user action required |
+| Transactions | Manual — users mark as "ready to sync" in Ramp UI |
+| Reimbursements | Manual — users mark as "ready to sync" in Ramp UI |
+
+### Fetching Ready-to-Sync Objects
+
+```bash
+GET /developer/v1/bills?sync_ready=true
+GET /developer/v1/transactions?sync_status=SYNC_READY
+GET /developer/v1/reimbursements?sync_status=SYNC_READY
+GET /developer/v1/transfers?sync_status=SYNC_READY
+GET /developer/v1/cashbacks?sync_status=SYNC_READY
+```
+
+### Marking Objects as Synced
+
+```bash
+POST /developer/v1/accounting/syncs
+{
+  "idempotency_key": "sync-2025-04-01-001",
+  "sync_type": "TRANSACTION_SYNC",
+  "successful_syncs": [
+    { "id": "txn_id", "reference_id": "erp_txn_id" }
+  ],
+  "failed_syncs": []
+}
+```
+
+### Bill Two-Step Sync
+
+Bills require a two-step sync: first the invoice, then the payment.
+
+**Invoice sync:**
+```bash
+# Fetch un-synced bills
+GET /developer/v1/bills?sync_ready=true
+
+# After creating the invoice in your ERP:
+POST /developer/v1/accounting/syncs
+{ "sync_type": "BILL_SYNC", "successful_syncs": [{ "id": "bill_id", "reference_id": "erp_inv_id" }] }
+```
+
+This updates the bill's `sync_status` to `BILL_SYNCED`.
+
+**Payment sync:**
+```bash
+# Fetch invoice-synced but not payment-synced bills
+GET /developer/v1/bills?payment_sync_ready=true
+
+# After creating the payment in your ERP:
+POST /developer/v1/accounting/syncs
+{ "sync_type": "BILL_PAYMENT_SYNC", "successful_syncs": [{ "id": "bill_id", "reference_id": "erp_pay_id" }] }
+```
+
+### Polling vs Webhooks
+
+**Polling** — Periodically fetch ready-to-sync objects. Recommended cadence: every 1–4 hours on weekdays, every 12 hours on weekends.
+
+**Webhooks** — Subscribe to `transactions.ready_to_sync` for real-time notifications. See the [Webhooks guide](/guides/webhooks) for setup instructions.
+
+### Reporting Sync Errors
+
+Use `failed_syncs` on the Sync endpoint to report errors back to users. These appear in the Accounting tab as Export Errors.
+
+Error categories:
+- **User-actionable** — Include a title and resolution steps (e.g., "Accounting period is closed. Open the period in NetSuite and retry.")
+- **Transient/retryable** — Include a prompt to retry (e.g., "NetSuite is temporarily unavailable.")
+- **Requires integrator support** — Include a support contact and reference ID
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Can I have multiple accounting connections active at once?">
+    No. Only one accounting connection can be active at a time. This is a known limitation when migrating between connections.
+  </Accordion>
+  <Accordion title="Is there a lookback limit for transactions?">
+    No. All historical objects are available via API with no lookback restrictions.
+  </Accordion>
+  <Accordion title="Can I fetch bill payment details via API?">
+    Yes. Payment details are nested within the Bill object. Use the Bills API to fetch `payment_status` and update sync status once payment is complete.
+  </Accordion>
+  <Accordion title="Are purchase orders available with all connection types?">
+    Yes. Purchase orders can be fetched and created via API regardless of your accounting connection type. POs are not part of the accounting connection configuration.
+  </Accordion>
+  <Accordion title="Does Ramp enforce encryption for data transmissions?">
+    Yes. All API requests and responses are encrypted using HTTPS. Data stored in Ramp systems is also encrypted.
+  </Accordion>
+</AccordionGroup>
+
+## Related APIs
+
+- [Accounting Connection](/api-reference/accounting/connections/list)
+- [GL Accounts](/api-reference/accounting/gl-accounts/list)
+- [Custom Fields](/api-reference/accounting/custom-fields/list)
+- [Field Options](/api-reference/accounting/field-options/list)
+- [Vendors (Accounting)](/api-reference/accounting/vendors/list)
+- [Accounting Sync](/api-reference/accounting/sync/post-sync)

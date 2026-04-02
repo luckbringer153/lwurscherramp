@@ -1,0 +1,39 @@
+---
+title: "Rate Limiting and Timeouts"
+description: "Ramp API rate limits and how to handle them."
+---
+
+## Rate Limits
+
+To ensure reliable and equitable access, the Ramp API enforces rate limiting per source IP address:
+
+- **Limit:** 200 requests per 10-second rolling window
+- **Reset:** Rolling window — every new request resets the 10-second timer for that request
+
+When the rate limit is exceeded, the API responds with **`429 Too Many Requests`**.
+
+## Handling Rate Limits
+
+When you receive a `429` response:
+
+1. **Implement exponential backoff** — wait 1s, then 2s, then 4s before retrying. Avoid immediate retries.
+2. **Optimize API calls** — consolidate requests using batch endpoints and minimize redundant calls.
+3. **Use pagination** — break large list requests into smaller pages.
+
+```
+Requests at 10:00:00 → hits limit at request 200
+Subsequent requests → 429 until 10:00:10
+Rolling: continued requests extend the window
+```
+
+<Note>
+  If your application requires a higher rate limit, [submit a Developer API support ticket](https://ramp.com/developer-api/support) with your account details and expected usage volume.
+</Note>
+
+## Request Timeouts
+
+API requests that take longer than **60 seconds** will be terminated and return a `504 Gateway Timeout` response. Most requests complete well within this limit.
+
+If you encounter `504` errors:
+- Use [pagination](/concepts/pagination) to break large requests into smaller chunks
+- Implement retry logic with exponential backoff

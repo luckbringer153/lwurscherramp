@@ -1,0 +1,14 @@
+---
+title: "Get a memo"
+description: "Retrieve the memo for a specific transaction."
+api: "GET https://api.ramp.com/developer/v1/memos/{transaction_id}"
+---
+
+## Path Parameters
+
+<ParamField path="transaction_id" type="string" required>The transaction UUID.</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Transaction UUID.</ResponseField>
+<ResponseField name="memo" type="string">Memo text.</ResponseField>

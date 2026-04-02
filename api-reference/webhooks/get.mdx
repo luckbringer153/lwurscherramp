@@ -1,0 +1,19 @@
+---
+title: "Get a webhook subscription"
+description: "Retrieve a single webhook subscription by ID."
+api: "GET https://api.ramp.com/developer/v1/webhooks/{webhook_id}"
+---
+
+## Path Parameters
+
+<ParamField path="webhook_id" type="string" required>The webhook subscription UUID.</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Webhook UUID.</ResponseField>
+<ResponseField name="endpoint_url" type="string">Endpoint URL.</ResponseField>
+<ResponseField name="event_types" type="array">Subscribed event types.</ResponseField>
+<ResponseField name="status" type="string">`active` | `inactive` | `pending_verification`</ResponseField>
+<ResponseField name="business_id" type="string">Business UUID.</ResponseField>
+<ResponseField name="created_at" type="string">Creation timestamp.</ResponseField>
+<ResponseField name="updated_at" type="string">Last updated timestamp.</ResponseField>

@@ -1,0 +1,128 @@
+---
+title: "Ramp CLI"
+description: "Authenticate with OAuth, manage expenses, approve bills, book travel, and more from your terminal or AI agent."
+---
+
+The Ramp CLI lets you interact with the Ramp API directly from your terminal or integrate it into AI agent workflows. Authenticate with OAuth, manage expenses, approve bills, book travel, and more.
+
+<Note>
+  The CLI is open source. View the repo at [github.com/ramp-public/ramp-cli](https://github.com/ramp-public/ramp-cli).
+</Note>
+
+## Installation
+
+```bash
+# Auto-detects your platform and downloads the pre-built binary
+curl -sSL https://ramp.com/cli/install.sh | sh
+```
+
+If you already have `uv` installed:
+```bash
+uv tool install ramp-cli
+```
+
+## Authentication
+
+```bash
+ramp auth login
+```
+
+This opens a browser-based OAuth flow. Run `ramp users me` to confirm which user the CLI is acting as.
+
+**Switch environments:**
+```bash
+# Use sandbox (default)
+ramp --env sandbox transactions list
+
+# Use production
+ramp --env production transactions list
+
+# Set a default environment
+ramp config set env production
+```
+
+<Note>
+  Every CLI action runs as the authenticated user. Actions are attributed to you, permissions match your Ramp role, and data visibility follows your access level. Non-admins see only their own data; admins can query across the business.
+</Note>
+
+## Output Modes
+
+| Flag | Description |
+|---|---|
+| `--human` | Human-readable table output (default in terminal) |
+| `--agent` | Machine-readable JSON output (default when piped) |
+| `--wide` | Show all columns in table output |
+
+When you pipe CLI output to another command, it automatically switches to JSON:
+```bash
+ramp transactions list | jq '.[] | .amount'
+```
+
+## Commands
+
+### Setup Commands
+
+| Command | Description |
+|---|---|
+| `auth` | Login, logout, check authentication status |
+| `config` | Get/set CLI configuration |
+| `env` | Show or set default environment (sandbox/production) |
+| `applications` | Apply for a Ramp account |
+| `skills` | Browse and install agent skill instructions |
+| `feedback` | Submit feedback about the CLI |
+
+### Resources
+
+Usage: `ramp <resource> <tool> [OPTIONS]`
+
+| Resource | Available Tools |
+|---|---|
+| `accounting` | `categories`, `category-options` |
+| `bills` | `search`, `get`, `draft`, `pending`, `approve`, `attachments` |
+| `funds` | `list`, `activate`, `creds`, `lock` |
+| `general` | `comment`, `explain`, `help-center`, `policy` |
+| `purchase_orders` | `search`, `get` |
+| `receipts` | `upload`, `attach` |
+| `reimbursements` | `list`, `pending`, `submit`, `approve`, `edit` |
+| `requests` | `pending`, `approve` |
+| `transactions` | `list`, `get`, `approve`, `edit`, `missing`, `flag-missing`, `explain-missing`, `memo-suggestions`, `trips` |
+| `travel` | `list`, `create`, `bookings`, `locations` |
+| `users` | `me`, `search`, `org-chart` |
+
+Run `ramp <resource> <tool> --help` to see all available flags.
+
+## Global Flags
+
+| Flag | Description |
+|---|---|
+| `--env, -e` | `sandbox` (default) or `production` |
+| `--output, -o` | Output format: `json` or `table` |
+| `--quiet, -q` | Suppress progress output |
+| `--no-input` | Disable interactive prompts (for CI/scripts) |
+
+**Common per-tool flags:**
+
+| Flag | Description |
+|---|---|
+| `--json TEXT` | Raw JSON request body (bypasses individual flags) |
+| `--dry_run, -n` | Print request without sending |
+| `--page_size N` | Results per page |
+| `--next_page_cursor` | Resume pagination from previous response |
+
+## AI Agent Integration
+
+The CLI includes a **skill system** for AI agent frameworks. Skills are structured instructions that teach an agent how to use Ramp for specific workflows — approving expenses, uploading receipts, making purchases, and more.
+
+```bash
+ramp skills list
+ramp skills install expense-approval
+```
+
+**Non-interactive mode for CI/scripts:**
+```bash
+ramp transactions list --no-input --quiet --output json
+```
+
+<Note>
+  Need help? [Submit a Developer API support ticket](https://ramp.com/developer-api/support) and our team will follow up.
+</Note>

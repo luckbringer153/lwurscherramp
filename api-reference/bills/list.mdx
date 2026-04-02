@@ -1,0 +1,126 @@
+---
+title: "List bills"
+description: "Retrieve a paginated list of bills."
+api: "GET https://api.ramp.com/developer/v1/bills"
+---
+
+**Required scope:** `bills:read`
+
+## Query Parameters
+
+<ParamField query="sync_ready" type="boolean">
+  Filter to bills that are ready to sync to accounting system.
+</ParamField>
+
+<ParamField query="payment_sync_ready" type="boolean">
+  Filter to bills that are invoice-synced but not yet payment-synced.
+</ParamField>
+
+<ParamField query="sync_status" type="string">
+  Filter by sync status. One of: `NOT_SYNCED`, `BILL_SYNCED`, `BILL_AND_PAYMENT_SYNCED`.
+</ParamField>
+
+<ParamField query="start" type="string">
+  Pagination cursor. Use the value of `page.next` from a previous response.
+</ParamField>
+
+<ParamField query="page_size" type="integer">
+  Number of results per page (default: 100, max: 100).
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  Array of bill objects.
+
+  <Expandable title="Bill object">
+    <ResponseField name="id" type="string">Ramp bill UUID.</ResponseField>
+    <ResponseField name="amount" type="object">
+      Total bill amount.
+      <Expandable title="CurrencyAmount">
+        <ResponseField name="amount" type="integer">Amount in smallest denomination.</ResponseField>
+        <ResponseField name="currency_code" type="string">ISO 4217 currency code.</ResponseField>
+        <ResponseField name="minor_unit_conversion_rate" type="number">Conversion rate to minor units.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="approval_status" type="string">
+      `APPROVED` | `INITIALIZED` | `PENDING` | `REJECTED` | `TERMINATED`
+    </ResponseField>
+    <ResponseField name="status" type="string">`OPEN` | `PAID`</ResponseField>
+    <ResponseField name="status_summary" type="string">
+      Detailed status: `APPROVAL_PENDING` | `APPROVAL_REJECTED` | `ARCHIVED` | `AWAITING_RELEASE` | `BLOCKED` | `HELD_BY_PROVIDER` | `ON_HOLD` | `PAYMENT_COMPLETED` | `PAYMENT_DETAILS_MISSING` | `PAYMENT_ERROR` | `PAYMENT_NOT_INSTRUCTED` | `PAYMENT_PROCESSING` | `PAYMENT_READY` | `PAYMENT_SCHEDULED` | `PENDING_VENDOR_APPROVAL` | `WAITING_FOR_TRANSACTION_MATCH` | `WAITING_FOR_VENDOR`
+    </ResponseField>
+    <ResponseField name="sync_status" type="string">
+      `NOT_SYNCED` | `BILL_SYNCED` | `BILL_AND_PAYMENT_SYNCED`
+    </ResponseField>
+    <ResponseField name="vendor" type="object">
+      <Expandable title="Vendor">
+        <ResponseField name="id" type="string">Vendor UUID.</ResponseField>
+        <ResponseField name="name" type="string">Vendor display name.</ResponseField>
+        <ResponseField name="remote_id" type="string">ERP vendor ID.</ResponseField>
+        <ResponseField name="remote_code" type="string">ERP vendor code.</ResponseField>
+        <ResponseField name="remote_name" type="string">ERP vendor name.</ResponseField>
+        <ResponseField name="type" type="string">`BUSINESS` | `INDIVIDUAL`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="vendor_contact_id" type="string">Vendor contact UUID.</ResponseField>
+    <ResponseField name="bill_owner" type="object">
+      <Expandable title="Bill owner">
+        <ResponseField name="id" type="string">User UUID.</ResponseField>
+        <ResponseField name="first_name" type="string" />
+        <ResponseField name="last_name" type="string" />
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="due_at" type="string">Due date (ISO 8601).</ResponseField>
+    <ResponseField name="issued_at" type="string">Invoice issue date (ISO 8601).</ResponseField>
+    <ResponseField name="paid_at" type="string">Payment date (ISO 8601).</ResponseField>
+    <ResponseField name="created_at" type="string">Bill creation timestamp.</ResponseField>
+    <ResponseField name="invoice_number" type="string">Invoice number from the vendor.</ResponseField>
+    <ResponseField name="invoice_urls" type="array">URLs to invoice attachments.</ResponseField>
+    <ResponseField name="memo" type="string">Bill memo.</ResponseField>
+    <ResponseField name="vendor_memo" type="string">Memo sent to the vendor.</ResponseField>
+    <ResponseField name="remote_id" type="string">External bill ID from your ERP.</ResponseField>
+    <ResponseField name="entity_id" type="string">Business entity UUID.</ResponseField>
+    <ResponseField name="purchase_order_id" type="string">Associated PO UUID.</ResponseField>
+    <ResponseField name="draft_bill_id" type="string">Associated draft bill UUID.</ResponseField>
+    <ResponseField name="fx_conversion_rate" type="string">FX rate if non-USD invoice.</ResponseField>
+    <ResponseField name="enable_accounting_sync" type="boolean">Whether accounting sync is enabled.</ResponseField>
+    <ResponseField name="deep_link_url" type="string">Deep link URL in Ramp UI.</ResponseField>
+    <ResponseField name="accounting_date" type="string">Accounting date (ISO 8601).</ResponseField>
+    <ResponseField name="posting_date" type="string">Posting date (ISO 8601).</ResponseField>
+    <ResponseField name="payment" type="object">
+      Payment details.
+      <Expandable title="Payment">
+        <ResponseField name="id" type="string">Payment UUID.</ResponseField>
+        <ResponseField name="amount" type="object">Payment amount (CurrencyAmount).</ResponseField>
+        <ResponseField name="payment_method" type="string">Payment method enum.</ResponseField>
+        <ResponseField name="payment_date" type="string">Scheduled payment date.</ResponseField>
+        <ResponseField name="effective_date" type="string">Effective payment date.</ResponseField>
+        <ResponseField name="customer_friendly_payment_id" type="string">Human-readable payment reference.</ResponseField>
+        <ResponseField name="trace_id" type="object">Payment trace information.</ResponseField>
+        <ResponseField name="details" type="object">Payment method-specific details.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="line_items" type="array">
+      Accounting line items.
+      <Expandable title="Line item">
+        <ResponseField name="amount" type="object">Line item amount (CurrencyAmount).</ResponseField>
+        <ResponseField name="memo" type="string">Line item memo.</ResponseField>
+        <ResponseField name="accounting_field_selections" type="array">Accounting coding selections.</ResponseField>
+        <ResponseField name="purchase_order_line_item_id" type="string">Associated PO line item.</ResponseField>
+        <ResponseField name="item_receipt_line_item_ids" type="array">Associated item receipt line item IDs.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="inventory_line_items" type="array">Inventory line items with quantity and unit price.</ResponseField>
+    <ResponseField name="accounting_field_selections" type="array">Bill-level accounting coding selections.</ResponseField>
+    <ResponseField name="applied_vendor_credits" type="array">Vendor credits applied to this bill.</ResponseField>
+    <ResponseField name="item_receipt_ids" type="array">Associated item receipt IDs.</ResponseField>
+    <ResponseField name="archived_at" type="string">Timestamp when bill was archived.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page. Null when no more results.</ResponseField>
+  </Expandable>
+</ResponseField>

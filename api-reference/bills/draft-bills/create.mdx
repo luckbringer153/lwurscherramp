@@ -1,0 +1,96 @@
+---
+title: "Create a draft bill"
+description: "Create a new draft bill that can be reviewed and approved before payment."
+api: "POST https://api.ramp.com/developer/v1/bills/drafts"
+---
+
+**Required scope:** `bills:write`
+
+## Body
+
+<ParamField body="vendor_id" type="string" required>
+  Ramp vendor UUID.
+</ParamField>
+
+<ParamField body="due_at" type="string">
+  Bill due date in ISO 8601 format.
+</ParamField>
+
+<ParamField body="issued_at" type="string">
+  Invoice issue date in ISO 8601 format.
+</ParamField>
+
+<ParamField body="invoice_number" type="string">
+  Invoice number from the vendor.
+</ParamField>
+
+<ParamField body="entity_id" type="string">
+  Business entity UUID.
+</ParamField>
+
+<ParamField body="invoice_currency" type="string">
+  ISO 4217 currency code for the invoice.
+</ParamField>
+
+<ParamField body="line_items" type="array">
+  Accounting line items.
+  <Expandable title="Line item">
+    <ParamField body="amount" type="number" required>Amount in invoice currency.</ParamField>
+    <ParamField body="memo" type="string">Line item memo.</ParamField>
+    <ParamField body="accounting_field_selections" type="array">Accounting coding.</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="inventory_line_items" type="array">
+  Inventory line items.
+  <Expandable title="Inventory line item">
+    <ParamField body="quantity" type="number" required>Quantity of items.</ParamField>
+    <ParamField body="unit_price" type="number" required>Unit price per item.</ParamField>
+    <ParamField body="memo" type="string">Line item memo.</ParamField>
+    <ParamField body="accounting_field_selections" type="array">Accounting coding.</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="accounting_field_selections" type="array">
+  Bill-level accounting coding.
+</ParamField>
+
+<ParamField body="payment_method" type="string">
+  Payment method: `ACH` | `CARD` | `CHECK` | `DOMESTIC_WIRE` | `INTERNATIONAL` | `LOCAL_BANK_TRANSFER` | `ONE_TIME_CARD` | `ONE_TIME_CARD_DELIVERY` | `PAID_MANUALLY` | `SWIFT`
+</ParamField>
+
+<ParamField body="vendor_contact_id" type="string">
+  Vendor contact UUID for payment routing.
+</ParamField>
+
+<ParamField body="use_default_payment_method" type="boolean">
+  Use the vendor's default payment method.
+</ParamField>
+
+<ParamField body="purchase_order_ids" type="array">
+  Associated purchase order UUIDs.
+</ParamField>
+
+<ParamField body="memo" type="string">
+  Internal memo.
+</ParamField>
+
+<ParamField body="vendor_memo" type="string">
+  Memo sent to the vendor with payment.
+</ParamField>
+
+<ParamField body="remote_id" type="string">
+  External bill ID from your ERP.
+</ParamField>
+
+<ParamField body="posting_date" type="string">
+  Accounting posting date.
+</ParamField>
+
+<ParamField body="enable_accounting_sync" type="boolean">
+  Whether to enable accounting sync.
+</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

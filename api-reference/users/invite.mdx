@@ -1,0 +1,32 @@
+---
+title: "Create a user invite"
+description: "Send a user invite via email as an async task."
+api: "POST https://api.ramp.com/developer/v1/users/deferred"
+---
+
+**Required scope:** `users:write`
+
+Triggers an async task to send a user invite via email. Users must accept the invite to complete onboarding.
+
+<Note>
+  Assign a user to a specific entity by specifying a `location_id` on creation. Locations are mapped to entities with a many-to-one relationship.
+</Note>
+
+## Body
+
+<ParamField body="email" type="string" required>User's email address.</ParamField>
+<ParamField body="first_name" type="string" required>User's first name.</ParamField>
+<ParamField body="last_name" type="string" required>User's last name.</ParamField>
+<ParamField body="role" type="string" required>
+  User role: `AUDITOR` | `BUSINESS_ADMIN` | `BUSINESS_BOOKKEEPER` | `BUSINESS_OWNER` | `BUSINESS_USER` | `GUEST_USER` | `IT_ADMIN`
+</ParamField>
+<ParamField body="idempotency_key" type="string" required>Unique key to safely retry.</ParamField>
+<ParamField body="department_id" type="string">Department UUID.</ParamField>
+<ParamField body="location_id" type="string">Location UUID (determines entity assignment).</ParamField>
+<ParamField body="direct_manager_id" type="string">Manager's user UUID.</ParamField>
+<ParamField body="is_manager" type="boolean">Whether this user is a manager.</ParamField>
+<ParamField body="scheduled_deactivation_date" type="string">Date to automatically deactivate the user (ISO 8601).</ParamField>
+
+## Response
+
+Returns `204 No Content`. Poll `GET /developer/v1/users/deferred/status/{task_id}` for the new user ID.

@@ -1,0 +1,24 @@
+---
+title: "Get a business entity"
+description: "Retrieve a single business entity by ID."
+api: "GET https://api.ramp.com/developer/v1/entities/{entity_id}"
+---
+
+**Required scope:** `entities:read`
+
+## Path Parameters
+
+<ParamField path="entity_id" type="string" required>The entity UUID.</ParamField>
+
+## Response
+
+Returns a single entity object. See [List business entities](/api-reference/entities/list) for the full response schema.
+
+<ResponseField name="id" type="string">Entity UUID.</ResponseField>
+<ResponseField name="entity_name" type="string">Legal name of the entity.</ResponseField>
+<ResponseField name="currency" type="string">Primary currency (ISO 4217).</ResponseField>
+<ResponseField name="is_primary" type="boolean">Whether this is the primary entity.</ResponseField>
+<ResponseField name="location_ids" type="array">Location IDs assigned to this entity.</ResponseField>
+<ResponseField name="connected_subsidiary" type="object">ERP subsidiary linkage.</ResponseField>
+<ResponseField name="payment_accounts" type="array">Available payment accounts.</ResponseField>
+<ResponseField name="accounts" type="array">GL accounts with usage type classifications.</ResponseField>

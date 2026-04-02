@@ -1,0 +1,39 @@
+---
+title: "Update a line item"
+description: "Update a single line item on an existing purchase order."
+api: "PATCH https://api.ramp.com/developer/v1/purchase-orders/{purchase_order_id}/line-items/{line_item_id}"
+---
+
+The purchase order must be approved before line items can be updated.
+
+## Path Parameters
+
+<ParamField path="purchase_order_id" type="string" required>The purchase order UUID.</ParamField>
+<ParamField path="line_item_id" type="string" required>The line item UUID to update.</ParamField>
+
+## Body
+
+<ParamField body="unit_price" type="string | number">
+  Updated unit price.
+</ParamField>
+
+<ParamField body="unit_quantity" type="number">
+  Updated quantity.
+</ParamField>
+
+<ParamField body="description" type="string">
+  Updated line item description.
+</ParamField>
+
+<ParamField body="accounting_field_selections" type="array">
+  Updated accounting categorizations.
+  <Expandable title="Accounting field selection">
+    <ParamField body="field_external_id" type="string" required>External ID of the accounting field.</ParamField>
+    <ParamField body="field_option_external_id" type="string">External ID of the selected option.</ParamField>
+    <ParamField body="free_form_text" type="string">Free-form text value.</ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+Returns the updated purchase order object. See [Get a purchase order](/api-reference/purchase-orders/get) for the full response schema.

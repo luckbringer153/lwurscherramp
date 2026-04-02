@@ -1,0 +1,23 @@
+---
+title: "List receipts"
+description: "Retrieve a paginated list of receipts."
+api: "GET https://api.ramp.com/developer/v1/receipts"
+---
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="Receipt object">
+    <ResponseField name="id" type="string">Receipt UUID.</ResponseField>
+    <ResponseField name="receipt_url" type="string">URL to the receipt image.</ResponseField>
+    <ResponseField name="transaction_id" type="string">Associated transaction UUID.</ResponseField>
+    <ResponseField name="user_id" type="string">User UUID who uploaded the receipt.</ResponseField>
+    <ResponseField name="created_at" type="string">Creation timestamp (ISO 8601).</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page. Pass as `start` query parameter.</ResponseField>
+  </Expandable>
+</ResponseField>

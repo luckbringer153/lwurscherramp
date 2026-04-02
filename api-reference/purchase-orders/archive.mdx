@@ -1,0 +1,19 @@
+---
+title: "Archive a purchase order"
+description: "Archive a purchase order."
+api: "POST https://api.ramp.com/developer/v1/purchase-orders/{purchase_order_id}/archive"
+---
+
+## Path Parameters
+
+<ParamField path="purchase_order_id" type="string" required>The purchase order UUID to archive.</ParamField>
+
+## Body
+
+<ParamField body="archived_reason" type="string">
+  Reason for archiving the purchase order.
+</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

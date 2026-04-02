@@ -1,0 +1,16 @@
+---
+title: "Delete a line item"
+description: "Delete a single line item from an existing purchase order."
+api: "DELETE https://api.ramp.com/developer/v1/purchase-orders/{purchase_order_id}/line-items/{line_item_id}"
+---
+
+The purchase order must be approved before line items can be deleted.
+
+## Path Parameters
+
+<ParamField path="purchase_order_id" type="string" required>The purchase order UUID.</ParamField>
+<ParamField path="line_item_id" type="string" required>The line item UUID to delete.</ParamField>
+
+## Response
+
+Returns the updated purchase order object. See [Get a purchase order](/api-reference/purchase-orders/get) for the full response schema.

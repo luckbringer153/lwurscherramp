@@ -1,0 +1,57 @@
+---
+title: "Deferred Tasks"
+description: "Some Ramp API calls require asynchronous processing and return a task ID instead of an immediate result."
+---
+
+Some API calls — for example, creating a new card — require asynchronous processing. These endpoints are denoted with `/deferred/` in the request URL.
+
+## How It Works
+
+For deferred operations, the API returns immediately with a **task ID**. You then poll a status endpoint to check when the task completes.
+
+<Steps>
+  <Step title="Make the deferred request">
+    For example, create a virtual card:
+    ```bash
+    POST /developer/v1/cards/deferred/virtual
+    ```
+    The response returns a task ID:
+    ```json
+    {
+      "id": "eca553b8-6923-42b2-aea9-8f3c15b079ff"
+    }
+    ```
+  </Step>
+  <Step title="Poll the status endpoint">
+    Check the task status using the relevant deferred status endpoint:
+    ```bash
+    GET /developer/v1/card/deferred/status/eca553b8-6923-42b2-aea9-8f3c15b079ff
+    ```
+  </Step>
+  <Step title="Handle the result">
+    Keep polling until `status` is `SUCCESS` or `ERROR`:
+    ```json
+    {
+      "status": "SUCCESS",
+      "data": {
+        "id": "card-uuid-here"
+      },
+      "context": {
+        "acting_user_id": "user-uuid-here"
+      }
+    }
+    ```
+  </Step>
+</Steps>
+
+## Task Status Fields
+
+| Field | Description |
+|---|---|
+| `status` | `STARTED`, `IN_PROGRESS`, `ERROR`, or `SUCCESS` |
+| `data` | Additional details. On success, contains the new object's `id`. On error, contains `error` with details. |
+| `context` | Static info about the initial request, such as `acting_user_id`. For operations on existing objects, includes the targeted object's ID. |
+
+<Note>
+  Poll the status endpoint periodically (e.g., every 1–2 seconds) until the task reaches `SUCCESS` or `ERROR`. Avoid polling too aggressively to stay within [rate limits](/concepts/rate-limiting).
+</Note>

@@ -1,0 +1,27 @@
+---
+title: "Upload a receipt"
+description: "Upload a receipt image and optionally associate it with a transaction."
+api: "POST https://api.ramp.com/developer/v1/receipts"
+---
+
+This endpoint accepts `multipart/form-data`. Include the receipt image as an attachment part and metadata as form-data parts.
+
+If a `transaction_id` is provided, the receipt is linked directly to that transaction. Otherwise, Ramp attempts to automatically match it to the most relevant transaction.
+
+## Body
+
+<ParamField body="user_id" type="string" required>
+  UUID of the user this receipt belongs to.
+</ParamField>
+
+<ParamField body="idempotency_key" type="string" required>
+  Unique key to prevent duplicate uploads.
+</ParamField>
+
+<ParamField body="transaction_id" type="string">
+  Transaction UUID to associate the receipt with.
+</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

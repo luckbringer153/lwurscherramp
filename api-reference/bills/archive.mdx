@@ -1,0 +1,21 @@
+---
+title: "Archive a bill"
+description: "Permanently archive (delete) a bill."
+api: "DELETE https://api.ramp.com/developer/v1/bills/{bill_id}"
+---
+
+**Required scope:** `bills:write`
+
+<Warning>
+  This is a destructive action. Associated in-flight payments will be cancelled if possible, and any attached one-time card will be terminated. Paid bills and bills belonging to a batch payment cannot be deleted.
+</Warning>
+
+## Path Parameters
+
+<ParamField path="bill_id" type="string" required>
+  The Ramp UUID of the bill to archive.
+</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

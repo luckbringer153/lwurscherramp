@@ -1,0 +1,23 @@
+---
+title: "Fetch company information"
+description: "Retrieve the business profile and settings for the authenticated company."
+api: "GET https://api.ramp.com/developer/v1/business"
+---
+
+**Required scope:** `business:read`
+
+## Response
+
+<ResponseField name="id" type="string">Business UUID.</ResponseField>
+<ResponseField name="business_name_legal" type="string">Legal business name.</ResponseField>
+<ResponseField name="business_name_on_card" type="string">Name printed on physical cards.</ResponseField>
+<ResponseField name="active" type="boolean">Whether the business account is active.</ResponseField>
+<ResponseField name="phone" type="string">Business phone number.</ResponseField>
+<ResponseField name="website" type="string">Business website URL.</ResponseField>
+<ResponseField name="billing_address" type="object">Business billing address.</ResponseField>
+<ResponseField name="created_time" type="string">Account creation timestamp.</ResponseField>
+<ResponseField name="initial_approved_limit" type="number">Initial credit limit approved for the account.</ResponseField>
+<ResponseField name="limit_locked" type="boolean">Whether the credit limit is locked.</ResponseField>
+<ResponseField name="enforce_sso" type="boolean">Whether SSO login is enforced.</ResponseField>
+<ResponseField name="is_integrated_with_slack" type="boolean">Whether Slack integration is active.</ResponseField>
+<ResponseField name="is_reimbursements_enabled" type="boolean">Whether reimbursements are enabled for this account.</ResponseField>

@@ -1,0 +1,76 @@
+---
+title: "Create a physical card"
+description: "Create an async task to request a new physical card."
+api: "POST https://api.ramp.com/developer/v1/cards/deferred/physical"
+---
+
+**Required scope:** `cards:write`
+
+This is a [deferred task](/concepts/deferred-tasks) endpoint. It returns a task ID immediately; use `GET /developer/v1/cards/deferred/status/{task_id}` to poll for completion.
+
+## Body
+
+<ParamField body="user_id" type="string" required>
+  UUID of the user who will receive the card.
+</ParamField>
+
+<ParamField body="idempotency_key" type="string" required>
+  Unique key to safely retry the request without creating duplicate cards.
+</ParamField>
+
+<ParamField body="display_name" type="string">
+  Display name for the card.
+</ParamField>
+
+<ParamField body="entity_id" type="string">
+  Business entity UUID for multi-entity accounts.
+</ParamField>
+
+<ParamField body="is_temporary" type="boolean">
+  Whether this is a temporary card.
+</ParamField>
+
+<ParamField body="spending_restrictions" type="object">
+  Spend controls for this card.
+  <Expandable title="Spending restrictions">
+    <ParamField body="amount" type="number" required>Spending limit amount.</ParamField>
+    <ParamField body="interval" type="string" required>
+      Limit interval: `DAILY` | `WEEKLY` | `MONTHLY` | `QUARTERLY` | `ANNUAL` | `YEARLY` | `TERTIARY` | `TOTAL`
+    </ParamField>
+    <ParamField body="categories" type="array">Allowed MCC category codes.</ParamField>
+    <ParamField body="categories_whitelist" type="array">Allowed MCC codes (alias for `categories`).</ParamField>
+    <ParamField body="categories_blacklist" type="array">Blocked MCC codes (alias for `blocked_mcc_codes`).</ParamField>
+    <ParamField body="blocked_mcc_codes" type="array">Blocked MCC codes.</ParamField>
+    <ParamField body="transaction_amount_limit" type="number">Per-transaction spending limit.</ParamField>
+    <ParamField body="lock_date" type="string">Date when the card auto-locks (ISO 8601).</ParamField>
+    <ParamField body="vendor_whitelist" type="array">Allowed merchant IDs.</ParamField>
+    <ParamField body="vendor_blacklist" type="array">Blocked merchant IDs.</ParamField>
+    <ParamField body="currency" type="string">Currency code for the limit.</ParamField>
+    <ParamField body="policy_id" type="string">Associated policy UUID.</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="fulfillment" type="object">
+  Physical card fulfillment options.
+  <Expandable title="Fulfillment">
+    <ParamField body="cardholder_uuid" type="string">UUID of the cardholder for personalization.</ParamField>
+    <ParamField body="shipping" type="object">
+      Shipping details.
+      <Expandable title="Shipping">
+        <ParamField body="method" type="string">Shipping method.</ParamField>
+        <ParamField body="recipient_address" type="object">Delivery address (address1, city, state, country, postal_code, first_name, last_name, phone).</ParamField>
+        <ParamField body="recipient_address_verification_state" type="string">`NOT_VERIFIED` | `OVERRIDEN` | `VERIFIED`</ParamField>
+        <ParamField body="return_address" type="object">Return address if undeliverable.</ParamField>
+      </Expandable>
+    </ParamField>
+    <ParamField body="card_personalization" type="object">
+      Card embossing options (name lines).
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">
+  Deferred task ID. Use `GET /developer/v1/cards/deferred/status/{id}` to poll for the card ID.
+</ResponseField>

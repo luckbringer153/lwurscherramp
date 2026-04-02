@@ -1,0 +1,45 @@
+---
+title: "Monetary Values"
+description: "How the Ramp API represents currency amounts and dates."
+---
+
+In the Ramp API, monetary values are represented by `currency_code` and `amount`. All `currency_code` values are three-letter acronyms as defined in [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) (e.g., `USD` for US Dollars).
+
+## Canonical Representation (Preferred)
+
+Ramp's preferred method uses the `CurrencyAmount` type to group `amount` and `currency_code` together. The `amount` is an integer in the **smallest denomination** of the currency to avoid floating-point precision loss.
+
+The formula is: `amount = value × 10^D`, where `D` is the number of decimal places for the currency.
+
+| Currency | D | Example | Amount |
+|---|---|---|---|
+| USD | 2 | $40.00 | `4000` |
+| EUR | 2 | €100.00 | `10000` |
+| GBP | 2 | £25.00 | `2500` |
+| JPY | 0 | ¥5000 | `5000` |
+
+```json
+{
+  "amount": {
+    "currency_code": "USD",
+    "amount": 4000
+  }
+}
+```
+
+<Tip>
+  Find the `D` value for any currency in the [ISO 4217 Wikipedia page](https://en.wikipedia.org/wiki/ISO_4217).
+</Tip>
+
+## Legacy Representation (Deprecated)
+
+The legacy representation uses separate top-level `amount` and `currency_code` fields. This is still supported for backward compatibility but is deprecated — migrate to canonical representation for new development.
+
+## Dates and Times
+
+Dates and datetimes are represented as strings conforming to [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601). UTC is assumed if no timezone offset is specified.
+
+```
+2024-01-15T10:30:00Z      # datetime with UTC
+2024-01-15                # date only
+```

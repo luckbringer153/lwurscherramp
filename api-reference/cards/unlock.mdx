@@ -1,0 +1,29 @@
+---
+title: "Unlock a card"
+description: "Create an async task to remove a card's suspension."
+api: "POST https://api.ramp.com/developer/v1/cards/{card_id}/deferred/unsuspension"
+---
+
+**Required scope:** `cards:write`
+
+Removes a suspension so the card can be used again. Only works on cards that are in `SUSPENDED` state.
+
+This is a [deferred task](/concepts/deferred-tasks) endpoint.
+
+## Path Parameters
+
+<ParamField path="card_id" type="string" required>
+  The Ramp UUID of the suspended card to unlock.
+</ParamField>
+
+## Body
+
+<ParamField body="idempotency_key" type="string" required>
+  Unique key to safely retry the request.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">
+  Deferred task ID. Poll `GET /developer/v1/cards/deferred/status/{id}` for completion.
+</ResponseField>

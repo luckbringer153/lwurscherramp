@@ -1,0 +1,30 @@
+---
+title: "Fetch a limit"
+description: "Retrieve a single fund (limit) by ID."
+api: "GET https://api.ramp.com/developer/v1/limits/{spend_limit_id}"
+---
+
+**Required scope:** `limits:read`
+
+## Path Parameters
+
+<ParamField path="spend_limit_id" type="string" required>
+  The limit UUID.
+</ParamField>
+
+## Response
+
+Returns a limit object. See [List limits](/api-reference/limits/list) for the full response schema.
+
+<ResponseField name="id" type="string">Limit UUID.</ResponseField>
+<ResponseField name="display_name" type="string">Display name.</ResponseField>
+<ResponseField name="state" type="string">`ACTIVE` | `SUSPENDED` | `TERMINATED`</ResponseField>
+<ResponseField name="balance" type="object">Current balance (cleared, pending, total — each CurrencyAmount).</ResponseField>
+<ResponseField name="restrictions" type="object">Spending restrictions.</ResponseField>
+<ResponseField name="permitted_spend_types" type="object">Card and reimbursement settings.</ResponseField>
+<ResponseField name="users" type="array">User IDs with access to this limit.</ResponseField>
+<ResponseField name="cards" type="array">Cards linked to this limit.</ResponseField>
+<ResponseField name="spend_program_id" type="string">Associated spend program UUID.</ResponseField>
+<ResponseField name="entity_id" type="string">Business entity UUID.</ResponseField>
+<ResponseField name="is_shareable" type="boolean">Whether the limit is shared.</ResponseField>
+<ResponseField name="suspension" type="object">Suspension details if applicable.</ResponseField>

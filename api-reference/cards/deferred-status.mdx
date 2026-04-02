@@ -1,0 +1,32 @@
+---
+title: "Fetch deferred task status"
+description: "Check the status of an async card creation task."
+api: "GET https://api.ramp.com/developer/v1/cards/deferred/status/{task_id}"
+---
+
+**Required scope:** `cards:read`
+
+## Path Parameters
+
+<ParamField path="task_id" type="string" required>
+  The task ID returned from a card creation endpoint.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Task UUID.</ResponseField>
+<ResponseField name="status" type="string">
+  Task status: `STARTED` | `IN_PROGRESS` | `ERROR` | `SUCCESS`
+</ResponseField>
+<ResponseField name="data" type="object">
+  <Expandable title="Task result">
+    <ResponseField name="card_id" type="string">UUID of the created card (on success).</ResponseField>
+    <ResponseField name="error" type="string">Error message (on failure).</ResponseField>
+  </Expandable>
+</ResponseField>
+<ResponseField name="context" type="object">
+  <Expandable title="Task context">
+    <ResponseField name="card_id" type="string">Card UUID if available.</ResponseField>
+    <ResponseField name="acting_user_id" type="string">User who initiated the task.</ResponseField>
+  </Expandable>
+</ResponseField>

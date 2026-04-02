@@ -1,0 +1,128 @@
+---
+title: "Cards and Funds"
+description: "Programmatic control over funds, cards, and spending policies for automated spend management."
+---
+
+Ramp's Developer API gives you programmatic control over funds, cards, and spending policies to help your teams spend responsibly and track budgets in real time.
+
+## How Funds, Cards, and Spend Programs Work Together
+
+### Funds (Limits)
+
+Funds act as predefined budgets you assign to employees, teams, or initiatives:
+- Can include merchant and category restrictions, as well as expiration controls
+- Can be shared across multiple users or assigned individually
+- Examples: "Marketing Q2 Budget", "Engineering Team Offsite", "Office Supplies - Austin"
+
+### Cards
+
+Cards are the payment methods users spend funds with:
+- **Virtual cards** — used for online transactions and subscriptions
+- **Physical cards** — shipped to users for in-person spending
+- Each card draws from its connected fund's available balance
+- Multiple cards can share the same fund, or one card can access multiple funds
+
+<Note>
+  Standard API responses return masked card numbers for security. Full 16-digit card numbers and CVVs require additional security review and PCI API access. [Submit a support ticket](https://ramp.com/developer-api/support) if your platform needs to process payments directly using full card data.
+</Note>
+
+### Spend Programs
+
+Spend Programs group funds, users, and cards under shared policies — think of them as "blueprints" that make fund creation faster and more consistent:
+- Enforce consistent spending rules across multiple funds
+- Enable automated fund provisioning based on employee attributes
+- Examples: "Team Budgets", "Team Offsites", "Professional Services Procurement"
+
+## Required Scopes
+
+| Feature | Scopes |
+|---|---|
+| Funds (Limits) | `limits:read`, `limits:write` |
+| Spend Programs | `spend_programs:read`, `spend_programs:write` |
+| Cards | `cards:read`, `cards:write` |
+| Transactions | `transactions:read` |
+
+## Walkthrough: Managing a Team Offsite
+
+### Step 1: Create a Spend Program Template
+
+Create a reusable template for team offsites:
+
+```bash
+POST /developer/v1/spend-programs
+{
+  "display_name": "Team Offsites",
+  "spending_restrictions": {
+    "categories": [19, 6, 4]  // meals, lodging, airlines
+  }
+}
+```
+
+### Step 2: Create a Fund from the Template
+
+```bash
+POST /developer/v1/limits/deferred
+{
+  "display_name": "Q1 Engineering Team Offsite",
+  "spend_program_id": "$SPEND_PROGRAM_ID",
+  "user_id": "$USER_ID",
+  "idempotency_key": "offsite-q1-eng-2025"
+}
+```
+
+The fund automatically inherits all spending restrictions from the spend program.
+
+### Step 3: Add Team Members
+
+```bash
+POST /developer/v1/limits/$LIMIT_ID/users
+{
+  "user_ids": ["$USER_ID_2", "$USER_ID_3"]
+}
+```
+
+### Step 4: Monitor Spending
+
+```bash
+# Check fund balance
+GET /developer/v1/limits/$LIMIT_ID
+
+# Filter transactions by fund
+GET /developer/v1/transactions?spend_limit_id=$LIMIT_ID
+```
+
+### Step 5: Close Out the Budget
+
+```bash
+POST /developer/v1/limits/$LIMIT_ID/terminate
+```
+
+## Suspend vs Terminate
+
+| Action | Effect |
+|---|---|
+| **Suspend a Limit** | Prevents new spending; cards linked to it are declined but NOT automatically suspended |
+| **Suspend a Card** | Prevents ALL spending on that card; limits are NOT affected |
+| **Terminate a Limit** | Permanently disables spending from that limit; linked cards remain active |
+| **Terminate a Card** | Permanently disables the card; limits are NOT affected |
+
+## Best Practices
+
+- Create spend programs for recurring patterns (travel, SaaS, office supplies)
+- Use descriptive display names that indicate purpose and time period
+- Set spending categories to prevent misuse
+- Enable reimbursements for general expense funds; disable for subscription-specific funds
+- Issue physical cards for employees who need in-person spending capability
+- Regularly review fund balances and suspend funds immediately when no longer needed
+- Use webhooks for real-time transaction notifications
+
+## Related Guides
+
+<CardGroup cols={2}>
+  <Card title="Virtual Cards" icon="credit-card" href="/guides/virtual-cards">
+    Full card numbers and CVVs via the Vault API.
+  </Card>
+  <Card title="Webhooks" icon="bell" href="/guides/webhooks">
+    Get notified of spending events in real time.
+  </Card>
+</CardGroup>

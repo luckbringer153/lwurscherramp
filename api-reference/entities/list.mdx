@@ -1,0 +1,46 @@
+---
+title: "List business entities"
+description: "Retrieve all business entities associated with the account."
+api: "GET https://api.ramp.com/developer/v1/entities"
+---
+
+**Required scope:** `entities:read`
+
+## Query Parameters
+
+<ParamField query="start" type="string">Pagination cursor from `page.next`.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="Entity object">
+    <ResponseField name="id" type="string">Entity UUID.</ResponseField>
+    <ResponseField name="entity_name" type="string">Legal name of the entity.</ResponseField>
+    <ResponseField name="currency" type="string">Primary currency for this entity (ISO 4217).</ResponseField>
+    <ResponseField name="is_primary" type="boolean">Whether this is the primary business entity.</ResponseField>
+    <ResponseField name="location_ids" type="array">IDs of locations assigned to this entity.</ResponseField>
+    <ResponseField name="connected_subsidiary" type="object">
+      <Expandable title="Connected subsidiary">
+        <ResponseField name="id" type="string">Subsidiary UUID.</ResponseField>
+        <ResponseField name="name" type="string">Subsidiary name.</ResponseField>
+        <ResponseField name="external_id" type="string">ERP subsidiary identifier.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="payment_accounts" type="array">
+      Payment accounts available for this entity.
+      <Expandable title="Payment account">
+        <ResponseField name="id" type="string">Account UUID.</ResponseField>
+        <ResponseField name="account_name" type="string">Account display name.</ResponseField>
+        <ResponseField name="account_number_last_four" type="string">Last four digits of account number.</ResponseField>
+        <ResponseField name="currency" type="string">Account currency.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="accounts" type="array">GL accounts associated with this entity (with usage_type classifications).</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page.</ResponseField>
+  </Expandable>
+</ResponseField>

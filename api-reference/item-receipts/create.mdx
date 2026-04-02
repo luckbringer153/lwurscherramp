@@ -1,0 +1,35 @@
+---
+title: "Create an item receipt"
+description: "Record receipt of goods against a purchase order."
+api: "POST https://api.ramp.com/developer/v1/item-receipts"
+---
+
+## Body
+
+<ParamField body="purchase_order_id" type="string" required>
+  Purchase order UUID to receive against.
+</ParamField>
+
+<ParamField body="item_receipt_number" type="string" required>
+  Item receipt number (for reference).
+</ParamField>
+
+<ParamField body="received_at" type="string" required>
+  Date goods were received (ISO 8601).
+</ParamField>
+
+<ParamField body="item_receipt_line_items" type="array" required>
+  Line items being received.
+  <Expandable title="Line item">
+    <ParamField body="purchase_order_line_item_id" type="string" required>PO line item UUID being received.</ParamField>
+    <ParamField body="unit_quantity" type="number">Quantity received. Defaults to full PO line item quantity if omitted.</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="memo" type="string">
+  Memo or notes.
+</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

@@ -1,0 +1,51 @@
+---
+title: "Fetch a bill"
+description: "Retrieve a single bill by ID."
+api: "GET https://api.ramp.com/developer/v1/bills/{bill_id}"
+---
+
+**Required scope:** `bills:read`
+
+## Path Parameters
+
+<ParamField path="bill_id" type="string" required>
+  The Ramp UUID of the bill.
+</ParamField>
+
+## Response
+
+Returns a bill object. See [List bills](/api-reference/bills/list) for the full response schema.
+
+<ResponseField name="id" type="string">Ramp bill UUID.</ResponseField>
+<ResponseField name="amount" type="object">Total bill amount (CurrencyAmount).</ResponseField>
+<ResponseField name="approval_status" type="string">`APPROVED` | `INITIALIZED` | `PENDING` | `REJECTED` | `TERMINATED`</ResponseField>
+<ResponseField name="status" type="string">`OPEN` | `PAID`</ResponseField>
+<ResponseField name="status_summary" type="string">Detailed payment status.</ResponseField>
+<ResponseField name="sync_status" type="string">`NOT_SYNCED` | `BILL_SYNCED` | `BILL_AND_PAYMENT_SYNCED`</ResponseField>
+<ResponseField name="vendor" type="object">Vendor information.</ResponseField>
+<ResponseField name="vendor_contact_id" type="string">Vendor contact UUID.</ResponseField>
+<ResponseField name="bill_owner" type="object">Owner user details.</ResponseField>
+<ResponseField name="due_at" type="string">Due date.</ResponseField>
+<ResponseField name="issued_at" type="string">Invoice issue date.</ResponseField>
+<ResponseField name="paid_at" type="string">Payment date.</ResponseField>
+<ResponseField name="invoice_number" type="string">Invoice number from vendor.</ResponseField>
+<ResponseField name="invoice_urls" type="array">Invoice attachment URLs.</ResponseField>
+<ResponseField name="memo" type="string">Internal memo.</ResponseField>
+<ResponseField name="vendor_memo" type="string">Memo sent to vendor.</ResponseField>
+<ResponseField name="remote_id" type="string">External ERP bill ID.</ResponseField>
+<ResponseField name="entity_id" type="string">Business entity UUID.</ResponseField>
+<ResponseField name="purchase_order_id" type="string">Associated PO UUID.</ResponseField>
+<ResponseField name="draft_bill_id" type="string">Associated draft bill UUID.</ResponseField>
+<ResponseField name="payment" type="object">Payment details including method, dates, and bank information.</ResponseField>
+<ResponseField name="line_items" type="array">Accounting line items.</ResponseField>
+<ResponseField name="inventory_line_items" type="array">Inventory line items.</ResponseField>
+<ResponseField name="accounting_field_selections" type="array">Bill-level accounting coding.</ResponseField>
+<ResponseField name="applied_vendor_credits" type="array">Vendor credits applied to this bill.</ResponseField>
+<ResponseField name="item_receipt_ids" type="array">Associated item receipt IDs.</ResponseField>
+<ResponseField name="enable_accounting_sync" type="boolean">Whether accounting sync is enabled.</ResponseField>
+<ResponseField name="fx_conversion_rate" type="string">FX rate for non-USD invoices.</ResponseField>
+<ResponseField name="accounting_date" type="string">Accounting date.</ResponseField>
+<ResponseField name="posting_date" type="string">Posting date.</ResponseField>
+<ResponseField name="deep_link_url" type="string">URL to view bill in Ramp UI.</ResponseField>
+<ResponseField name="created_at" type="string">Creation timestamp.</ResponseField>
+<ResponseField name="archived_at" type="string">Archive timestamp (if archived).</ResponseField>

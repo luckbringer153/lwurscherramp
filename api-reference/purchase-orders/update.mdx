@@ -1,0 +1,34 @@
+---
+title: "Update a purchase order"
+description: "Update an approved purchase order's accounting fields and spend dates."
+api: "PATCH https://api.ramp.com/developer/v1/purchase-orders/{purchase_order_id}"
+---
+
+The purchase order must be approved before it can be updated.
+
+## Path Parameters
+
+<ParamField path="purchase_order_id" type="string" required>The purchase order UUID.</ParamField>
+
+## Body
+
+<ParamField body="spend_start_date" type="string">
+  Updated spend period start date (ISO 8601).
+</ParamField>
+
+<ParamField body="spend_end_date" type="string">
+  Updated spend period end date (ISO 8601).
+</ParamField>
+
+<ParamField body="accounting_field_selections" type="array">
+  Updated accounting categorizations.
+  <Expandable title="Accounting field selection">
+    <ParamField body="field_external_id" type="string" required>External ID of the accounting field.</ParamField>
+    <ParamField body="field_option_external_id" type="string">External ID of the selected option.</ParamField>
+    <ParamField body="free_form_text" type="string">Free-form text value.</ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+Returns the updated purchase order object. See [Get a purchase order](/api-reference/purchase-orders/get) for the full response schema.

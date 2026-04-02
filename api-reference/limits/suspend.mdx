@@ -1,0 +1,17 @@
+---
+title: "Suspend a limit"
+description: "Suspend a fund (limit) to prevent new spending."
+api: "POST https://api.ramp.com/developer/v1/limits/{spend_limit_id}/suspension"
+---
+
+**Required scope:** `limits:write`
+
+Suspending a limit prevents new spending from this fund. Cards linked to the limit are declined but not automatically suspended. The suspension is reversible.
+
+## Path Parameters
+
+<ParamField path="spend_limit_id" type="string" required>The limit UUID to suspend.</ParamField>
+
+## Response
+
+Returns the updated limit object with `state: "SUSPENDED"` and suspension details.

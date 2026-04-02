@@ -1,0 +1,17 @@
+---
+title: "Create a department"
+description: "Create a new department."
+api: "POST https://api.ramp.com/developer/v1/departments"
+---
+
+**Required scope:** `departments:write`
+
+## Body
+
+<ParamField body="name" type="string" required>
+  Name of the department.
+</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

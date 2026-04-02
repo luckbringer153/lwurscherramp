@@ -1,0 +1,24 @@
+---
+title: "Fetch company balance"
+description: "Retrieve the current balance and credit limit information for the company."
+api: "GET https://api.ramp.com/developer/v1/business/balance"
+---
+
+**Required scope:** `business:read`
+
+## Response
+
+<ResponseField name="global_limit" type="number">Total credit limit.</ResponseField>
+<ResponseField name="available_card_limit" type="number">Available credit for card spending.</ResponseField>
+<ResponseField name="card_limit" type="number">Card credit limit.</ResponseField>
+<ResponseField name="card_balance_including_pending" type="number">Card balance including pending transactions.</ResponseField>
+<ResponseField name="card_balance_excluding_pending" type="number">Card balance excluding pending transactions.</ResponseField>
+<ResponseField name="balance_including_pending" type="number">Total balance including pending.</ResponseField>
+<ResponseField name="available_flex_limit" type="number">Available flex credit limit.</ResponseField>
+<ResponseField name="flex_limit" type="number">Total flex credit limit.</ResponseField>
+<ResponseField name="flex_balance" type="number">Current flex balance.</ResponseField>
+<ResponseField name="float_balance_excluding_pending" type="number">Float balance excluding pending.</ResponseField>
+<ResponseField name="max_balance" type="number">Maximum allowable balance.</ResponseField>
+<ResponseField name="statement_balance" type="number">Current statement balance.</ResponseField>
+<ResponseField name="next_billing_date" type="string">Next billing cycle date.</ResponseField>
+<ResponseField name="prev_billing_date" type="string">Previous billing cycle date.</ResponseField>

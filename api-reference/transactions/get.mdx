@@ -1,0 +1,34 @@
+---
+title: "Fetch a transaction"
+description: "Retrieve a single transaction by ID."
+api: "GET https://api.ramp.com/developer/v1/transactions/{transaction_id}"
+---
+
+**Required scope:** `transactions:read`
+
+## Path Parameters
+
+<ParamField path="transaction_id" type="string" required>
+  The transaction UUID.
+</ParamField>
+
+## Response
+
+Returns a single transaction object. See [List transactions](/api-reference/transactions/list) for the full response schema.
+
+<ResponseField name="id" type="string">Transaction UUID.</ResponseField>
+<ResponseField name="amount" type="number">Transaction amount (legacy field).</ResponseField>
+<ResponseField name="original_transaction_amount" type="object">Canonical transaction amount (CurrencyAmount).</ResponseField>
+<ResponseField name="state" type="string">Transaction state.</ResponseField>
+<ResponseField name="sync_status" type="string">Sync status.</ResponseField>
+<ResponseField name="card_id" type="string">Card UUID.</ResponseField>
+<ResponseField name="card_holder" type="object">Cardholder details.</ResponseField>
+<ResponseField name="merchant_name" type="string">Merchant name.</ResponseField>
+<ResponseField name="merchant_category_code" type="string">MCC code.</ResponseField>
+<ResponseField name="accounting_field_selections" type="array">Accounting coding selections.</ResponseField>
+<ResponseField name="line_items" type="array">Split line items.</ResponseField>
+<ResponseField name="merchant_data" type="object">Rich travel/merchant data.</ResponseField>
+<ResponseField name="receipts" type="array">Attached receipt IDs.</ResponseField>
+<ResponseField name="memo" type="string">Transaction memo.</ResponseField>
+<ResponseField name="policy_violations" type="array">Policy violations.</ResponseField>
+<ResponseField name="disputes" type="array">Active disputes.</ResponseField>

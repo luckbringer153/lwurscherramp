@@ -1,0 +1,53 @@
+---
+title: "Update a card"
+description: "Update the owner, display name, or spend restrictions of a card."
+api: "PATCH https://api.ramp.com/developer/v1/cards/{card_id}"
+---
+
+**Required scope:** `cards:write`
+
+## Path Parameters
+
+<ParamField path="card_id" type="string" required>
+  The Ramp UUID of the card to update.
+</ParamField>
+
+## Body
+
+<ParamField body="display_name" type="string">
+  New display name for the card.
+</ParamField>
+
+<ParamField body="new_user_id" type="string">
+  UUID of the new cardholder to transfer the card to.
+</ParamField>
+
+<ParamField body="entity_id" type="string">
+  Updated business entity UUID.
+</ParamField>
+
+<ParamField body="has_notifications_enabled" type="boolean">
+  Whether to enable transaction notifications for the cardholder.
+</ParamField>
+
+<ParamField body="spending_restrictions" type="object">
+  Updated spend controls.
+  <Expandable title="Spending restrictions">
+    <ParamField body="amount" type="number">Spending limit amount.</ParamField>
+    <ParamField body="interval" type="string">`DAILY` | `WEEKLY` | `MONTHLY` | `QUARTERLY` | `ANNUAL` | `YEARLY` | `TERTIARY` | `TOTAL`</ParamField>
+    <ParamField body="categories" type="array">Allowed MCC category codes.</ParamField>
+    <ParamField body="categories_whitelist" type="array">Allowed MCC codes.</ParamField>
+    <ParamField body="categories_blacklist" type="array">Blocked MCC codes.</ParamField>
+    <ParamField body="blocked_mcc_codes" type="array">Blocked MCC codes.</ParamField>
+    <ParamField body="transaction_amount_limit" type="number">Per-transaction limit.</ParamField>
+    <ParamField body="lock_date" type="string">Auto-lock date (ISO 8601).</ParamField>
+    <ParamField body="vendor_whitelist" type="array">Allowed merchant IDs.</ParamField>
+    <ParamField body="vendor_blacklist" type="array">Blocked merchant IDs.</ParamField>
+    <ParamField body="currency" type="string">Limit currency.</ParamField>
+    <ParamField body="policy_id" type="string">Associated policy UUID.</ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

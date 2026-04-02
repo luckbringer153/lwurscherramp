@@ -1,0 +1,52 @@
+---
+title: "Fetch a draft bill"
+description: "Retrieve a single draft bill by ID."
+api: "GET https://api.ramp.com/developer/v1/bills/drafts/{draft_bill_id}"
+---
+
+**Required scope:** `bills:read`
+
+## Path Parameters
+
+<ParamField path="draft_bill_id" type="string" required>
+  The Ramp UUID of the draft bill.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Draft bill UUID.</ResponseField>
+<ResponseField name="amount" type="object">Total amount (CurrencyAmount).</ResponseField>
+<ResponseField name="vendor" type="object">Vendor details (id, name, remote_id, remote_code, type).</ResponseField>
+<ResponseField name="bill_owner" type="object">Owner user details (id, first_name, last_name).</ResponseField>
+<ResponseField name="due_at" type="string">Due date.</ResponseField>
+<ResponseField name="issued_at" type="string">Invoice issue date.</ResponseField>
+<ResponseField name="invoice_number" type="string">Invoice number.</ResponseField>
+<ResponseField name="invoice_urls" type="array">Invoice attachment URLs.</ResponseField>
+<ResponseField name="entity_id" type="string">Business entity UUID.</ResponseField>
+<ResponseField name="memo" type="string">Internal memo.</ResponseField>
+<ResponseField name="vendor_memo" type="string">Vendor memo.</ResponseField>
+<ResponseField name="remote_id" type="string">External ERP bill ID.</ResponseField>
+<ResponseField name="posting_date" type="string">Posting date.</ResponseField>
+<ResponseField name="accounting_date" type="string">Accounting date.</ResponseField>
+<ResponseField name="created_at" type="string">Creation timestamp.</ResponseField>
+<ResponseField name="status" type="string">Draft bill status.</ResponseField>
+<ResponseField name="sync_status" type="string">Sync status.</ResponseField>
+<ResponseField name="line_items" type="array">
+  Accounting line items.
+  <Expandable title="Line item">
+    <ResponseField name="amount" type="object">CurrencyAmount.</ResponseField>
+    <ResponseField name="memo" type="string">Line item memo.</ResponseField>
+    <ResponseField name="accounting_field_selections" type="array">Coding selections.</ResponseField>
+  </Expandable>
+</ResponseField>
+<ResponseField name="inventory_line_items" type="array">
+  Inventory line items.
+  <Expandable title="Inventory line item">
+    <ResponseField name="amount" type="object">CurrencyAmount.</ResponseField>
+    <ResponseField name="quantity" type="number">Item quantity.</ResponseField>
+    <ResponseField name="unit_price" type="object">Unit price (CurrencyAmount).</ResponseField>
+    <ResponseField name="memo" type="string">Line item memo.</ResponseField>
+    <ResponseField name="accounting_field_selections" type="array">Coding selections.</ResponseField>
+  </Expandable>
+</ResponseField>
+<ResponseField name="accounting_field_selections" type="array">Bill-level accounting coding.</ResponseField>

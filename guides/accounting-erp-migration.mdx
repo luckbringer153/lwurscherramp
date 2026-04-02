@@ -1,0 +1,109 @@
+---
+title: "ERP Migration Tool"
+description: "Set up a new API-based accounting connection to use the ERP migration tool."
+---
+
+<Warning>
+  This feature is currently in Beta and must be manually enabled by Ramp. Please reach out to your Account Manager for assistance.
+</Warning>
+
+This guide explains how integrators can set up a new API-based accounting connection to use the ERP migration tool, allowing customers to migrate from one accounting connection to another while preserving their chart of accounts mappings.
+
+**Required scopes:** `accounting:read`, `accounting:write`
+
+## How It Works
+
+The ERP migration tool allows customers to switch accounting providers without losing their field mappings. Instead of disconnecting and rebuilding from scratch, you create an inactive connection in the background, populate it with the new chart of accounts, then mark it as ready — at which point the customer can switch providers via the Ramp UI with guided field mapping.
+
+## Setup
+
+<Steps>
+  <Step title="Create an Inactive Accounting Connection">
+    Create a new connection with `is_active: false`. This connection will remain invisible to users until you mark it ready.
+
+    ```bash
+    POST /developer/v1/accounting/connection
+    {
+      "remote_provider_name": "New ERP Name",
+      "is_active": false
+    }
+    ```
+
+    **Notes:**
+    - `remote_provider_name` appears in the customer UI when they choose to switch providers — choose a descriptive, customer-facing name
+    - Status will show as `unlinked`
+    - Save the returned `id` for subsequent calls
+  </Step>
+  <Step title="Upload Chart of Accounts to the Inactive Connection">
+    For all write operations, include the `accounting_connection_id` from Step 1 in the request body.
+
+    **2a. Upload GL accounts:**
+    ```bash
+    POST /developer/v1/accounting/accounts
+    {
+      "accounting_connection_id": "<new_connection_id>",
+      "gl_accounts": [...]
+    }
+    ```
+
+    **2b. Create custom accounting fields:**
+    ```bash
+    POST /developer/v1/accounting/fields
+    {
+      "accounting_connection_id": "<new_connection_id>",
+      "name": "Department",
+      "input_type": "SINGLE_CHOICE"
+    }
+    ```
+
+    **2c. Add options for custom fields:**
+    ```bash
+    POST /developer/v1/accounting/field-options
+    {
+      "accounting_connection_id": "<new_connection_id>",
+      "field_options": [...]
+    }
+    ```
+
+    **2d. Upload vendors:**
+    ```bash
+    POST /developer/v1/accounting/vendors
+    {
+      "accounting_connection_id": "<new_connection_id>",
+      "vendors": [...]
+    }
+    ```
+  </Step>
+  <Step title="Mark the Connection as Ready to Migrate">
+    Once the chart of accounts is fully set up, mark the inactive connection as ready. This makes it selectable in the customer UI.
+
+    ```bash
+    POST /developer/v1/accounting/connection/{accounting_connection_id}/ready-to-migrate
+    ```
+
+    The inactive connection is now visible as an option in the customer's Ramp UI.
+  </Step>
+  <Step title="Customer Completes Migration in Ramp UI">
+    The customer navigates to **Accounting → Settings → Danger Zone → Switch Providers**, selects the new provider by the `remote_provider_name` you chose, and follows the on-screen steps to map fields from the old connection to the new one.
+  </Step>
+</Steps>
+
+## Before Migrating: Pre-Migration Checklist
+
+<Warning>
+  Migrating accounting connections will result in a loss of historical chart of accounts codings. Ensure the chart of accounts is backed up before proceeding.
+</Warning>
+
+Before initiating a migration, complete these steps:
+
+1. **Sync outstanding data** — Ensure all ready-to-sync objects (transactions, bills, reimbursements) are marked as synced via the API or Ramp UI. This avoids losing data during migration.
+
+2. **Document rules and automations** — Export or note all accounting rules, automations, and configurations. These will need to be recreated with the new connection.
+
+3. **Fetch and store the current chart of accounts:**
+   - Use the Accounting Custom Fields API to fetch current custom fields
+   - Use the Accounting GL Accounts API to fetch all active GL accounts
+   - Use the Accounting Vendors API to fetch vendor data
+   - Save the fetched data securely for re-upload after creating the new connection
+
+4. **After migration:** Rebuild any accounting automations. See Ramp's documentation on [setting up accounting automations](https://support.ramp.com) after migration.

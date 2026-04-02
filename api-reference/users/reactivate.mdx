@@ -1,0 +1,17 @@
+---
+title: "Reactivate a user"
+description: "Reactivate a previously deactivated user."
+api: "POST https://api.ramp.com/developer/v1/users/{user_id}/reactivate"
+---
+
+**Required scope:** `users:write`
+
+Upon reactivation, users can log in to Ramp again, spend on their previously issued cards, and resume receiving Ramp notifications.
+
+## Path Parameters
+
+<ParamField path="user_id" type="string" required>The user UUID to reactivate.</ParamField>
+
+## Response
+
+Returns `200` with an empty object on success.

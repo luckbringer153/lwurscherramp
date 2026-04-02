@@ -1,0 +1,72 @@
+---
+title: "Vendor Credits"
+description: "Enable and retrieve vendor credits via the Ramp API."
+---
+
+<Warning>
+  Vendor credit endpoints are currently in Beta.
+</Warning>
+
+This guide explains how integrators can enable and use vendor credits with the Ramp API.
+
+**Required scopes:** `accounting:read`, `accounting:write`, `vendors:read`
+
+## Enable Vendor Credits
+
+Vendor credits are enabled at the accounting connection level.
+
+**For new connections:**
+```bash
+POST /developer/v1/accounting/connection
+{
+  "remote_provider_name": "Your ERP",
+  "settings": { "vendor_credits_enabled": true }
+}
+```
+
+**For existing connections:**
+```bash
+# Step 1: Get your connection ID
+GET /developer/v1/accounting/connection
+
+# Step 2: Enable vendor credits
+PATCH /developer/v1/accounting/connection/{connection_id}
+{
+  "settings": { "vendor_credits_enabled": true }
+}
+```
+
+<Note>
+  This setting is managed at the Accounting Connection level. Configure it separately for each connection if you have multiple.
+</Note>
+
+## Creating Vendor Credits
+
+Once enabled, users create vendor credits in the Ramp UI:
+
+1. Navigate to **Vendors**
+2. Click into a specific vendor
+3. Click **New** in the top-right corner
+4. Select **Vendor Credit** and fill in the required fields
+
+## Retrieving Vendor Credits
+
+### List all vendor credits
+
+```bash
+GET /developer/v1/vendors/credits
+```
+
+### List credits for a specific vendor
+
+```bash
+GET /developer/v1/vendors/{vendor_id}/credits
+```
+
+### Get a specific vendor credit
+
+```bash
+GET /developer/v1/vendors/credits/{credit_id}
+```
+
+The response includes the credit's line items, applied bills, and remaining amounts.

@@ -1,0 +1,25 @@
+---
+title: "Update a location"
+description: "Update an existing location's name or entity association."
+api: "PATCH https://api.ramp.com/developer/v1/locations/{location_id}"
+---
+
+## Path Parameters
+
+<ParamField path="location_id" type="string" required>The location UUID to update.</ParamField>
+
+## Body
+
+<ParamField body="name" type="string" required>
+  Updated location name.
+</ParamField>
+
+<ParamField body="entity_id" type="string">
+  Updated entity UUID.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Location UUID.</ResponseField>
+<ResponseField name="name" type="string">Updated location name.</ResponseField>
+<ResponseField name="entity_id" type="string">Entity UUID.</ResponseField>

@@ -1,0 +1,20 @@
+---
+title: "Get application status"
+description: "Retrieve the status and details of a submitted application."
+api: "GET https://api.ramp.com/developer/v1/applications"
+---
+
+**Required scope:** `applications:read` (obtained via Authorization Code flow)
+
+See the [Applications guide](/guides/applications) for the full application lifecycle.
+
+## Response
+
+<ResponseField name="id" type="string">Application UUID.</ResponseField>
+<ResponseField name="status" type="string">
+  `STARTED` | `IN_REVIEW` | `FOLLOW_UPS_REQUIRED` | `APPROVED` | `REJECTED` | `WITHDRAWN`
+</ResponseField>
+<ResponseField name="email" type="string">Applicant email address.</ResponseField>
+<ResponseField name="business_name" type="string">Applying business name.</ResponseField>
+<ResponseField name="created_at" type="string">Application creation timestamp.</ResponseField>
+<ResponseField name="updated_at" type="string">Last status update timestamp.</ResponseField>

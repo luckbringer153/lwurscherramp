@@ -1,0 +1,52 @@
+---
+title: "List draft bills"
+description: "Retrieve a paginated list of draft bills."
+api: "GET https://api.ramp.com/developer/v1/bills/drafts"
+---
+
+**Required scope:** `bills:read`
+
+## Query Parameters
+
+<ParamField query="start" type="string">
+  Pagination cursor from `page.next`.
+</ParamField>
+
+<ParamField query="page_size" type="integer">
+  Number of results per page (default: 100, max: 100).
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  Array of draft bill objects.
+
+  <Expandable title="Draft bill object">
+    <ResponseField name="id" type="string">Draft bill UUID.</ResponseField>
+    <ResponseField name="amount" type="object">Total draft amount (CurrencyAmount).</ResponseField>
+    <ResponseField name="vendor" type="object">Vendor details.</ResponseField>
+    <ResponseField name="bill_owner" type="object">Owner user details.</ResponseField>
+    <ResponseField name="due_at" type="string">Due date.</ResponseField>
+    <ResponseField name="issued_at" type="string">Invoice issue date.</ResponseField>
+    <ResponseField name="invoice_number" type="string">Invoice number.</ResponseField>
+    <ResponseField name="invoice_urls" type="array">Invoice attachment URLs.</ResponseField>
+    <ResponseField name="memo" type="string">Internal memo.</ResponseField>
+    <ResponseField name="vendor_memo" type="string">Memo for vendor.</ResponseField>
+    <ResponseField name="remote_id" type="string">External ERP bill ID.</ResponseField>
+    <ResponseField name="entity_id" type="string">Business entity UUID.</ResponseField>
+    <ResponseField name="posting_date" type="string">Posting date.</ResponseField>
+    <ResponseField name="created_at" type="string">Creation timestamp.</ResponseField>
+    <ResponseField name="accounting_date" type="string">Accounting date.</ResponseField>
+    <ResponseField name="line_items" type="array">Accounting line items.</ResponseField>
+    <ResponseField name="inventory_line_items" type="array">Inventory line items.</ResponseField>
+    <ResponseField name="accounting_field_selections" type="array">Bill-level accounting coding.</ResponseField>
+    <ResponseField name="status" type="string">Draft bill status.</ResponseField>
+    <ResponseField name="sync_status" type="string">Sync status.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page.</ResponseField>
+  </Expandable>
+</ResponseField>

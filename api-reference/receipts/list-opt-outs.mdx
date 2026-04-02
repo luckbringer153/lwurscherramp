@@ -1,0 +1,15 @@
+---
+title: "List receipt opt-outs"
+description: "List emails opted out of receipt integrations."
+api: "GET https://api.ramp.com/developer/v1/receipt-integrations/opt-out"
+---
+
+## Query Parameters
+
+<ParamField query="email" type="string">Filter by email address.</ParamField>
+<ParamField query="id" type="string">Filter by opt-out entry UUID.</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Opt-out entry UUID.</ResponseField>
+<ResponseField name="email" type="string">Opted-out email address.</ResponseField>

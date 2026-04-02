@@ -1,0 +1,28 @@
+---
+title: "Fetch a user"
+description: "Retrieve a single user by ID."
+api: "GET https://api.ramp.com/developer/v1/users/{user_id}"
+---
+
+**Required scope:** `users:read`
+
+## Path Parameters
+
+<ParamField path="user_id" type="string" required>The user UUID.</ParamField>
+
+## Response
+
+See [List users](/api-reference/users/list) for the full user object schema.
+
+<ResponseField name="id" type="string">User UUID.</ResponseField>
+<ResponseField name="email" type="string">Email address.</ResponseField>
+<ResponseField name="first_name" type="string">First name.</ResponseField>
+<ResponseField name="last_name" type="string">Last name.</ResponseField>
+<ResponseField name="role" type="string">User role.</ResponseField>
+<ResponseField name="status" type="string">Account status.</ResponseField>
+<ResponseField name="department_id" type="string">Department UUID.</ResponseField>
+<ResponseField name="location_id" type="string">Location UUID.</ResponseField>
+<ResponseField name="entity_id" type="string">Entity UUID.</ResponseField>
+<ResponseField name="manager_id" type="string">Manager's user UUID.</ResponseField>
+<ResponseField name="is_manager" type="boolean">Whether the user is a manager.</ResponseField>
+<ResponseField name="custom_fields" type="array">Custom metadata fields.</ResponseField>

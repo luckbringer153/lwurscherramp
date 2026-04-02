@@ -1,0 +1,97 @@
+---
+title: "Virtual Cards"
+description: "Create and manage virtual cards with customizable spend controls for payments, AI agents, and embedded finance."
+---
+
+<Warning>
+  Due to PCI compliance requirements, 16-digit card numbers and CVVs are not available in production without approval. All customers can see these fields in Sandbox. [Submit a Developer API support ticket](https://ramp.com/developer-api/support) to begin the qualification process for production access.
+</Warning>
+
+Create and manage virtual cards with customizable spend and fraud controls — safely embed payments into your apps, agents, or backend workflows.
+
+## Use Cases
+
+- **Travel Platforms** — Generate single-use virtual cards for each booking to streamline reconciliation and simplify refund workflows
+- **B2B Marketplaces** — Provide instant supplier payments via virtual cards while earning interchange on each transaction
+- **Procurement & AP Platforms** — Replace ACH payments with card
+- **AI Agents** — Enable AI agents to make autonomous payments with controlled spending limits and merchant restrictions
+
+## How It Works
+
+A virtual card is generated instantly via Ramp's API, optionally configured with:
+- **Merchant restrictions** — limiting transactions to specific providers (airlines, hotels, etc.)
+- **Spending caps** — ensuring charges do not exceed predefined thresholds
+- **Expiration dates** — to auto-expire unused cards for security and refund alignment
+
+Card details (PAN, CVV, expiration) are securely delivered via Ramp's Vault API. You pass these details to your vendor, travel partner, or supplier to process payment.
+
+After the card is charged, Ramp notifies you via webhook and exposes detailed transaction metadata via API.
+
+## Quick Start
+
+**Required scopes:** `cards:read_vault`, `limits:write` (and optionally `users:read`)
+
+```python
+import os
+import requests
+from dotenv import load_dotenv
+
+load_dotenv()  # Load CLIENT_ID and CLIENT_SECRET from .env
+
+# Step 1: Authenticate
+def get_token():
+    response = requests.post(
+        "https://api.ramp.com/v1/token",
+        data={
+            "grant_type": "client_credentials",
+            "client_id": os.getenv("CLIENT_ID"),
+            "client_secret": os.getenv("CLIENT_SECRET"),
+        }
+    )
+    return response.json()["access_token"]
+
+token = get_token()
+headers = {"Authorization": f"Bearer {token}"}
+
+# Step 2: Create a virtual card (limit + card in one request)
+limit_response = requests.post(
+    "https://api.ramp.com/developer/v1/limits/deferred",
+    headers=headers,
+    json={
+        "display_name": "Vendor Payment - March",
+        "spend_budget": {"amount": 50000, "currency_code": "USD"},  # $500.00
+        "idempotency_key": "vendor-payment-march-2025"
+    }
+)
+limit_id = limit_response.json()["id"]
+
+# Step 3: Retrieve sensitive card details
+card_details = requests.get(
+    f"https://api.ramp.com/developer/v1/cards/{card_id}/details/sensitive",
+    headers=headers
+).json()
+
+print(f"PAN: {card_details['pan']}")
+print(f"CVV: {card_details['cvv']}")
+print(f"Expiry: {card_details['expiry_month']}/{card_details['expiry_year']}")
+```
+
+## Terminating Virtual Cards
+
+When you need to permanently terminate a virtual card created via the Vault API, use the **limits termination endpoint**, not the cards termination endpoint:
+
+```bash
+POST /developer/v1/limits/{limit_id}/terminate
+```
+
+## Reconciliation
+
+- **Card ID → Transaction mapping** makes it easy to automate reconciliation
+- Supports adjustments and refunds even after the card is locked or expired
+- Webhooks fire when a card is used, declined, or refunded
+
+## Related
+
+- [Bill Pay](/guides/bill-pay) — For delivering virtual cards to vendors without PCI compliance requirements
+- [Cards and Funds](/guides/cards-and-funds) — For managing physical cards and funds
+- [Embedded Cards](/guides/virtual-cards-embedded) — For embedding card management in your own UI

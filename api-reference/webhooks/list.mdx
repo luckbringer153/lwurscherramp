@@ -1,0 +1,27 @@
+---
+title: "List webhook subscriptions"
+description: "Retrieve all webhook subscriptions for the authenticated business."
+api: "GET https://api.ramp.com/developer/v1/webhooks"
+---
+
+## Response
+
+Returns an array of webhook subscription objects.
+
+<ResponseField name="id" type="string">Webhook subscription UUID.</ResponseField>
+<ResponseField name="endpoint_url" type="string">Your endpoint URL.</ResponseField>
+<ResponseField name="event_types" type="array">
+  Subscribed event types. Available events:
+  - `applications.status_updated`
+  - `bills.approved`, `bills.archived`, `bills.created`, `bills.paid`, `bills.rejected`
+  - `item_receipts.created`
+  - `purchase_orders.archived`, `purchase_orders.created`, `purchase_orders.updated`
+  - `reimbursements.batch_payment_reimbursed`, `reimbursements.ready_for_review`, `reimbursements.ready_to_sync`, `reimbursements.sync_requested`
+  - `transactions.authorized`, `transactions.cleared`, `transactions.ready_for_review`, `transactions.ready_to_sync`, `transactions.sync_requested`
+  - `vendors.activated`
+  - `webhooks.verification`
+</ResponseField>
+<ResponseField name="status" type="string">`active` | `inactive` | `pending_verification`</ResponseField>
+<ResponseField name="business_id" type="string">Business UUID.</ResponseField>
+<ResponseField name="created_at" type="string">Creation timestamp.</ResponseField>
+<ResponseField name="updated_at" type="string">Last updated timestamp.</ResponseField>

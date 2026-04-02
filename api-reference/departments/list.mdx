@@ -1,0 +1,26 @@
+---
+title: "List departments"
+description: "Retrieve a paginated list of departments."
+api: "GET https://api.ramp.com/developer/v1/departments"
+---
+
+**Required scope:** `departments:read`
+
+## Query Parameters
+
+<ParamField query="start" type="string">Pagination cursor from `page.next`.</ParamField>
+<ParamField query="page_size" type="integer">Number of results per page.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="Department object">
+    <ResponseField name="id" type="string">Department UUID.</ResponseField>
+    <ResponseField name="name" type="string">Department name.</ResponseField>
+  </Expandable>
+</ResponseField>
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for next page.</ResponseField>
+  </Expandable>
+</ResponseField>

@@ -1,0 +1,20 @@
+---
+title: "List memos"
+description: "Retrieve a paginated list of transaction memos."
+api: "GET https://api.ramp.com/developer/v1/memos"
+---
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="Memo object">
+    <ResponseField name="id" type="string">Transaction UUID.</ResponseField>
+    <ResponseField name="memo" type="string">Memo text.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page. Pass as `start` query parameter.</ResponseField>
+  </Expandable>
+</ResponseField>

@@ -1,0 +1,56 @@
+---
+title: "Data Relationships"
+description: "How Ramp API resources connect to each other."
+---
+
+Ramp's API resources are interconnected through relationships that mirror real-world business processes. Understanding these relationships is essential for building effective integrations, especially when:
+
+- Planning complex integrations that span multiple resources
+- Optimizing API calls by understanding data dependencies
+- Building comprehensive reporting that connects related data
+- Designing user interfaces that reflect business workflows
+
+## Relationship Types
+
+### Many-to-One
+
+The most common type — multiple records reference a single parent record.
+
+| Child | Parent |
+|---|---|
+| Users | Department |
+| Transactions | User (cardholder) |
+| Bills | Vendor |
+| Cards | User |
+
+### One-to-Many
+
+A single parent record has multiple child records.
+
+| Parent | Children |
+|---|---|
+| Department | Users |
+| Vendor | Bills |
+| User | Cards |
+
+### One-to-One
+
+A direct relationship between two specific records.
+
+| Resource A | Resource B |
+|---|---|
+| Business | Primary Location |
+| Card | Primary User |
+
+## Navigating Relationships
+
+When viewing any API resource, UUID fields that reference other resources are documented with the target resource type. Use these IDs to fetch related records:
+
+```bash
+# Get a transaction
+GET /developer/v1/transactions/{transaction_id}
+# Response includes user_id, card_id, merchant_id, etc.
+
+# Fetch the related user
+GET /developer/v1/users/{user_id}
+```

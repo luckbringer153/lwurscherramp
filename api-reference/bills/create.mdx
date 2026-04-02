@@ -1,0 +1,145 @@
+---
+title: "Create a bill"
+description: "Create a new bill for an approved vendor."
+api: "POST https://api.ramp.com/developer/v1/bills"
+---
+
+**Required scope:** `bills:write`
+
+<Note>
+  Batch payments cannot be created via the API.
+</Note>
+
+## Body
+
+<ParamField body="vendor_id" type="string" required>
+  Ramp vendor UUID. The vendor must be approved before bills can be created.
+</ParamField>
+
+<ParamField body="due_at" type="string" required>
+  Bill due date in ISO 8601 format.
+</ParamField>
+
+<ParamField body="issued_at" type="string" required>
+  Invoice issue date in ISO 8601 format.
+</ParamField>
+
+<ParamField body="invoice_number" type="string" required>
+  Invoice number from the vendor.
+</ParamField>
+
+<ParamField body="entity_id" type="string" required>
+  Business entity UUID.
+</ParamField>
+
+<ParamField body="invoice_currency" type="string">
+  ISO 4217 currency code for the invoice. Defaults to USD if not specified.
+</ParamField>
+
+<ParamField body="line_items" type="array">
+  Accounting line items.
+  <Expandable title="Line item">
+    <ParamField body="amount" type="number" required>Amount in invoice currency.</ParamField>
+    <ParamField body="memo" type="string">Line item memo.</ParamField>
+    <ParamField body="accounting_field_selections" type="array">
+      Accounting coding for this line item.
+      <Expandable title="Accounting field selection">
+        <ParamField body="field_external_id" type="string" required>External ID of the accounting field.</ParamField>
+        <ParamField body="field_option_external_id" type="string">External ID of the selected option.</ParamField>
+        <ParamField body="free_form_text" type="string">Free-form text value (for text-type fields).</ParamField>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="inventory_line_items" type="array">
+  Inventory line items (for three-way matching with POs and item receipts).
+  <Expandable title="Inventory line item">
+    <ParamField body="quantity" type="number" required>Quantity of items.</ParamField>
+    <ParamField body="unit_price" type="number" required>Unit price per item.</ParamField>
+    <ParamField body="memo" type="string">Line item memo.</ParamField>
+    <ParamField body="accounting_field_selections" type="array">Accounting coding.</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="accounting_field_selections" type="array">
+  Bill-level accounting coding selections.
+</ParamField>
+
+<ParamField body="payment_method" type="string">
+  Payment method. One of: `ACH` | `CARD` | `CHECK` | `DOMESTIC_WIRE` | `INTERNATIONAL` | `LOCAL_BANK_TRANSFER` | `ONE_TIME_CARD` | `ONE_TIME_CARD_DELIVERY` | `PAID_MANUALLY` | `SWIFT`
+</ParamField>
+
+<ParamField body="payment_details" type="object">
+  Payment-method-specific details. The shape depends on `payment_method`:
+
+  **ACH/Wire/International:**
+  ```json
+  {
+    "vendor_account_id": "vac_xxx",
+    "source_bank_account_id": "bac_xxx",
+    "payment_arrival_date": "2025-04-15",
+    "is_same_day": false
+  }
+  ```
+
+  **Card (ONE_TIME_CARD):**
+  ```json
+  {
+    "spend_limit_id": "lim_xxx",
+    "transaction_id": "txn_xxx"
+  }
+  ```
+
+  **Manual:**
+  ```json
+  {
+    "manual_payment_method": "CHECK",
+    "payment_date": "2025-04-15"
+  }
+  ```
+</ParamField>
+
+<ParamField body="vendor_contact_id" type="string">
+  Vendor contact UUID. Use with payment methods that require a destination account.
+</ParamField>
+
+<ParamField body="use_default_vendor_contact" type="boolean">
+  Use the vendor's default contact for payment routing.
+</ParamField>
+
+<ParamField body="use_default_payment_method" type="boolean">
+  Use the vendor's configured default payment method.
+</ParamField>
+
+<ParamField body="purchase_order_ids" type="array">
+  Associated purchase order UUIDs.
+</ParamField>
+
+<ParamField body="attachment_id" type="string">
+  ID of a previously uploaded invoice attachment.
+</ParamField>
+
+<ParamField body="memo" type="string">
+  Internal memo for this bill.
+</ParamField>
+
+<ParamField body="vendor_memo" type="string">
+  Memo sent to the vendor with payment.
+</ParamField>
+
+<ParamField body="remote_id" type="string">
+  External bill ID from your ERP or system of record.
+</ParamField>
+
+<ParamField body="posting_date" type="string">
+  Accounting posting date in ISO 8601 format.
+</ParamField>
+
+<ParamField body="enable_accounting_sync" type="boolean">
+  Whether to enable accounting sync for this bill.
+</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

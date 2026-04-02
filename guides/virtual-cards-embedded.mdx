@@ -1,0 +1,110 @@
+---
+title: "Embedded Cards"
+description: "Securely display card numbers and CVV codes to users via an iframe."
+---
+
+<Warning>
+  Embedded Cards is currently in Beta. Contact [developer-support@ramp.com](mailto:developer-support@ramp.com) to request a whitelist for your `parent_origin`. This is required before you can generate embed tokens for your domain.
+</Warning>
+
+Ramp Embedded Cards allow you to securely display card numbers and CVV codes to users via an iframe. Card data flows directly from Ramp to your user's browser — it never touches your servers.
+
+<Note>
+  If you want to programmatically create virtual cards for vendor payments, see the [Virtual Cards](/guides/virtual-cards) guide instead.
+</Note>
+
+## Prerequisites
+
+- A fund already created via the [Cards and Funds guide](/guides/cards-and-funds)
+- The `card_id` of the card you want to display
+- A domain where your application is hosted (`parent_origin`)
+- The `embedded_cards:write` scope enabled on your application
+
+## How It Works
+
+This integration follows a four-step flow:
+
+1. **Create a limit** — Use `POST /limits`. A card is automatically created with a unique `card_id`
+2. **Backend generates embed token** — Your backend calls `/developer/v1/embedded/cards/{card_id}/embed`
+3. **Frontend loads iframe** — Your frontend receives the token and loads it in a Ramp-hosted iframe
+4. **User views card** — The user's browser requests card details directly from Ramp
+
+<Warning>
+  Never store embed tokens client-side. All tokens should be securely stored on your backend server.
+</Warning>
+
+## Setup
+
+<Steps>
+  <Step title="Enable the embedded_cards:write Scope">
+    Enable the `embedded_cards:write` scope on your app in the Developer Console.
+
+    The `embedded_cards:write` scope requires explicit approval for production use. Contact [developer-support@ramp.com](mailto:developer-support@ramp.com) with the client ID of the app you want this scope enabled for.
+  </Step>
+  <Step title="Generate an Embed Token (Backend)">
+    Create an API endpoint on your backend that accepts a `card_id` and `parent_origin`, then calls Ramp's API to generate an embed token:
+
+    ```bash
+    POST /developer/v1/embedded/cards/{card_id}/embed
+    {
+      "parent_origin": "https://your-app-domain.com"
+    }
+    ```
+
+    Response:
+    ```json
+    {
+      "embed_init_token": "eit_abc123..."
+    }
+    ```
+
+    Return this token to your frontend. Do not store it client-side.
+  </Step>
+  <Step title="Implement the Frontend">
+    Your frontend calls your backend to get the embed token, then loads the iframe:
+
+    ```html
+    <iframe
+      src="https://app.ramp.com/embedded/card?token=<embed_init_token>"
+      allow="clipboard-write"
+      style="width: 400px; height: 250px; border: none;"
+    ></iframe>
+    ```
+
+    The iframe displays the full card number, CVV, and expiration date directly to the user.
+  </Step>
+  <Step title="Test Your Integration">
+    Navigate to the [Embedded Card Demo](https://app.ramp.com/developer/embedded-demo), paste your `embed_init_token`, and press **Load Embed** to test the integration.
+  </Step>
+</Steps>
+
+## About parent_origin
+
+The `parent_origin` is the domain where your application is hosted. It must exactly match `window.location.origin` of the page embedding the iframe.
+
+This is a critical security parameter — Ramp validates that the embed request is loaded from the specified origin, preventing unauthorized domains from displaying your users' card details.
+
+**Examples:**
+- Production: `"https://your-app-domain.com"`
+- Local development: `"http://localhost:3000"`
+
+The origin must match exactly — including protocol (`https://` vs `http://`) and port number. Mismatched origins will cause the embed to fail to load.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How do I get the card_id?">
+    Retrieve card IDs via the Limits API (`GET /limits/{limit_id}`) or when creating cards through the Virtual Cards guide.
+  </Accordion>
+  <Accordion title="Can I use this in production?">
+    Yes, but you need to contact [developer-support@ramp.com](mailto:developer-support@ramp.com) to enable the `embedded_cards:write` scope for your production application and whitelist your `parent_origin`.
+  </Accordion>
+  <Accordion title="The embed fails to load — what's wrong?">
+    The most common cause is a mismatched `parent_origin`. Make sure the value includes the exact protocol and port number matching the page loading the iframe.
+  </Accordion>
+</AccordionGroup>
+
+## Related
+
+- [Virtual Cards](/guides/virtual-cards) — Programmatically issue cards for vendor payments
+- [Cards and Funds](/guides/cards-and-funds) — Create and manage funds and physical cards

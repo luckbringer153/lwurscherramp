@@ -1,0 +1,13 @@
+---
+title: "Unsuspend a limit"
+description: "Restore an active state to a suspended spend limit."
+api: "POST https://api.ramp.com/developer/v1/limits/{spend_limit_id}/unsuspension"
+---
+
+## Path Parameters
+
+<ParamField path="spend_limit_id" type="string" required>The spend limit UUID to unsuspend.</ParamField>
+
+## Response
+
+Returns the updated limit object. See [Get a limit](/api-reference/limits/get) for the full response schema.

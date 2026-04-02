@@ -1,0 +1,17 @@
+---
+title: "Get a receipt"
+description: "Retrieve a single receipt by ID."
+api: "GET https://api.ramp.com/developer/v1/receipts/{receipt_id}"
+---
+
+## Path Parameters
+
+<ParamField path="receipt_id" type="string" required>The receipt UUID.</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Receipt UUID.</ResponseField>
+<ResponseField name="receipt_url" type="string">URL to the receipt image.</ResponseField>
+<ResponseField name="transaction_id" type="string">Associated transaction UUID.</ResponseField>
+<ResponseField name="user_id" type="string">User UUID who uploaded the receipt.</ResponseField>
+<ResponseField name="created_at" type="string">Creation timestamp (ISO 8601).</ResponseField>

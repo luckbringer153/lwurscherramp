@@ -1,0 +1,67 @@
+---
+title: "Update a bill"
+description: "Update an existing approved bill."
+api: "PATCH https://api.ramp.com/developer/v1/bills/{bill_id}"
+---
+
+**Required scope:** `bills:write`
+
+<Note>
+  Only approved bills can be updated.
+</Note>
+
+## Path Parameters
+
+<ParamField path="bill_id" type="string" required>
+  The Ramp UUID of the bill to update.
+</ParamField>
+
+## Body
+
+<ParamField body="due_at" type="string">
+  Updated due date in ISO 8601 format.
+</ParamField>
+
+<ParamField body="issued_at" type="string">
+  Updated invoice issue date.
+</ParamField>
+
+<ParamField body="invoice_number" type="string">
+  Updated invoice number.
+</ParamField>
+
+<ParamField body="entity_id" type="string">
+  Updated business entity UUID.
+</ParamField>
+
+<ParamField body="line_items" type="array">
+  Replace all line items. Each item has `amount`, `memo`, and `accounting_field_selections`.
+</ParamField>
+
+<ParamField body="inventory_line_items" type="array">
+  Replace all inventory line items. Each item has `quantity`, `unit_price`, `memo`, and `accounting_field_selections`.
+</ParamField>
+
+<ParamField body="accounting_field_selections" type="array">
+  Updated bill-level accounting coding.
+</ParamField>
+
+<ParamField body="memo" type="string">
+  Updated internal memo.
+</ParamField>
+
+<ParamField body="vendor_memo" type="string">
+  Updated memo sent to vendor.
+</ParamField>
+
+<ParamField body="remote_id" type="string">
+  Updated external ERP bill ID.
+</ParamField>
+
+<ParamField body="posting_date" type="string">
+  Updated posting date.
+</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

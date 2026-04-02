@@ -1,0 +1,57 @@
+---
+title: "List vendors"
+description: "Retrieve a paginated list of bill pay vendors."
+api: "GET https://api.ramp.com/developer/v1/vendors"
+---
+
+**Required scope:** `vendors:read`
+
+<Note>
+  This endpoint lists bill pay vendors (payees for vendor payments). For accounting vendors (ERP-side COA identifiers), see [List accounting vendors](/api-reference/accounting/vendors/list).
+</Note>
+
+## Query Parameters
+
+<ParamField query="start" type="string">Pagination cursor from `page.next`.</ParamField>
+<ParamField query="page_size" type="integer">Number of results per page.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="Vendor object">
+    <ResponseField name="id" type="string">Vendor UUID.</ResponseField>
+    <ResponseField name="name" type="string">Vendor display name.</ResponseField>
+    <ResponseField name="name_legal" type="string">Legal name of the vendor.</ResponseField>
+    <ResponseField name="is_active" type="boolean">Whether the vendor is active.</ResponseField>
+    <ResponseField name="is_deletable" type="boolean">Whether the vendor can be deleted.</ResponseField>
+    <ResponseField name="vendor_type" type="string">`BUSINESS` | `INDIVIDUAL`</ResponseField>
+    <ResponseField name="country" type="string">Vendor country code.</ResponseField>
+    <ResponseField name="state" type="string">Vendor state (US).</ResponseField>
+    <ResponseField name="address" type="object">Vendor mailing address.</ResponseField>
+    <ResponseField name="tax_address" type="object">Vendor tax address.</ResponseField>
+    <ResponseField name="federal_tax_classification" type="string">Tax classification for 1099 purposes.</ResponseField>
+    <ResponseField name="billing_frequency" type="string">How often the vendor bills: `MONTHLY` | `ANNUAL` | `QUARTERLY` | `ROLLING` | etc.</ResponseField>
+    <ResponseField name="description" type="string">Vendor description.</ResponseField>
+    <ResponseField name="external_vendor_id" type="string">External identifier.</ResponseField>
+    <ResponseField name="accounting_vendor_remote_id" type="string">Linked accounting vendor ERP ID.</ResponseField>
+    <ResponseField name="vendor_owner_id" type="string">UUID of the Ramp user who owns this vendor.</ResponseField>
+    <ResponseField name="default_entity_id" type="string">Default business entity UUID.</ResponseField>
+    <ResponseField name="merchant_id" type="string">Associated merchant ID.</ResponseField>
+    <ResponseField name="contacts" type="array">Vendor contact IDs.</ResponseField>
+    <ResponseField name="subsidiary" type="array">Subsidiary IDs.</ResponseField>
+    <ResponseField name="sk_category_id" type="number">Ramp spend category ID.</ResponseField>
+    <ResponseField name="sk_category_name" type="string">Ramp spend category name.</ResponseField>
+    <ResponseField name="default_payment_method" type="object">Default payment method configuration.</ResponseField>
+    <ResponseField name="created_at" type="string">Creation timestamp.</ResponseField>
+    <ResponseField name="total_spend_all_time" type="object">Lifetime spend (CurrencyAmount).</ResponseField>
+    <ResponseField name="total_spend_ytd" type="object">Year-to-date spend (CurrencyAmount).</ResponseField>
+    <ResponseField name="total_spend_last_30_days" type="object">Last 30 days spend (CurrencyAmount).</ResponseField>
+    <ResponseField name="total_spend_last_365_days" type="object">Last 365 days spend (CurrencyAmount).</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page.</ResponseField>
+  </Expandable>
+</ResponseField>

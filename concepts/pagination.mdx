@@ -1,0 +1,52 @@
+---
+title: "Pagination"
+description: "How to paginate through large result sets using Ramp's keyset pagination."
+---
+
+Pagination allows you to retrieve an entire dataset with a series of requests, where each request fetches a portion of the data. By loading data in smaller chunks, pagination reduces the amount of data transmitted per response and ensures faster loading times.
+
+## Keyset Pagination
+
+Ramp uses **keyset pagination** (also called cursor-based pagination) to divide data into fixed-size pages. This approach is efficient and consistent, even as data changes between requests.
+
+## How It Works
+
+<Steps>
+  <Step title="Request the first page">
+    Make a standard API request to a list endpoint. Optionally use `page_size` to control how many results are returned per page.
+
+    ```bash
+    GET /developer/v1/transactions?page_size=100
+    ```
+  </Step>
+  <Step title="Read the next cursor">
+    The response includes a `page.next` field containing the complete URL for the next page:
+
+    ```json
+    {
+      "data": [...],
+      "page": {
+        "next": "https://api.ramp.com/developer/v1/transactions?start=abc123&page_size=100"
+      }
+    }
+    ```
+  </Step>
+  <Step title="Fetch subsequent pages">
+    Use the URL from `page.next` to request the next page. Continue until `page.next` is `null`, which indicates all records have been fetched.
+
+    ```bash
+    GET /developer/v1/transactions?start=abc123&page_size=100
+    ```
+  </Step>
+</Steps>
+
+## Query Parameters
+
+| Parameter | Description |
+|---|---|
+| `start` | Cursor for the next page (from `page.next` URL) |
+| `page_size` | Number of results per page (varies by endpoint) |
+
+<Note>
+  Always use the full URL provided in `page.next` rather than constructing the URL manually — it may contain additional parameters needed for correct pagination.
+</Note>

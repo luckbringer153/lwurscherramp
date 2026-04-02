@@ -1,0 +1,15 @@
+---
+title: "Get a location"
+description: "Retrieve a single location by ID."
+api: "GET https://api.ramp.com/developer/v1/locations/{location_id}"
+---
+
+## Path Parameters
+
+<ParamField path="location_id" type="string" required>The location UUID.</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Location UUID.</ResponseField>
+<ResponseField name="name" type="string">Location name.</ResponseField>
+<ResponseField name="entity_id" type="string">Entity UUID this location belongs to.</ResponseField>

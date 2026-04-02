@@ -1,0 +1,44 @@
+---
+title: "Upload attachment to draft bill"
+description: "Upload a file attachment to an existing draft bill."
+api: "POST https://api.ramp.com/developer/v1/bills/drafts/{draft_bill_id}/attachments"
+---
+
+**Required scope:** `bills:write`
+
+<Note>
+  This endpoint accepts `multipart/form-data`. Include the file as a part named `file` with `Content-Disposition: attachment`.
+</Note>
+
+<Warning>
+  `INVOICE` type attachments cannot be uploaded if one already exists on the draft bill.
+</Warning>
+
+## Path Parameters
+
+<ParamField path="draft_bill_id" type="string" required>
+  The Ramp UUID of the draft bill.
+</ParamField>
+
+## Form Data
+
+<ParamField body="file" type="file" required>
+  The file to upload. Include as a form part with `Content-Disposition: attachment`.
+</ParamField>
+
+<ParamField body="attachment_type" type="string" required>
+  Type of attachment. Use `INVOICE` for invoice documents.
+</ParamField>
+
+## Example
+
+```bash
+curl -X POST https://api.ramp.com/developer/v1/bills/drafts/{draft_bill_id}/attachments \
+  -H "Authorization: Bearer $TOKEN" \
+  -F "attachment_type=INVOICE" \
+  -F "file=@invoice.pdf;type=application/pdf"
+```
+
+## Response
+
+Returns `204 No Content` on success.

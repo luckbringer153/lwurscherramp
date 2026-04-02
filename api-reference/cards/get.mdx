@@ -1,0 +1,50 @@
+---
+title: "Fetch a card"
+description: "Retrieve a single card by ID."
+api: "GET https://api.ramp.com/developer/v1/cards/{card_id}"
+---
+
+**Required scope:** `cards:read`
+
+## Path Parameters
+
+<ParamField path="card_id" type="string" required>
+  The Ramp UUID of the card.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Card UUID.</ResponseField>
+<ResponseField name="display_name" type="string">Card display name.</ResponseField>
+<ResponseField name="last_four" type="string">Last four digits of the card number.</ResponseField>
+<ResponseField name="expiration" type="string">Expiration date (MM/YYYY).</ResponseField>
+<ResponseField name="state" type="string">`ACTIVE` | `CHIP_LOCKED` | `SUSPENDED` | `TERMINATED` | `UNACTIVATED`</ResponseField>
+<ResponseField name="is_physical" type="boolean">Whether this is a physical card.</ResponseField>
+<ResponseField name="cardholder_id" type="string">UUID of the cardholder.</ResponseField>
+<ResponseField name="cardholder_name" type="string">Cardholder display name.</ResponseField>
+<ResponseField name="card_program_id" type="string">Card program UUID.</ResponseField>
+<ResponseField name="entity_id" type="string">Business entity UUID.</ResponseField>
+<ResponseField name="created_at" type="string">Creation timestamp.</ResponseField>
+<ResponseField name="has_program_overridden" type="boolean">Whether program settings are overridden.</ResponseField>
+<ResponseField name="spending_restrictions" type="object">
+  <Expandable title="Spending restrictions">
+    <ResponseField name="amount" type="number">Limit amount.</ResponseField>
+    <ResponseField name="interval" type="string">Limit interval.</ResponseField>
+    <ResponseField name="auto_lock_date" type="string">Auto-lock date.</ResponseField>
+    <ResponseField name="categories" type="array">Allowed MCC codes.</ResponseField>
+    <ResponseField name="blocked_categories" type="array">Blocked MCC codes.</ResponseField>
+    <ResponseField name="transaction_amount_limit" type="number">Per-transaction limit.</ResponseField>
+    <ResponseField name="suspended" type="boolean">Whether card is suspended.</ResponseField>
+  </Expandable>
+</ResponseField>
+<ResponseField name="fulfillment" type="object">
+  Physical card shipping and personalization details.
+  <Expandable title="Fulfillment">
+    <ResponseField name="fulfillment_status" type="string">`DELIVERED` | `DIGITALLY_PRESENTED` | `ISSUED` | `ORDERED` | `REJECTED` | `SHIPPED`</ResponseField>
+    <ResponseField name="shipping_date" type="string">Shipped date.</ResponseField>
+    <ResponseField name="shipping_eta" type="string">Estimated delivery date.</ResponseField>
+    <ResponseField name="shipping_tracking_url" type="string">Carrier tracking URL.</ResponseField>
+    <ResponseField name="shipping" type="object">Recipient address and shipping method.</ResponseField>
+    <ResponseField name="cardholder_uuid" type="string">Cardholder UUID for personalization.</ResponseField>
+  </Expandable>
+</ResponseField>

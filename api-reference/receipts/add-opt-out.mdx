@@ -1,0 +1,19 @@
+---
+title: "Add receipt opt-out"
+description: "Add an email address to the receipt integrations opt-out list."
+api: "POST https://api.ramp.com/developer/v1/receipt-integrations/opt-out"
+---
+
+## Body
+
+<ParamField body="email" type="string" required>
+  Email address to opt out of receipt integrations.
+</ParamField>
+
+<ParamField body="business_id" type="number" required>
+  Business ID.
+</ParamField>
+
+## Response
+
+Returns `204 No Content` on success.

@@ -1,0 +1,20 @@
+---
+title: "Update a department"
+description: "Update a department's name."
+api: "PATCH https://api.ramp.com/developer/v1/departments/{department_id}"
+---
+
+**Required scope:** `departments:write`
+
+## Path Parameters
+
+<ParamField path="department_id" type="string" required>The department UUID.</ParamField>
+
+## Body
+
+<ParamField body="name" type="string" required>New department name.</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Department UUID.</ResponseField>
+<ResponseField name="name" type="string">Updated department name.</ResponseField>

@@ -1,0 +1,27 @@
+---
+title: "Terminate a limit"
+description: "Permanently terminate a fund (limit) as an async task."
+api: "POST https://api.ramp.com/developer/v1/limits/{spend_limit_id}/deferred/termination"
+---
+
+**Required scope:** `limits:write`
+
+<Warning>
+  This action is irreversible. The limit will be permanently disabled. Cards linked to the limit remain active but the limit can no longer be spent from.
+</Warning>
+
+This is a [deferred task](/concepts/deferred-tasks) endpoint.
+
+## Path Parameters
+
+<ParamField path="spend_limit_id" type="string" required>The limit UUID to terminate.</ParamField>
+
+## Body
+
+<ParamField body="idempotency_key" type="string" required>
+  Unique key to safely retry.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Deferred task ID.</ResponseField>

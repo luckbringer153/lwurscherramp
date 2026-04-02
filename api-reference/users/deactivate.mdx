@@ -1,0 +1,17 @@
+---
+title: "Deactivate a user"
+description: "Deactivate a user so they can no longer log in or spend."
+api: "POST https://api.ramp.com/developer/v1/users/{user_id}/deactivate"
+---
+
+**Required scope:** `users:write`
+
+When users are deactivated, they will no longer be able to log in, spend on cards, or receive any notifications from Ramp.
+
+## Path Parameters
+
+<ParamField path="user_id" type="string" required>The user UUID to deactivate.</ParamField>
+
+## Response
+
+Returns `200` with an empty object on success.

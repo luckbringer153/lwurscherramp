@@ -1,0 +1,52 @@
+---
+title: "List item receipts"
+description: "Retrieve a paginated list of item receipts."
+api: "GET https://api.ramp.com/developer/v1/item-receipts"
+---
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="Item receipt object">
+    <ResponseField name="id" type="string">Item receipt UUID.</ResponseField>
+    <ResponseField name="item_receipt_number" type="string">Item receipt number.</ResponseField>
+    <ResponseField name="purchase_order_id" type="string">Associated purchase order UUID.</ResponseField>
+    <ResponseField name="remote_id" type="string">External system identifier.</ResponseField>
+    <ResponseField name="memo" type="string">Memo or notes.</ResponseField>
+    <ResponseField name="received_at" type="string">Date goods were received (ISO 8601).</ResponseField>
+    <ResponseField name="archived_at" type="string">Archival timestamp (ISO 8601).</ResponseField>
+    <ResponseField name="created_at" type="string">Creation timestamp (ISO 8601).</ResponseField>
+    <ResponseField name="documents" type="array">Associated document URLs.</ResponseField>
+    <ResponseField name="line_items" type="array">
+      Line items on this item receipt.
+      <Expandable title="Line item">
+        <ResponseField name="id" type="string">Line item UUID.</ResponseField>
+        <ResponseField name="purchase_order_line_item_id" type="string">Associated PO line item UUID.</ResponseField>
+        <ResponseField name="remote_id" type="string">External system ID.</ResponseField>
+        <ResponseField name="memo" type="string">Line item memo.</ResponseField>
+        <ResponseField name="quantity" type="number">Quantity received.</ResponseField>
+        <ResponseField name="amount" type="object">
+          <Expandable title="CurrencyAmount">
+            <ResponseField name="amount" type="number">Amount in smallest denomination.</ResponseField>
+            <ResponseField name="currency_code" type="string">ISO 4217 currency code.</ResponseField>
+            <ResponseField name="minor_unit_conversion_rate" type="number">Conversion rate.</ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="unit_price" type="object">
+          <Expandable title="CurrencyAmount">
+            <ResponseField name="amount" type="number">Amount in smallest denomination.</ResponseField>
+            <ResponseField name="currency_code" type="string">ISO 4217 currency code.</ResponseField>
+            <ResponseField name="minor_unit_conversion_rate" type="number">Conversion rate.</ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="accounting_field_selections" type="array">Accounting categorizations for this line item.</ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page. Pass as `start` query parameter.</ResponseField>
+  </Expandable>
+</ResponseField>

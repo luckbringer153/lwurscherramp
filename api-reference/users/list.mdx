@@ -1,0 +1,51 @@
+---
+title: "List users"
+description: "Retrieve a paginated list of users."
+api: "GET https://api.ramp.com/developer/v1/users"
+---
+
+**Required scope:** `users:read`
+
+## Query Parameters
+
+<ParamField query="start" type="string">Pagination cursor from `page.next`.</ParamField>
+<ParamField query="page_size" type="integer">Number of results per page.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="User object">
+    <ResponseField name="id" type="string">User UUID.</ResponseField>
+    <ResponseField name="email" type="string">User email address.</ResponseField>
+    <ResponseField name="first_name" type="string">First name.</ResponseField>
+    <ResponseField name="last_name" type="string">Last name.</ResponseField>
+    <ResponseField name="phone" type="string">Phone number.</ResponseField>
+    <ResponseField name="role" type="string">
+      `AUDITOR` | `BUSINESS_ADMIN` | `BUSINESS_BOOKKEEPER` | `BUSINESS_OWNER` | `BUSINESS_USER` | `GUEST_USER` | `IT_ADMIN`
+    </ResponseField>
+    <ResponseField name="status" type="string">
+      `INVITE_EXPIRED` | `INVITE_PENDING` | `USER_ACTIVE` | `USER_INACTIVE` | `USER_ONBOARDING` | `USER_SUSPENDED`
+    </ResponseField>
+    <ResponseField name="business_id" type="string">Business UUID.</ResponseField>
+    <ResponseField name="department_id" type="string">Department UUID.</ResponseField>
+    <ResponseField name="location_id" type="string">Location UUID.</ResponseField>
+    <ResponseField name="entity_id" type="string">Business entity UUID.</ResponseField>
+    <ResponseField name="manager_id" type="string">UUID of the user's manager.</ResponseField>
+    <ResponseField name="employee_id" type="string">Internal employee ID.</ResponseField>
+    <ResponseField name="is_manager" type="boolean">Whether the user is a manager.</ResponseField>
+    <ResponseField name="scheduled_deactivation_date" type="string">Scheduled deactivation date.</ResponseField>
+    <ResponseField name="custom_fields" type="array">
+      Custom metadata fields.
+      <Expandable title="Custom field">
+        <ResponseField name="name" type="string">Field name.</ResponseField>
+        <ResponseField name="value" type="string">Field value.</ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page.</ResponseField>
+  </Expandable>
+</ResponseField>

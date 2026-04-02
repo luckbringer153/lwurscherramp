@@ -1,0 +1,35 @@
+---
+title: "Update a limit"
+description: "Update an existing fund (limit)."
+api: "PATCH https://api.ramp.com/developer/v1/limits/{spend_limit_id}"
+---
+
+**Required scope:** `limits:write`
+
+## Path Parameters
+
+<ParamField path="spend_limit_id" type="string" required>The limit UUID.</ParamField>
+
+## Body
+
+<ParamField body="display_name" type="string">Updated display name.</ParamField>
+<ParamField body="new_user_id" type="string">Transfer ownership to this user UUID.</ParamField>
+<ParamField body="spend_program_id" type="string">Associate with a different spend program.</ParamField>
+<ParamField body="is_shareable" type="boolean">Whether to allow multiple users to share this limit.</ParamField>
+<ParamField body="is_exempt_from_policy_agent" type="boolean">Whether to exempt from policy enforcement.</ParamField>
+<ParamField body="existing_expense_policy_agent_exemption_application_rules" type="string">
+  How to apply exemption to existing transactions: `APPLY_TO_ALL` | `APPLY_TO_NONE`
+</ParamField>
+<ParamField body="permitted_spend_types" type="object">
+  Updated card and reimbursement settings (primary_card_enabled, reimbursements_enabled).
+</ParamField>
+<ParamField body="spending_restrictions" type="object">
+  Updated spending controls. Fields: `limit`, `interval`, `allowed_categories`, `blocked_categories`, `allowed_vendors`, `blocked_vendors`, `transaction_amount_limit`, `lock_date`, `is_one_time_edit`.
+</ParamField>
+<ParamField body="accounting_rules" type="array">
+  Updated accounting field auto-apply rules (field_id, field_option_id).
+</ParamField>
+
+## Response
+
+Returns the updated limit object.

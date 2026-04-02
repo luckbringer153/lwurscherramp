@@ -1,0 +1,29 @@
+---
+title: "Suspend a card"
+description: "Create an async task to suspend a card so it is locked from use."
+api: "POST https://api.ramp.com/developer/v1/cards/{card_id}/deferred/suspension"
+---
+
+**Required scope:** `cards:write`
+
+Suspending a card prevents all new transactions. The suspension is reversible — use the [Unlock a card](/api-reference/cards/unlock) endpoint to re-enable the card.
+
+This is a [deferred task](/concepts/deferred-tasks) endpoint.
+
+## Path Parameters
+
+<ParamField path="card_id" type="string" required>
+  The Ramp UUID of the card to suspend.
+</ParamField>
+
+## Body
+
+<ParamField body="idempotency_key" type="string" required>
+  Unique key to safely retry the request.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">
+  Deferred task ID. Poll `GET /developer/v1/cards/deferred/status/{id}` for completion.
+</ResponseField>

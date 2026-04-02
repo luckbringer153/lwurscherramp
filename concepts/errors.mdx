@@ -1,0 +1,52 @@
+---
+title: "Error Handling"
+description: "The Ramp API returns detailed error information alongside standard HTTP status codes."
+---
+
+The Ramp API returns detailed error information in the response body along with standard HTTP status codes.
+
+## Error Response Format
+
+```json
+{
+  "error": "invalid_request",
+  "error_v2": {
+    "error_code": "INVALID_FIELD_VALUE",
+    "message": "The field 'amount' must be a positive integer.",
+    "additional_info": {
+      "field": "amount"
+    }
+  }
+}
+```
+
+Use the `error_v2.error_code` and `error_v2.additional_info` fields to pinpoint the issue programmatically.
+
+## HTTP Status Codes
+
+| Status | Meaning | Common Cause |
+|---|---|---|
+| `400` | Bad Request | Invalid request format or missing required fields |
+| `401` | Unauthorized | Missing, expired, or invalid access token |
+| `403` | Forbidden | Valid token but insufficient scope for the resource |
+| `404` | Not Found | The requested resource doesn't exist |
+| `422` | Unprocessable Entity | Validation errors on the request body |
+| `429` | Too Many Requests | [Rate limit](/concepts/rate-limiting) exceeded |
+| `500` | Internal Server Error | Server-side issue — contact support |
+| `504` | Gateway Timeout | Request exceeded the 60-second timeout |
+
+## Best Practices
+
+**Inspect the status code** to identify the error category (4xx = client error, 5xx = server error).
+
+**Parse `error_v2`** to get the specific error code and actionable info for your application.
+
+**Log the `x-trace-id` header** from every response. Include this ID when contacting Ramp support for faster resolution. See [Debugging](/concepts/debugging).
+
+**Implement retry logic** with exponential backoff for transient errors (`429`, `5xx`).
+
+**Display user-friendly messages** using the `message` field where appropriate.
+
+## Extra Fields Are Ignored
+
+The Ramp API ignores extra request parameters or body fields not defined in the endpoint specification. Your requests will succeed as long as all required fields are present and valid. This means misspelled optional field names won't cause errors — validate your requests against the schema documentation during development.

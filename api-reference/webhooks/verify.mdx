@@ -1,0 +1,23 @@
+---
+title: "Verify a webhook subscription"
+description: "Complete endpoint verification using the challenge string sent by Ramp."
+api: "POST https://api.ramp.com/developer/v1/webhooks/{webhook_id}/verify"
+---
+
+After creating a webhook subscription, Ramp sends a `challenge` string to your endpoint via POST request. Pass that challenge back to this endpoint to verify ownership and activate the subscription.
+
+## Path Parameters
+
+<ParamField path="webhook_id" type="string" required>The webhook subscription UUID.</ParamField>
+
+## Body
+
+<ParamField body="challenge" type="string" required>
+  The challenge string received from Ramp's verification POST request to your endpoint.
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  `true` if verification was successful and the subscription is now `active`.
+</ResponseField>

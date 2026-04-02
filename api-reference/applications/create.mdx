@@ -1,0 +1,47 @@
+---
+title: "Submit an application"
+description: "Pre-fill and submit a Ramp application on behalf of a new business."
+api: "POST https://api.ramp.com/developer/v1/applications"
+---
+
+No scopes required. Use Client Credentials grant type.
+
+See the [Applications guide](/guides/applications) for the full application lifecycle.
+
+## Body
+
+<ParamField body="email" type="string" required>
+  Applicant's email address.
+</ParamField>
+
+<ParamField body="first_name" type="string">
+  Applicant's first name.
+</ParamField>
+
+<ParamField body="last_name" type="string">
+  Applicant's last name.
+</ParamField>
+
+<ParamField body="business_name" type="string">
+  Business name for the application.
+</ParamField>
+
+<ParamField body="oauth_authorize_params" type="object">
+  If provided, the applicant will be redirected to an OAuth consent screen after signing up.
+  <Expandable title="OAuth params">
+    <ParamField body="redirect_uri" type="string" required>Your registered redirect URI.</ParamField>
+    <ParamField body="state" type="string">State parameter passed through to your redirect URI.</ParamField>
+  </Expandable>
+</ParamField>
+
+## Behavior
+
+| Scenario | Result |
+|---|---|
+| Email doesn't exist in Ramp | New business and application created |
+| Email exists, still in application stage | Invite email re-sent |
+| Business already approved | No-op |
+
+## Response
+
+Returns `204 No Content` on success.

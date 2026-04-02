@@ -1,0 +1,217 @@
+---
+title: "Custom Records"
+description: "Extend Ramp's data models with custom fields and data structures."
+---
+
+<Note>
+  Custom Records are available to **Ramp Plus** and **Ramp Enterprise** customers only. Contact your Ramp representative for more information.
+</Note>
+
+The Custom Records API allows you to extend Ramp's data models with your own custom fields and data. Whether you need to add custom fields to existing Ramp objects or create entirely new data structures, this API provides the flexibility to integrate Ramp with your business processes.
+
+**Required scopes:** `custom_records:read`, `custom_records:write`
+
+With the Custom Records API you can:
+
+- **Extend Native Objects** — Add custom fields and relationships to Ramp objects such as Users, Locations, Departments, and Accounting Field Options
+- **Create Custom Tables** — Build your own data structures to store business-specific information
+- **Link Data** — Create relationships between custom and native data
+- **Query and Filter** — Search and retrieve data using flexible filtering options
+
+## Native Tables vs Custom Tables
+
+| | Native Tables | Custom Tables |
+|---|---|---|
+| What they extend | Core Ramp objects (Users, Departments, Locations, etc.) | Arbitrary business data |
+| Row identification | Ramp UUIDs | External keys (your identifiers) |
+| Behavior on missing ID | Error returned | New row created |
+| Behavior on deletion | Row inaccessible | N/A |
+
+**Native Tables** allow extending core Ramp objects with custom fields. Each row maps to an existing Ramp object by its UUID. If the Ramp object is deleted, the extension row becomes inaccessible.
+
+**Custom Tables** store arbitrary data that doesn't fit into core Ramp objects. Rows are identified by `external_key` — if a key doesn't exist, a new row is created automatically.
+
+<Note>
+  External keys are immutable, case-sensitive, and must be unique within a table.
+</Note>
+
+## Configuration
+
+### Creating Tables
+
+**Extend a Native Table** (adds custom columns to an existing Ramp object):
+
+```bash
+POST /developer/v1/custom-records/configure/native-tables/{table_name}/extend
+```
+
+**Create a Custom Table:**
+
+```bash
+POST /developer/v1/custom-records/configure/custom-tables
+{
+  "name": "states",
+  "label": "States"
+}
+```
+
+<Note>
+  The `name` (API name) must be lowercase, alpha-only, with underscores permitted but not at the beginning or end. The `label` is displayed to users in Ramp and can be any string.
+</Note>
+
+### Creating Columns
+
+Once you've created or extended a table, add columns to store data. Each column has a `name` (API name) and `label` (display name) with the same naming constraints as tables.
+
+**Reference Columns** — Create relationships between tables:
+
+```bash
+POST /developer/v1/custom-records/configure/native-tables/users/columns
+{
+  "name": "home_state",
+  "label": "Home State",
+  "type": "custom_reference",
+  "referenced_table": "states",
+  "corresponding_column_name": "residents",
+  "corresponding_column_label": "Residents"
+}
+```
+
+When you create a reference column, the API automatically creates a **corresponding column** on the referenced table to maintain bidirectional relationships.
+
+**Primitive Columns** — Store simple values:
+
+```bash
+POST /developer/v1/custom-records/configure/custom-tables/states/columns
+{
+  "name": "state_name",
+  "label": "State Name",
+  "type": "text"
+}
+```
+
+Column types: `text`, `boolean` (primitive); `native_reference`, `custom_reference` (reference).
+
+## Working with Data
+
+### Custom Tables (Read/Write)
+
+```bash
+# Create or update rows
+PUT /developer/v1/custom-records/custom-tables/{table_name}/rows
+
+# Append values to a reference list
+POST /developer/v1/custom-records/custom-tables/{table_name}/rows/append
+
+# Remove specific values
+POST /developer/v1/custom-records/custom-tables/{table_name}/rows/remove
+
+# Delete rows
+DELETE /developer/v1/custom-records/custom-tables/{table_name}/rows
+```
+
+### Native Tables (Extend Ramp Objects)
+
+```bash
+# Read rows
+GET /developer/v1/custom-records/native-tables/{table_name}/rows
+
+# Update custom field values
+PUT /developer/v1/custom-records/native-tables/{table_name}/rows
+
+# Append/remove values
+POST /developer/v1/custom-records/native-tables/{table_name}/rows/append
+POST /developer/v1/custom-records/native-tables/{table_name}/rows/remove
+```
+
+### Writing Rows
+
+When writing to rows, keep these in mind:
+
+- All rows in a single `PUT` request must write to the **same set of columns**
+- If a row should not have a value for a column, that column must still be included with an explicit `null` contents value
+- For columns that reference multiple items, each reference must be a **separate cell entry**
+- `PUT` on list columns **replaces all existing values** — use `-/append` and `-/remove` to modify without replacing
+- Corresponding columns (`allows_writes: false`) cannot be written to directly — write to the source reference column instead
+
+**Example — set regional directors on the Regions table:**
+
+```bash
+PUT /developer/v1/custom-records/custom-tables/regions/rows
+{
+  "rows": [
+    {
+      "external_key": "northeast",
+      "cells": [
+        {
+          "column_name": "regional_directors",
+          "contents": [
+            { "column_name": "email", "value": "alice@company.com" }
+          ]
+        }
+      ]
+    },
+    {
+      "external_key": "southwest",
+      "cells": [
+        {
+          "column_name": "regional_directors",
+          "contents": [
+            { "column_name": "id", "value": "01956422-6793-7700-adb4-3f1bd635ee49" },
+            { "column_name": "email", "value": "bob@company.com" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Referencing Native Tables
+
+When writing a value that references a native Ramp object, use the format `{"column_name": "<identifier>", "value": "<value>"}`.
+
+| Native Table | Supported Identifiers |
+|---|---|
+| Users | `id` (UUID), `email` |
+| Locations | `id` (UUID), `name` |
+| Departments | `id` (UUID), `name` |
+| Accounting Field Options | `id` (UUID), `field_id::option_id` |
+| Entities | `id` (UUID), `name` |
+| Bills | `id` (UUID) |
+| Transactions | `id` (UUID) |
+| Reimbursements | `id` (UUID) |
+
+**Example using `field_id::option_id`:**
+```json
+{ "column_name": "field_id::option_id", "value": "Projects::Project A" }
+```
+
+## Pagination and Filtering
+
+When listing rows, both custom and native tables support:
+
+- **Page size control** — default 50, max 100
+- **Cursor-based pagination** — use the `start` parameter
+- **Filtering by key** — external keys (custom tables) or Ramp IDs (native tables)
+- **Column-specific filters** — `filter.column_name.operation=value`
+
+Supported filter operations:
+- `one_of` — Match any value in a list
+- `is_not` — Match no values in a list
+
+**Example filter:**
+```bash
+GET /developer/v1/custom-records/native-tables/users/rows?filter.home_state.one_of=california,texas
+```
+
+## Bidirectional References
+
+When you create a reference column, the API automatically creates a corresponding column on the referenced table:
+
+- **Reference column** — The column you create (e.g., `home_state` on Users)
+- **Corresponding column** — Auto-created on the referenced table (e.g., `residents` on States)
+
+Corresponding columns have `allows_writes: false` — write to the original reference column instead.
+
+When a reference column's contents have `has_more: true`, not all referenced rows are included in the response. Query the referenced table directly using the corresponding column to retrieve the full set.

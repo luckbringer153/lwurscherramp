@@ -1,0 +1,21 @@
+---
+title: "List locations"
+description: "Retrieve a paginated list of business locations."
+api: "GET https://api.ramp.com/developer/v1/locations"
+---
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="Location object">
+    <ResponseField name="id" type="string">Location UUID.</ResponseField>
+    <ResponseField name="name" type="string">Location name.</ResponseField>
+    <ResponseField name="entity_id" type="string">Entity UUID this location belongs to.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page. Pass as `start` query parameter.</ResponseField>
+  </Expandable>
+</ResponseField>

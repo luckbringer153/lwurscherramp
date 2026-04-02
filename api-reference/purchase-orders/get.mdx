@@ -1,0 +1,94 @@
+---
+title: "Get a purchase order"
+description: "Retrieve a single purchase order by ID."
+api: "GET https://api.ramp.com/developer/v1/purchase-orders/{purchase_order_id}"
+---
+
+## Path Parameters
+
+<ParamField path="purchase_order_id" type="string" required>The purchase order UUID.</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Purchase order UUID.</ResponseField>
+<ResponseField name="name" type="string">Purchase order name.</ResponseField>
+<ResponseField name="purchase_order_number" type="string">PO number.</ResponseField>
+<ResponseField name="memo" type="string">Memo or notes.</ResponseField>
+<ResponseField name="entity_id" type="string">Entity UUID.</ResponseField>
+<ResponseField name="vendor_id" type="string">Vendor UUID.</ResponseField>
+<ResponseField name="owner_id" type="string">Owner user UUID.</ResponseField>
+<ResponseField name="user_id" type="string">Creator user UUID.</ResponseField>
+<ResponseField name="remote_id" type="string">External system identifier.</ResponseField>
+<ResponseField name="spend_program_id" type="string">Associated spend program UUID.</ResponseField>
+<ResponseField name="spend_request_id" type="string">Associated spend request UUID.</ResponseField>
+<ResponseField name="amount" type="object">
+  Total PO amount.
+  <Expandable title="CurrencyAmount">
+    <ResponseField name="amount" type="number">Amount in smallest denomination.</ResponseField>
+    <ResponseField name="currency_code" type="string">ISO 4217 currency code.</ResponseField>
+    <ResponseField name="minor_unit_conversion_rate" type="number">Conversion rate to minor units.</ResponseField>
+  </Expandable>
+</ResponseField>
+<ResponseField name="spend_total_amount" type="object">
+  Total spend against this PO.
+  <Expandable title="CurrencyAmount">
+    <ResponseField name="amount" type="number">Amount in smallest denomination.</ResponseField>
+    <ResponseField name="currency_code" type="string">ISO 4217 currency code.</ResponseField>
+    <ResponseField name="minor_unit_conversion_rate" type="number">Conversion rate to minor units.</ResponseField>
+  </Expandable>
+</ResponseField>
+<ResponseField name="billing_status" type="string">`CLOSED` | `DELETED` | `FULLY_BILLED` | `OPEN` | `PARTIALLY_BILLED`</ResponseField>
+<ResponseField name="receipt_status" type="string">`FULLY_RECEIVED` | `NOT_RECEIVED` | `OVER_RECEIVED` | `PARTIALLY_RECEIVED`</ResponseField>
+<ResponseField name="creation_source" type="string">`ACCOUNTING_PROVIDER` | `DEVELOPER_API` | `RAMP`</ResponseField>
+<ResponseField name="three_way_match_enabled" type="boolean">Whether three-way matching is enabled.</ResponseField>
+<ResponseField name="net_payment_terms" type="number">Payment terms in days.</ResponseField>
+<ResponseField name="promise_date" type="string">Expected delivery date (ISO 8601).</ResponseField>
+<ResponseField name="spend_start_date" type="string">Spend period start date (ISO 8601).</ResponseField>
+<ResponseField name="spend_end_date" type="string">Spend period end date (ISO 8601).</ResponseField>
+<ResponseField name="archived_at" type="string">Archival timestamp (ISO 8601).</ResponseField>
+<ResponseField name="created_at" type="string">Creation timestamp (ISO 8601).</ResponseField>
+<ResponseField name="bill_ids" type="array">Associated bill UUIDs.</ResponseField>
+<ResponseField name="item_receipt_ids" type="array">Associated item receipt UUIDs.</ResponseField>
+<ResponseField name="transaction_ids" type="array">Associated transaction UUIDs.</ResponseField>
+<ResponseField name="accounting_field_selections" type="array">
+  Accounting categorizations applied to this PO.
+  <Expandable title="Accounting field selection">
+    <ResponseField name="id" type="string">Field option UUID.</ResponseField>
+    <ResponseField name="external_id" type="string">External system ID.</ResponseField>
+    <ResponseField name="external_code" type="string">External code.</ResponseField>
+    <ResponseField name="name" type="string">Field option name.</ResponseField>
+    <ResponseField name="provider_name" type="string">Accounting provider name.</ResponseField>
+    <ResponseField name="category_info" type="object">
+      <Expandable title="Category info">
+        <ResponseField name="id" type="string">Category UUID.</ResponseField>
+        <ResponseField name="external_id" type="string">External category ID.</ResponseField>
+        <ResponseField name="name" type="string">Category name.</ResponseField>
+        <ResponseField name="type" type="string">Category type (e.g. `GL_ACCOUNT`, `COST_CENTER`, `PROJECT`).</ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+<ResponseField name="line_items" type="array">
+  Line items on this purchase order.
+  <Expandable title="Line item">
+    <ResponseField name="id" type="string">Line item UUID.</ResponseField>
+    <ResponseField name="remote_id" type="string">External system ID.</ResponseField>
+    <ResponseField name="description" type="string">Line item description.</ResponseField>
+    <ResponseField name="quantity" type="number">Quantity.</ResponseField>
+    <ResponseField name="amount" type="object">
+      <Expandable title="CurrencyAmount">
+        <ResponseField name="amount" type="number">Amount in smallest denomination.</ResponseField>
+        <ResponseField name="currency_code" type="string">ISO 4217 currency code.</ResponseField>
+        <ResponseField name="minor_unit_conversion_rate" type="number">Conversion rate.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="unit_price" type="object">
+      <Expandable title="CurrencyAmount">
+        <ResponseField name="amount" type="number">Amount in smallest denomination.</ResponseField>
+        <ResponseField name="currency_code" type="string">ISO 4217 currency code.</ResponseField>
+        <ResponseField name="minor_unit_conversion_rate" type="number">Conversion rate.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="accounting_field_selections" type="array">Accounting categorizations for this line item.</ResponseField>
+  </Expandable>
+</ResponseField>

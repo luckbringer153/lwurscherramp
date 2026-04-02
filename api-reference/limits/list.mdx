@@ -1,0 +1,69 @@
+---
+title: "List limits"
+description: "Retrieve a paginated list of funds (limits)."
+api: "GET https://api.ramp.com/developer/v1/limits"
+---
+
+**Required scope:** `limits:read`
+
+## Query Parameters
+
+<ParamField query="start" type="string">Pagination cursor from `page.next`.</ParamField>
+<ParamField query="page_size" type="integer">Number of results per page.</ParamField>
+<ParamField query="entity_id" type="string">Filter by business entity UUID.</ParamField>
+<ParamField query="user_id" type="string">Filter by user UUID.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="Limit (Fund) object">
+    <ResponseField name="id" type="string">Limit UUID.</ResponseField>
+    <ResponseField name="display_name" type="string">Limit display name.</ResponseField>
+    <ResponseField name="state" type="string">`ACTIVE` | `SUSPENDED` | `TERMINATED`</ResponseField>
+    <ResponseField name="entity_id" type="string">Business entity UUID.</ResponseField>
+    <ResponseField name="spend_program_id" type="string">Associated spend program UUID.</ResponseField>
+    <ResponseField name="created_at" type="string">Creation timestamp.</ResponseField>
+    <ResponseField name="is_shareable" type="boolean">Whether multiple users can share this limit.</ResponseField>
+    <ResponseField name="has_program_overridden" type="boolean">Whether the limit overrides its spend program settings.</ResponseField>
+    <ResponseField name="is_exempt_from_policy_agent" type="boolean">Whether this limit is exempt from policy enforcement.</ResponseField>
+    <ResponseField name="balance" type="object">
+      Current fund balance.
+      <Expandable title="Balance">
+        <ResponseField name="total" type="object">Total spend (CurrencyAmount).</ResponseField>
+        <ResponseField name="cleared" type="object">Cleared spend (CurrencyAmount).</ResponseField>
+        <ResponseField name="pending" type="object">Pending spend (CurrencyAmount).</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="restrictions" type="object">
+      Spending restrictions on this limit.
+      <Expandable title="Restrictions">
+        <ResponseField name="limit" type="object">Spending limit (CurrencyAmount).</ResponseField>
+        <ResponseField name="interval" type="string">Limit interval: `DAILY` | `WEEKLY` | `MONTHLY` | `QUARTERLY` | `ANNUAL` | `YEARLY` | `TERTIARY` | `TOTAL`</ResponseField>
+        <ResponseField name="auto_lock_date" type="string">Auto-lock date.</ResponseField>
+        <ResponseField name="next_interval_reset" type="string">Next interval reset date.</ResponseField>
+        <ResponseField name="start_of_interval" type="string">Current interval start date.</ResponseField>
+        <ResponseField name="allowed_categories" type="array">Allowed MCC codes.</ResponseField>
+        <ResponseField name="blocked_categories" type="array">Blocked MCC codes.</ResponseField>
+        <ResponseField name="allowed_vendors" type="array">Allowed vendor IDs.</ResponseField>
+        <ResponseField name="blocked_vendors" type="array">Blocked vendor IDs.</ResponseField>
+        <ResponseField name="transaction_amount_limit" type="object">Per-transaction limit (CurrencyAmount).</ResponseField>
+        <ResponseField name="temporary_limit" type="object">Temporary limit override (CurrencyAmount).</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="permitted_spend_types" type="object">
+      <Expandable title="Permitted spend types">
+        <ResponseField name="primary_card_enabled" type="boolean">Whether card spending is enabled.</ResponseField>
+        <ResponseField name="reimbursements_enabled" type="boolean">Whether reimbursements are enabled.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="users" type="array">Users who have access to this limit (array of user_id objects).</ResponseField>
+    <ResponseField name="cards" type="array">Cards linked to this limit.</ResponseField>
+    <ResponseField name="suspension" type="object">Suspension details if limit is suspended.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="Pagination">
+    <ResponseField name="next" type="string">Cursor for the next page.</ResponseField>
+  </Expandable>
+</ResponseField>

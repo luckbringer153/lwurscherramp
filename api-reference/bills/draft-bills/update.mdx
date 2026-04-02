@@ -1,0 +1,87 @@
+---
+title: "Update a draft bill"
+description: "Update an existing draft bill."
+api: "PATCH https://api.ramp.com/developer/v1/bills/drafts/{draft_bill_id}"
+---
+
+**Required scope:** `bills:write`
+
+## Path Parameters
+
+<ParamField path="draft_bill_id" type="string" required>
+  The Ramp UUID of the draft bill to update.
+</ParamField>
+
+## Body
+
+<ParamField body="vendor_id" type="string">
+  Updated vendor UUID.
+</ParamField>
+
+<ParamField body="due_at" type="string">
+  Updated due date in ISO 8601 format.
+</ParamField>
+
+<ParamField body="issued_at" type="string">
+  Updated invoice issue date.
+</ParamField>
+
+<ParamField body="invoice_number" type="string">
+  Updated invoice number.
+</ParamField>
+
+<ParamField body="entity_id" type="string">
+  Updated business entity UUID.
+</ParamField>
+
+<ParamField body="invoice_currency" type="string">
+  Updated invoice currency (ISO 4217).
+</ParamField>
+
+<ParamField body="line_items" type="array">
+  Replaces all line items. Each item: `amount`, `memo`, `accounting_field_selections`.
+</ParamField>
+
+<ParamField body="inventory_line_items" type="array">
+  Replaces all inventory line items. Each item: `quantity`, `unit_price`, `memo`, `accounting_field_selections`.
+</ParamField>
+
+<ParamField body="accounting_field_selections" type="array">
+  Updated bill-level accounting coding.
+</ParamField>
+
+<ParamField body="payment_method" type="string">
+  Updated payment method.
+</ParamField>
+
+<ParamField body="vendor_contact_id" type="string">
+  Updated vendor contact UUID.
+</ParamField>
+
+<ParamField body="use_default_payment_method" type="boolean">
+  Use the vendor's default payment method.
+</ParamField>
+
+<ParamField body="purchase_order_ids" type="array">
+  Updated purchase order UUIDs.
+</ParamField>
+
+<ParamField body="memo" type="string">
+  Updated internal memo.
+</ParamField>
+
+<ParamField body="remote_id" type="string">
+  Updated external ERP bill ID.
+</ParamField>
+
+<ParamField body="posting_date" type="string">
+  Updated posting date.
+</ParamField>
+
+<ParamField body="enable_accounting_sync" type="boolean">
+  Updated accounting sync setting.
+</ParamField>
+
+## Response
+
+Returns the updated draft bill object. See [Fetch a draft bill](/api-reference/bills/draft-bills/get) for the response schema.

@@ -43,8 +43,9 @@
                     "pages": [
                       "guides/accounting",
                       "guides/accounting-erp-migration",
-                      "guides/sync-button",
-                      "guides/tax-codes"
+                      "guides/tax-codes",
+                      "guides/vendor-credits",
+                      "guides/sync-button"
                     ]
                   },
                   "guides/custom-records",
@@ -57,8 +58,7 @@
                   },
                   "guides/cards-and-funds",
                   "guides/bill-pay",
-                  "guides/vendor-credits",
-                  "guides/webhooks",
+
                   "guides/applications"
                 ]
               },
@@ -69,11 +69,12 @@
                   "concepts/pagination",
                   "guides/sandbox",
                   "concepts/rate-limiting",
+                  "guides/webhooks",
+                  "concepts/debugging",
                   "concepts/errors",
-                  "concepts/monetary-values",
-                  "concepts/deferred-tasks",
                   "concepts/data-relationships",
-                  "concepts/debugging"
+                  "concepts/monetary-values",
+                  "concepts/deferred-tasks"
                 ]
               }
             ]

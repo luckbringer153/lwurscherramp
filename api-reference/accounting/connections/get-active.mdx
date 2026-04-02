@@ -1,0 +1,32 @@
+---
+title: "Get Active Connection"
+description: "Fetch the current active accounting connection."
+api: "GET https://api.ramp.com/developer/v1/accounting/connection"
+---
+
+<Warning>
+  This endpoint is deprecated. Use [List Accounting Connections](/api-reference/accounting/connections/list) instead.
+</Warning>
+
+## Response
+
+<ResponseField name="id" type="string" required />
+<ResponseField name="connection_type" type="string" required>
+  One of: `API`, `CSV`, `DIRECT`.
+</ResponseField>
+<ResponseField name="remote_provider_name" type="string" required />
+<ResponseField name="status" type="string" required>
+  One of: `failed_to_auth`, `linked`, `revoked`, `unlinked`.
+</ResponseField>
+<ResponseField name="is_active" type="boolean" required />
+<ResponseField name="is_ready_to_migrate" type="boolean" required />
+<ResponseField name="created_at" type="string (date)" required />
+<ResponseField name="last_linked_at" type="string (date)" required />
+<ResponseField name="settings" type="object">
+  <Expandable title="settings">
+    <ResponseField name="reimbursement_sync_button_enabled" type="boolean" />
+    <ResponseField name="transaction_sync_button_enabled" type="boolean" />
+    <ResponseField name="transaction_accounting_vendor_creation_on_sync_enabled" type="boolean" />
+    <ResponseField name="vendor_credits_enabled" type="boolean" />
+  </Expandable>
+</ResponseField>

@@ -1,0 +1,87 @@
+---
+title: "Getting Started"
+description: "Make your first Ramp API call in just a few minutes. Create an access token and call the Transactions API to retrieve transaction data."
+---
+
+This guide will help you make your first Ramp API call in just a few minutes. You'll create an access token and call the Transactions API to retrieve transaction data.
+
+<Info>
+  This guide assumes you are a Ramp customer with admin access to your dashboard. Need a test environment for development? [Request access to our Sandbox](/guides/sandbox).
+</Info>
+
+<Steps>
+  <Step title="Create a Developer App">
+    First, you'll need to create a developer app to get your API credentials.
+
+    1. In your Ramp account, go to **Company → Developer** (admin access required).
+    2. Click **Create New App**.
+    3. Name your app (e.g., `API Quickstart`) and accept the Terms.
+    4. Under **Grant types**, click **Add new grant type** → select **Client Credentials**.
+    5. Under **Scopes**, click **Configure allowed scopes** and select `transactions:read`.
+    6. Copy your **Client ID** and **Client Secret**. Store them securely — you'll need them in the next step.
+
+    <Tip>
+      For more details on authorization, see the [Authorization Guide](/guides/authorization).
+    </Tip>
+  </Step>
+
+  <Step title="Request an Access Token">
+    With your credentials, request an access token. The token authenticates your API requests.
+
+    Replace `{environment-url}` with:
+    - `https://demo-api.ramp.com` for Sandbox
+    - `https://api.ramp.com` for Production
+
+    ```bash
+    curl -X POST {environment-url}/v1/token \
+      -H "Content-Type: application/x-www-form-urlencoded" \
+      -d "grant_type=client_credentials" \
+      -d "client_id=YOUR_CLIENT_ID" \
+      -d "client_secret=YOUR_CLIENT_SECRET"
+    ```
+
+    **Response:**
+
+    ```json
+    {
+      "access_token": "ramp_business_tok_...",
+      "token_type": "Bearer",
+      "expires_in": 864000
+    }
+    ```
+
+    Copy the `access_token` — you'll use it to make API calls. Tokens expire after 10 days.
+  </Step>
+
+  <Step title="Make Your First API Call">
+    With your access token, retrieve your transactions using the `GET /transactions` endpoint.
+
+    ```bash
+    curl -X GET {environment-url}/developer/v1/transactions \
+      -H "Authorization: Bearer YOUR_TOKEN_HERE"
+    ```
+
+    You should receive a paginated list of transactions from your Ramp account.
+
+    <Tip>
+      See the [Transactions API reference](/api-reference/transactions/list) for all available query parameters and response fields.
+    </Tip>
+  </Step>
+</Steps>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Authorization Guide" icon="shield" href="/guides/authorization">
+    Learn about OAuth scopes, grant types, and token management.
+  </Card>
+  <Card title="Sandbox Environment" icon="flask" href="/guides/sandbox">
+    Test safely without affecting production data.
+  </Card>
+  <Card title="Pagination" icon="list" href="/concepts/pagination">
+    Learn how to paginate through large result sets.
+  </Card>
+  <Card title="Error Handling" icon="circle-exclamation" href="/concepts/errors">
+    Understand error codes and how to handle them.
+  </Card>
+</CardGroup>

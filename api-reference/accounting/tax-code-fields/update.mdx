@@ -1,0 +1,18 @@
+---
+title: "Update Tax Code Field"
+description: "Update the tax code accounting field."
+api: "PATCH https://api.ramp.com/developer/v1/accounting/tax/code"
+---
+
+## Request
+
+<ParamField body="name" type="string">Updated name.</ParamField>
+<ParamField body="display_name" type="string">Updated display name.</ParamField>
+
+## Response
+
+<ResponseField name="accounting_connection_id" type="string" required />
+<ResponseField name="id" type="string" required />
+<ResponseField name="ramp_id" type="string" required />
+<ResponseField name="name" type="string" required />
+<ResponseField name="display_name" type="string" required />

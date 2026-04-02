@@ -1,0 +1,13 @@
+---
+title: "Delete GL Account"
+description: "Deactivate a general ledger account. The account is marked inactive but not permanently removed."
+api: "DELETE https://api.ramp.com/developer/v1/accounting/accounts/{gl_account_id}"
+---
+
+Deactivates the GL account, removing it from cardholder selection. The record is retained and can be reactivated via the [Update GL Account](/api-reference/accounting/gl-accounts/update) endpoint.
+
+## Path Parameters
+
+<ParamField path="gl_account_id" type="string" required>
+  The Ramp ID of the GL account to delete.
+</ParamField>

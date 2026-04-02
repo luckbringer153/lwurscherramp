@@ -1,0 +1,28 @@
+---
+title: "Create Custom Field"
+description: "Create a new custom accounting field."
+api: "POST https://api.ramp.com/developer/v1/accounting/fields"
+---
+
+If a custom field with the same `id` already exists, the existing field is returned instead of creating a new one. If the existing field is inactive, it will be reactivated.
+
+## Request
+
+<ParamField body="id" type="string" required>
+  Your ERP's unique identifier for this field.
+</ParamField>
+<ParamField body="name" type="string" required>
+  Name of the custom field.
+</ParamField>
+<ParamField body="input_type" type="string" required>
+  One of: `BOOLEAN`, `FREE_FORM_TEXT`, `SINGLE_CHOICE`.
+</ParamField>
+<ParamField body="display_name" type="string">
+  Optional display name shown in the Ramp UI.
+</ParamField>
+<ParamField body="is_splittable" type="boolean">
+  Whether this field can be split across multiple values on a transaction.
+</ParamField>
+<ParamField body="is_required_for" type="array">
+  Object types that require this field before sync. Values: `BILL`, `BILL_PAYMENT`, `INVOICE`, `PURCHASE_ORDER`, `REIMBURSEMENT`, `TRANSACTION`, `VENDOR_CREDIT`.
+</ParamField>

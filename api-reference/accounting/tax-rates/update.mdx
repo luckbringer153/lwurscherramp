@@ -1,0 +1,24 @@
+---
+title: "Update Tax Rate"
+description: "Update a tax rate."
+api: "PATCH https://api.ramp.com/developer/v1/accounting/tax/rates/{tax_rate_id}"
+---
+
+## Path Parameters
+
+<ParamField path="tax_rate_id" type="string" required>The ID of the tax rate to update.</ParamField>
+
+## Request
+
+<ParamField body="name" type="string">Updated name.</ParamField>
+<ParamField body="rate" type="string | number">Updated rate.</ParamField>
+<ParamField body="accounting_gl_account_id" type="string">Updated GL account ID.</ParamField>
+
+## Response
+
+<ResponseField name="accounting_connection_id" type="string" required />
+<ResponseField name="id" type="string" required />
+<ResponseField name="ramp_id" type="string" required />
+<ResponseField name="name" type="string" required />
+<ResponseField name="rate" type="string" required />
+<ResponseField name="accounting_gl_account_id" type="string" required />

@@ -1,0 +1,36 @@
+---
+title: "List Accounting Connections"
+description: "Fetch all accounting connections for the current business."
+api: "GET https://api.ramp.com/developer/v1/accounting/all-connections"
+---
+
+## Response
+
+<ResponseField name="connections" type="array">
+  <Expandable title="connections[]">
+    <ResponseField name="id" type="string" required>
+      Unique connection ID.
+    </ResponseField>
+    <ResponseField name="connection_type" type="string" required>
+      One of: `API`, `CSV`, `DIRECT`.
+    </ResponseField>
+    <ResponseField name="remote_provider_name" type="string" required>
+      Name of the ERP/accounting system.
+    </ResponseField>
+    <ResponseField name="status" type="string" required>
+      One of: `failed_to_auth`, `linked`, `revoked`, `unlinked`.
+    </ResponseField>
+    <ResponseField name="is_active" type="boolean" required />
+    <ResponseField name="is_ready_to_migrate" type="boolean" required />
+    <ResponseField name="created_at" type="string (date)" required />
+    <ResponseField name="last_linked_at" type="string (date)" required />
+    <ResponseField name="settings" type="object">
+      <Expandable title="settings">
+        <ResponseField name="reimbursement_sync_button_enabled" type="boolean" />
+        <ResponseField name="transaction_sync_button_enabled" type="boolean" />
+        <ResponseField name="transaction_accounting_vendor_creation_on_sync_enabled" type="boolean" />
+        <ResponseField name="vendor_credits_enabled" type="boolean" />
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>

@@ -1,0 +1,18 @@
+---
+title: "Upload Tax Rates"
+description: "Upload up to 500 tax rates in a single batch."
+api: "POST https://api.ramp.com/developer/v1/accounting/tax/rates"
+---
+
+Upload up to 500 tax rates in an all-or-nothing batch.
+
+## Request
+
+<ParamField body="tax_rates" type="array" required>
+  <Expandable title="tax_rates[]">
+    <ParamField body="id" type="string" required>Your ERP's unique ID for this tax rate.</ParamField>
+    <ParamField body="name" type="string" required>Display name of the tax rate.</ParamField>
+    <ParamField body="rate" type="string | number" required>Tax rate as a decimal (e.g., `0.10` for 10%).</ParamField>
+    <ParamField body="accounting_gl_account_id" type="string">Associated GL account ID.</ParamField>
+  </Expandable>
+</ParamField>

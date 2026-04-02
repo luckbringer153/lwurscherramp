@@ -1,0 +1,42 @@
+---
+title: "List Field Options"
+description: "List options for a given custom accounting field."
+api: "GET https://api.ramp.com/developer/v1/accounting/field-options"
+---
+
+## Query Parameters
+
+<ParamField query="field_id" type="string">
+  Filter options by accounting field ID.
+</ParamField>
+<ParamField query="visibility" type="string">
+  Filter by visibility: `HIDDEN` or `VISIBLE`.
+</ParamField>
+<ParamField query="is_active" type="boolean">
+  Filter by active status.
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="data[]">
+    <ResponseField name="accounting_connection_id" type="string" required />
+    <ResponseField name="id" type="string" />
+    <ResponseField name="ramp_id" type="string" />
+    <ResponseField name="value" type="string" />
+    <ResponseField name="display_name" type="string" />
+    <ResponseField name="code" type="string" />
+    <ResponseField name="is_active" type="boolean" />
+    <ResponseField name="visibility" type="string">
+      `HIDDEN` or `VISIBLE`.
+    </ResponseField>
+    <ResponseField name="provider_name" type="string" required />
+    <ResponseField name="created_at" type="string (date)" />
+    <ResponseField name="updated_at" type="string (date)" />
+  </Expandable>
+</ResponseField>
+<ResponseField name="page" type="object">
+  <Expandable title="page">
+    <ResponseField name="next" type="string" />
+  </Expandable>
+</ResponseField>

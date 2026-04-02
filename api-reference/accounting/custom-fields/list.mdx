@@ -1,0 +1,39 @@
+---
+title: "List Custom Fields"
+description: "List all custom accounting fields for the current connection."
+api: "GET https://api.ramp.com/developer/v1/accounting/fields"
+---
+
+## Query Parameters
+
+<ParamField query="is_active" type="boolean">
+  Filter by active status.
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="data[]">
+    <ResponseField name="accounting_connection_id" type="string" required />
+    <ResponseField name="id" type="string" />
+    <ResponseField name="ramp_id" type="string" />
+    <ResponseField name="name" type="string" />
+    <ResponseField name="display_name" type="string" required />
+    <ResponseField name="input_type" type="string" required>
+      One of: `BOOLEAN`, `DATE`, `FREE_FORM_TEXT`, `SINGLE_CHOICE`.
+    </ResponseField>
+    <ResponseField name="is_active" type="boolean" />
+    <ResponseField name="is_splittable" type="boolean" />
+    <ResponseField name="is_required_for" type="array">
+      Objects this field is required for. Values: `BILL`, `BILL_PAYMENT`, `INVOICE`, `PURCHASE_ORDER`, `REIMBURSEMENT`, `TRANSACTION`, `VENDOR_CREDIT`.
+    </ResponseField>
+    <ResponseField name="provider_name" type="string" required />
+    <ResponseField name="created_at" type="string (date)" />
+    <ResponseField name="updated_at" type="string (date)" />
+  </Expandable>
+</ResponseField>
+<ResponseField name="page" type="object">
+  <Expandable title="page">
+    <ResponseField name="next" type="string" />
+  </Expandable>
+</ResponseField>

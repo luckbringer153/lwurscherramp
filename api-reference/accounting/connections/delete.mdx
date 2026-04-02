@@ -1,0 +1,11 @@
+---
+title: "Disconnect Accounting Connection"
+description: "Disconnect an API-based accounting connection."
+api: "DELETE https://api.ramp.com/developer/v1/accounting/connection"
+---
+
+<Warning>
+  Disconnecting an accounting connection will remove all associated custom fields, GL accounts, and vendors. See the [ERP Migration guide](/guides/accounting-erp-migration) for guidance on preserving data during connection changes.
+</Warning>
+
+This endpoint only supports disconnecting API-based connections.

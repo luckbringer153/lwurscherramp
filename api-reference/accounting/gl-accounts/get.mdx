@@ -1,0 +1,41 @@
+---
+title: "Get GL Account"
+description: "Fetch a single general ledger account by its ID."
+api: "GET https://api.ramp.com/developer/v1/accounting/accounts/{gl_account_id}"
+---
+
+## Path Parameters
+
+<ParamField path="gl_account_id" type="string" required>
+  The Ramp ID of the GL account.
+</ParamField>
+
+## Response
+
+<ResponseField name="accounting_connection_id" type="string" required>
+  ID of the accounting connection this account belongs to.
+</ResponseField>
+<ResponseField name="classification" type="string">
+  One of: `ANY`, `ASSET`, `CREDCARD`, `EQUITY`, `EXPENSE`, `LIABILITY`, `REVENUE`, `UNKNOWN`.
+</ResponseField>
+<ResponseField name="code" type="string">
+  Account code from the ERP system.
+</ResponseField>
+<ResponseField name="created_at" type="string (date)">
+  ISO 8601 creation timestamp.
+</ResponseField>
+<ResponseField name="gl_account_category_info" type="object">
+  <Expandable title="gl_account_category_info">
+    <ResponseField name="id" type="string" />
+    <ResponseField name="name" type="string" />
+    <ResponseField name="ramp_id" type="string" />
+  </Expandable>
+</ResponseField>
+<ResponseField name="id" type="string">
+  External (ERP) ID.
+</ResponseField>
+<ResponseField name="is_active" type="boolean" required />
+<ResponseField name="name" type="string" required />
+<ResponseField name="provider_name" type="string" required />
+<ResponseField name="ramp_id" type="string" required />
+<ResponseField name="updated_at" type="string (date)" />

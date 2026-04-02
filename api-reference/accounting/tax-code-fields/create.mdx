@@ -1,0 +1,16 @@
+---
+title: "Create Tax Code Field"
+description: "Create the tax code accounting field for the current accounting connection."
+api: "POST https://api.ramp.com/developer/v1/accounting/tax/code"
+---
+
+There can only be one active tax code accounting field per accounting connection.
+
+## Request
+
+<ParamField body="name" type="string" required>
+  Name of the tax code field.
+</ParamField>
+<ParamField body="display_name" type="string">
+  Optional display name shown in the Ramp UI.
+</ParamField>

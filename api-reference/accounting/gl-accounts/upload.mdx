@@ -1,0 +1,32 @@
+---
+title: "Upload GL Accounts"
+description: "Upload up to 500 general ledger accounts in a single batch."
+api: "POST https://api.ramp.com/developer/v1/accounting/accounts"
+---
+
+Upload up to 500 general ledger accounts in an all-or-nothing fashion. If any account in the batch is malformed or violates a database constraint, the entire batch is discarded.
+
+<Warning>
+  Ensure the GL accounts you are uploading do not already exist on Ramp. To update an existing account, use the [Update GL Account](/api-reference/accounting/gl-accounts/update) endpoint instead.
+</Warning>
+
+## Request
+
+<ParamField body="gl_accounts" type="array" required>
+  Array of GL accounts to upload (max 500).
+
+  <Expandable title="gl_accounts[]">
+    <ParamField body="id" type="string" required>
+      Your ERP's unique identifier for this GL account.
+    </ParamField>
+    <ParamField body="name" type="string" required>
+      Display name of the GL account.
+    </ParamField>
+    <ParamField body="classification" type="string" required>
+      Account classification. One of: `ANY`, `ASSET`, `CREDCARD`, `EQUITY`, `EXPENSE`, `LIABILITY`, `REVENUE`, `UNKNOWN`.
+    </ParamField>
+    <ParamField body="code" type="string">
+      Account code from the ERP system.
+    </ParamField>
+  </Expandable>
+</ParamField>

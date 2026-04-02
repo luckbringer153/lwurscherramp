@@ -1,0 +1,23 @@
+---
+title: "List Tax Rates"
+description: "List all tax rates for the current accounting connection."
+api: "GET https://api.ramp.com/developer/v1/accounting/tax/rates"
+---
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="data[]">
+    <ResponseField name="accounting_connection_id" type="string" required />
+    <ResponseField name="id" type="string" required />
+    <ResponseField name="ramp_id" type="string" required />
+    <ResponseField name="name" type="string" required />
+    <ResponseField name="rate" type="string" required>Tax rate as a decimal string (e.g., `"0.10"` for 10%).</ResponseField>
+    <ResponseField name="accounting_gl_account_id" type="string" required>Associated GL account ID.</ResponseField>
+  </Expandable>
+</ResponseField>
+<ResponseField name="page" type="object">
+  <Expandable title="page">
+    <ResponseField name="next" type="string" />
+  </Expandable>
+</ResponseField>

@@ -1,0 +1,339 @@
+---
+title: "Changelog"
+description: "Stay up to date with the latest Ramp API updates."
+---
+
+<Info>
+  Subscribe to our [RSS feed](https://developer.ramp.com/rss) to receive changelog updates automatically (RSS reader required).
+</Info>
+
+## March 30, 2026
+
+- **New List Bank Accounts endpoint** — Retrieve a paginated list of bank accounts associated with your business. Supports `start` and `page_size` query parameters for pagination.
+- **New List Vendor Agreements endpoint (beta)** — Query vendor agreements with extensive filtering options including date ranges, renewal status, contract owners, departments, total value, and custom record filters via `POST /developer/v1/vendors/agreements`.
+- **Enhanced vendor filtering by timestamps** — Added `to_created_at`, `from_updated_at`, and `to_updated_at` query parameters to the List Vendors endpoint.
+- **Vendor subsidiary data** — Added `include_subsidiary` query parameter to the List Vendors endpoint. When `true`, vendor responses include a `subsidiary` field with ERP subsidiary identifiers.
+- **Allowed overage percent override on limits** — `allowed_overage_percent_override` is now available when creating limits and returned in limit responses.
+- **Update custom accounting field options** — New `PUT /developer/v1/accounting/field-options/{field_option_id}` endpoint.
+- **New audit log event types** — Added *Generated renewal brief for contract*, *Spend allocation change request approval policy updated*, and *Vendor Network updates enabled*.
+- **Updated token prefix format** — Access tokens are now prefixed with `ramp_business_tok_`, `ramp_user_tok_`, `ramp_business_jwt_`, or `ramp_user_jwt_`.
+- **Custom records reference columns relaxed** — The `corresponding_column_name` field on reference column configurations is no longer required and defaults to `null`.
+- **Auto-match uploaded receipts without a transaction ID** — `POST /receipts` can now automatically match uploaded receipts to transactions without requiring a `transaction_id`.
+
+## March 25, 2026
+
+- **New financing applications endpoints (beta)** — Create and fetch financing applications programmatically.
+- **New ready-to-sync endpoint (beta)** — Mark accounting objects as ready to sync by providing a list of `object_ids` and an `object_type` (currently supports `TRANSACTION`).
+- **New `applications.status_updated` webhook event** — Subscribe to receive notifications when a financing application's status changes.
+- **New bill payment status `ON_HOLD`** — Added `ON_HOLD` enum value to the bill `payment_status` filter and response.
+- **New cancelled trip status** — The `status` filter on the List Trips endpoint now supports the `cancelled` enum value.
+- **New audit log event type** — Added *Vendor linked to vendor network*.
+- **New GL account classification types** — Added `AR_CHARGEBACK_CLEARING_ACCOUNT` and `AR_REFUNDS_CLEARING_ACCOUNT`.
+
+## March 19, 2026
+
+- **New bill filtering by payment ID** — Added `customer_friendly_payment_id` query parameter to filter bills by their customer-friendly payment identifier.
+- **New bill filtering by draft bill ID** — Added `draft_bill_id` query parameter to the List Bills endpoint.
+- **New bill and draft bill filtering by remote ID** — Added `remote_id` query parameter to both the List Bills and List Draft Bills endpoints.
+- **Reactivate deleted inventory item options** — Added `reactivate` field to the `PATCH /developer/v1/accounting/inventory-item/options/{option_id}` request body.
+- **Vendor owner is now optional** — The `vendor_owner_id` field is no longer required when creating a vendor.
+
+## March 18, 2026
+
+- **Decimal quantity support for bill line items** — The `unit_quantity` field has been replaced with `quantity`, which now accepts decimal values. `unit_price` also now accepts decimal string or number formats.
+- **New GL account classification types** — Added `AR_ACCOUNTS_RECEIVABLE_ACCOUNT`, `AR_BAD_DEBT_ACCOUNT`, `AR_CARD_FEES_ACCOUNT`, `AR_CASH_ACCOUNT_DEFAULT`, `AR_INCOME_ACCOUNT_DEFAULT`, and `AR_UNDEPOSITED_FUNDS_ACCOUNT`.
+- **Vendor memo support for bills** — Added `vendor_memo` field to create and update bill endpoints and draft bill endpoints.
+
+## March 17, 2026
+
+- **Refresh token expiration info** — The token endpoint response now includes a `refresh_token_expires_in` field.
+- **New embedded cards endpoint (beta)** — Generate an embed init token for a card to enable embedded card experiences. Requires the `embedded_cards:write` scope.
+- **New audit log event type** — Added *RFX graded*.
+- **Global library field ID on custom record columns** — Custom record column responses now include `global_library_field_id`.
+- **Visibility filter for accounting field options** — Filter by visibility (`HIDDEN` or `VISIBLE`) using the new `visibility` query parameter.
+
+## March 16, 2026
+
+- **Bill filtering by ERP sync status** — Filter bills by `is_accounting_sync_enabled` query parameter.
+- **Payment accounts on entities** — Entity response now includes a `payment_accounts` array.
+- **Custom record fields on vendors** — Vendor responses now include `custom_record_fields` array.
+- **Policy agent exemption for spend limits** — Spend limit responses now include `is_exempt_from_policy_agent`.
+- **Accounting vendor creation flag on transactions** — Transaction responses now include `requires_accounting_vendor_creation_to_sync`.
+- **New webhook event types for unified requests** — Added `unified_requests.created`, `unified_requests.modified`, `unified_requests.node_advanced`, `unified_requests.override_approved`, and `unified_requests.updated`.
+- **New transaction decline reasons** — Added `AUTHORIZER_SPEND_ALLOCATION_MEMBER_SUSPENDED` and `AUTHORIZER_UNAUTHORIZED_USER`.
+- **New custom records reference table types** — Added `contracts` and `purchase_order_line_items` as valid native reference table types.
+- **New custom record text display type** — Added `numeric_id` to available display types for custom record text columns.
+
+## March 12, 2026
+
+- **New audit log event types** — Added *ABK agent blocked on user*, *ABK agent review requested*, *ABK agent started*, *Document labeled*, *Edited contract tracking setting*, and *Reimbursement bank account updated*.
+- **New spend program mapped field type** — Added `REQUEST_REASON` as a mapped field option for spend program configurations.
+- **New vendor document types** — Added `INVOICE` and `VENDOR_CREDIT` to supported vendor document types.
+
+## February 27, 2026
+
+- **Filter bills by payment ID** — Added `payment_id` query parameter to the List Bills endpoint.
+- **Payment ID on bill responses** — Bill payment details now include an `id` field.
+- **Draft bill attachment uploads** — Upload file attachments to existing draft bills via `POST /developer/v1/bills/drafts/{draft_bill_id}/attachments`.
+- **Bank account ID on transfers** — Transfer responses now include `bank_account_id`.
+- **Vendor creation on sync setting for accounting connections** — Added `transaction_accounting_vendor_creation_on_sync_enabled` to accounting connection settings.
+- **New INVOICE sync resource type** — Added `INVOICE` as a supported enum value for accounting sync resource types.
+- **New webhook event types** — Added `bills.archived` and `reimbursements.batch_payment_reimbursed`.
+- **Scheduled deactivation date for new users** — Added `scheduled_deactivation_date` field to the create user request.
+
+## February 13, 2026
+
+- **Date column type for custom records** — Custom record tables now support a `datetime` column type with date display.
+- **Attachments on custom form fields** — Custom form field responses now include an `attachments` array.
+- **New transaction decline reason** — Added `AUTHORIZER_SPEND_ALLOCATION_ARCHIVED_FUNDS`.
+- **New OAuth scope** — Added `comments:write` scope.
+- **New `status_summary` field on bills** — Bill responses now include `status_summary` with values like `PAYMENT_SCHEDULED`, `APPROVAL_PENDING`, `PAYMENT_PROCESSING`, and `PAYMENT_COMPLETED`.
+- **Enhanced bill filtering by `status_summary`** — Refined enum values on the List Bills endpoint.
+- **New `NON_ERP` accounting field type** — Added `NON_ERP` enum value for accounting field types.
+
+## February 12, 2026
+
+- **Filter limits by card** — Added `card_id` query parameter to the List Limits endpoint.
+- **Draft bill `remote_id` field** — The draft bill response now includes `remote_id`.
+- **Custom Records column display types** — Number columns now support `currency`, `number`, and `percentage` display types. Text columns support `email`, `paragraph`, `phone`, `plain_text`, and `url`.
+- **New endpoint to fetch accounting connection by ID (beta)**.
+
+## February 11, 2026
+
+- **Renamed tax code options request field** — `POST /developer/v1/accounting/tax/code/options` now uses `options` instead of `tax_codes`.
+- **New `item_receipts.created` webhook event**.
+- **Transaction `functional_currency_amount` moved behind query parameter** — No longer returned by default.
+
+## February 10, 2026
+
+- **New tax code options management (beta)** — Upload, list, update, and delete tax code options.
+- **Enhanced vendor filtering** — Added `merchant_id` query parameter to List Vendors.
+- **Draft bill creation and updates** — Create and update draft bills with accounting fields, line items, and vendor details.
+- **Bills now include item receipt associations** — Added `item_receipt_ids` field to bill responses.
+- **Accounting connection migration status** — Added `is_ready_to_migrate` field.
+- **New inventory item accounting field endpoints (beta)**.
+- **Inventory item options management (beta)**.
+- **New tax code accounting field endpoints (beta)**.
+- **Transaction sync button setting** — Added `transaction_sync_button_enabled` setting to accounting connections.
+
+## February 5, 2026
+
+- **Extended accounting field requirements** — Added `VENDOR_CREDIT` enum value to `is_required_for` arrays.
+- **New vendor awarded audit event**.
+- **Enhanced transaction data** — Added `functional_currency_amount` field to transaction responses.
+- **Tax rate field renamed** — `gl_account_id` renamed to `accounting_gl_account_id` in tax rate resources.
+- **New tax rates endpoints (beta)** — List, upload, update, and delete tax rates with support for up to 500 per batch upload.
+- **Enhanced bill creation** — Added `use_default_vendor_contact` parameter.
+- **Ramp category code enums** — Category fields now include explicit enum values and descriptions for all Ramp category codes (1–44).
+
+## February 3, 2026
+
+- **New audit log event types** — Added RFX and sourcing event types.
+- **New purchase order line item management (beta)** — Add, update, and delete line items on existing purchase orders.
+- **New card vault endpoint (beta)** — Retrieve sensitive card details by card ID.
+- **Default payment method support for bills** — Added `use_default_payment_method` parameter.
+- **Enhanced vendor data** — Added `code` field to accounting vendors.
+- **Item receipt line item tracking** — Added `id` field to item receipt line items.
+- **New webhook events** — Added `purchase_orders.archived`, `reimbursements.sync_requested`, and `transactions.sync_requested`.
+
+## January 30, 2026
+
+- **Additional managed portfolio account types** — Added `MANAGED_PORTFOLIO_INTEREST_INCOME_ACCOUNT`, `MANAGED_PORTFOLIO_POSITION_ASSET_ACCOUNT`, `MANAGED_PORTFOLIO_REALIZED_GAIN_LOSS_ACCOUNT`, and `MANAGED_PORTFOLIO_UNREALIZED_GAIN_LOSS_ACCOUNT`.
+- **Enhanced item receipts filtering** — Added `entity_id`, `purchase_order_id`, `purchase_order_line_item_id`, `include_archived`, and pagination query parameters.
+- **New currency support** — Added `USDB` currency code for USD Basecoin.
+- **Enhanced user management** — Added `scheduled_deactivation_date` field to user objects.
+- **New SFTP configurations resource type** — Added to supported resource types in audit logs.
+
+## January 28, 2026
+
+- **Enhanced bill filtering** — Added `status_summaries` query parameter to filter bills by multiple status summaries.
+- **Tracking category metadata in custom records** — Custom record accounting field options now include a `tracking_category` object.
+- **New accounting connection update endpoint (beta)**.
+- **Enhanced reimbursement filtering** — Added `state` query parameter.
+- **New vendor credits endpoints (beta)** — Retrieve vendor credits across all vendors or for specific vendors.
+- **Individual vendor credit retrieval (beta)** — Fetch detailed information about a specific vendor credit.
+
+## January 22, 2026
+
+- **New audit log event types** — Added *Card delivered*, *Reimbursement submitted*, *Reimbursements disabled*, and *Reimbursements enabled*.
+- **Custom form comments support** — All custom form field responses now include an optional `comment` field.
+- **Enhanced custom form entity support** — Added `vendors` to supported entity types for custom forms.
+- **New webhook event** — Added `spend_requests.comment_created`.
+
+## January 16, 2026
+
+- **Multiple purchase orders per bill** — Bills can now be linked to multiple purchase orders using `purchase_order_ids` array.
+- **ERP migration tool (beta)** — Set up a new API-based accounting connection to migrate from your current ERP.
+- **Enhanced bills filtering** — Added `invoice_number` query parameter.
+- **Enhanced receipts filtering** — Added `reimbursement_id` query parameter.
+- **Enhanced users filtering** — Added `status` query parameter.
+- **New vendor bank account archiving** — Archive vendor bank accounts with automatic transfer of associated bills.
+
+## January 14, 2026
+
+- **New currency support** — Added CNH (Chinese Yuan Renminbi offshore).
+- **New DATE input type** — Added `DATE` enum value for custom accounting field input types.
+- **Enhanced audit log events** — Added vendor management agreement event types.
+- **Enhanced attachment types** — Added `EMAIL` and `VENDOR_CREDIT` enum values for bill attachment types.
+- **Provider name fields** — Added `provider_name` field to custom accounting fields, field options, GL accounts, and vendors.
+- **Reimbursement payment tracking** — Added `payment_batch_id` field.
+
+## January 6, 2026
+
+- **Enhanced vendor filtering** — Added `external_vendor_id` query parameter.
+- **External vendor ID support** — Added `external_vendor_id` field to vendor creation, updates, and responses.
+- **Purchase order line item matching** — Added `purchase_order_line_item_id` field to bill line items.
+- **Real-time payment support** — Added `RTP` enum value for Real-Time Payment processing.
+- **Same-day bill payments** — Added `is_same_day` parameter to enable same-day ACH delivery.
+- **Spend program line item fields** — Added `line_item_accounting_fields` to spend program responses.
+
+## January 5, 2026
+
+- **New audit log event** — Added *Vendor management agreement notification type switched*.
+- **Form 1099 compliance type** — Added `FORM_1099` enum value to vendor compliance types.
+- **Enhanced date filtering** — Improved transaction filtering with explicit ISO8601 format specification.
+- **Draft bill tracking** — Added `draft_bill_created_at` field to bill responses.
+
+## December 23, 2025
+
+- **Delete matrix table rows** — Remove individual rows from custom matrix tables.
+- **Matrix table row IDs** — Matrix table rows now include an `id` field.
+- **Number column support for custom tables** — Create and use number columns with the new `number` column type.
+- **Default entity for vendors** — Added `default_entity_id` field to vendors.
+- **New procurement event type** — Added *Procurement agent run completed*.
+- **New limited edition card designs** — Added holiday-themed card design options.
+
+## December 11, 2025
+
+- **Bill accounting sync control** — Added `enable_accounting_sync` boolean field to bill responses.
+- **Manual vendor payment method** — Added `MANUAL` enum value to vendor payment method kind.
+- **New accrual AP account type** — Added `ACCRUAL_AP_ACCOUNT` enum value.
+- **Enhanced custom field values** — Custom field values now support `number` type.
+- **Enhanced bill creation** — Added `enable_accounting_sync` field.
+- **Matrix table column management (beta)** — Add result columns to existing matrix tables.
+- **Matrix table column renaming (beta)** — Change the API name of matrix table columns.
+- **Number column support for matrix tables (beta)**.
+
+## December 4, 2025
+
+- **Enhanced vendor data** — Vendor accounts now include `accounting_connection_id`.
+- **New audit log events** — Added *Vendor management agreement status changed* and *Vendor management edited agreement field*.
+- **New audit log event type** — Added *Created fund from purchase order*.
+- **Enhanced user filtering** — Added `COORDINATOR` role to user role filtering options.
+- **New accounting sync type** — Added `REPAYMENT_SYNC` enum value.
+- **Update purchase order support (beta)**.
+- **Change custom table row external key (beta)**.
+- **Enhanced bill payment methods** — Added `LOCAL_BANK_TRANSFER` payment method.
+- **Flexible accounting field selections** — Accounting field selections now support `free_form_text`.
+- **Improved quantity handling** — Line item quantity fields now use `number` instead of `integer`.
+- **Enhanced user validation** — Added 50-character limits for `first_name` and `last_name`.
+
+## November 28, 2025
+
+- **New trips endpoints (beta)** — List all trips and fetch individual trips by ID.
+- **Enhanced custom records matrix filtering** — Added `filters` parameter to filter matrix table rows by input column values.
+- **Enhanced entity filtering** — Added `hide_inactive` parameter.
+- **New workflow base type** — Added *Workflow (Base)* enum value for custom record types.
+- **Enhanced bill filtering by payment date** — Added `from_payment_date` and `to_payment_date` parameters.
+
+## November 26, 2025
+
+- **New Matrix tables for Custom Records (beta)** — Create and manage lookup tables where unique input combinations map to result values.
+- **Enhanced spend program details** — The Get Spend Program endpoint now includes `custom_form_collection`.
+- **New vendor default payment method** — Added `default_payment_method` field to vendor responses.
+- **Enhanced vendor filtering** — Added `accounting_vendor_remote_ids` and `vendor_tracking_category_option_ids` query parameters.
+- **New audit log event types** — Added *Agent access request resolved*, *Agent access requested*, and *Set member limit on shared fund*.
+
+## November 24, 2025
+
+- **New audit logs endpoint (beta)** — Retrieve audit log events with filtering by user IDs, date ranges, event actor types, and event types.
+- **Enhanced transaction filters** — Added `has_been_approved`, `all_requirements_met_and_approved`, and `has_statement` parameters. The `sync_ready` parameter is now deprecated.
+- **Enhanced user endpoints** — Added `include_deleted` parameter.
+- **Enhanced reimbursements filtering** — Added `has_been_approved` parameter.
+- **New accounting sync type** — Added `AMORTIZATION_ENTRY_SYNC`.
+- **New payment method type** — Added `CRYPTO_WALLET_TRANSFER`.
+- **Enhanced spend limit creation** — Added `accounting_rules` parameter.
+
+## November 20, 2025
+
+- **Vault cards endpoint publicly available** — Create virtual cards through the vault endpoint.
+- **Bill attachment upload support** — Upload attachments to existing bills.
+- **Allow negative line items for bill creation** — Bills can now include negative line items for credits and adjustments.
+- **Enhanced card schema in limits endpoint** — Added `cardholder_id`, `cardholder_name`, `created_at`, and `display_name` fields.
+- **User access roles filter for limits** — Added `user_access_roles` query parameter to the List Limits endpoint.
+
+## November 18, 2025
+
+- **New entity relationship documentation** — Comprehensive guide for understanding data connections across all Ramp objects.
+- **Support for querying draft bills**.
+- **Filter archived bills**.
+- **Filter transactions by spend program** — Use `spend_program_id` parameter.
+- **Receipt affidavit URLs** — `GET /transactions` now includes receipt affidavit URLs.
+- **Foreign exchange rates in bills** — `GET /bills` now provides FX conversion rates.
+- **Vendor payment details management** — Add and update vendor bank account information.
+
+## November 12, 2025
+
+- **Filter purchase orders by spend request timeframe** — Use `spend_start_date` and `spend_end_date`.
+- **New endpoint:** `POST /reimbursement/mileage` — Log and submit mileage reimbursements.
+- **Search accounting vendors and GL accounts by `remote_id`**.
+- **Match bills to purchase orders** — Programmatic linkage between bills and POs.
+- **Include `is_manager` in user invites**.
+- **Filter purchase orders by `user_id`**.
+- **`accounting_date` now returned in reimbursements**.
+- **New endpoint:** `POST /reimbursements/submit-receipt`.
+- **Auto-match uploaded receipts using OCR**.
+- **Temporary limit increases** — Use `PATCH /limits/{limit_id}` for temporary spending boosts.
+- **Control declined transaction visibility** — `GET /transactions` now defaults to excluding declines.
+
+## November 10, 2025
+
+- **Search by accounting field selections** — Filter transactions and bills based on assigned accounting fields.
+- **Custom forms support** — Retrieve and manage custom form metadata on Vendors, Purchase Orders, Transactions, and Limits.
+
+## November 7, 2025
+
+- **New endpoint** `POST /connection/{connection_id}/reactivate`
+- **Support for specifying `display_name`** on `POST /accounting/fields`
+- **New field `card_present`** to `GET /transactions`
+- **Filter by `employee_id`** for `GET /transactions` and `GET /reimbursements`
+- **Support for updating accounting custom field `display_name`**
+- **New field `accounting_date`** to `GET /bills`
+- **Deprecated:** `GET /accounting/connection` in favor of `GET /accounting/all-connections`
+- **Filter by `awaiting_approval_by_user_id`** in `GET /transactions` and `GET /reimbursements`
+- **Filter bills** by `payee_id` and `sync_status` parameters
+- **New field `transaction_accounting_date`** to transactions APIs
+- **Filter transactions** by `approval_status` parameter
+- **Filter accounting custom field options** by `remote_code` parameter
+
+## November 4, 2025
+
+- **Beta: Procurement API** — Now available for Ramp Plus customers to manage Purchase Orders and Item Receipts.
+- **New `sync_status` field** to Transactions, Reimbursements, Transfers, and Cashbacks.
+- **Filter with `sync_status` query parameter**.
+- **Query Accounting Custom Fields and Options by `remote_id` parameter**.
+- **Mark Accounting Custom Fields as required** to enforce validation before sync-ready status.
+
+## October 31, 2025
+
+- **Ramp MCP Server** — Enables developers to expose business data through an LLM-friendly SQL interface. Available as a Python package with support for custom tools, data loaders, and SQL execution.
+
+## October 30, 2025
+
+- **Beta: Custom Records** — Now available for Ramp Plus customers to add custom fields to users for advanced workflows (e.g., Cost Center, Division, Custom Approvers).
+
+## September 25, 2025
+
+- **New endpoint** `GET /developer/v1/bank-accounts/{bank_account_id}` — Retrieve linked bank account information.
+
+## August 8, 2025
+
+- **Bills and Vendors API Launch** — Manage vendors, bills, and payments via API for Accounts Payable workflows. Supports creating, updating, deleting, and retrieving Vendors, Vendor Contacts, and Bills.
+
+## June 25, 2025
+
+- **Deprecation Notice: Cards API** — Ramp is transitioning from the Cards API to the more flexible Limits API. Use the Limits API for card issuance and management. Physical card shipping continues to be supported via the Cards API until full migration support is provided.
+
+## May 2024
+
+- Initial API launch with core endpoints for Transactions, Cards, Users, Limits, Spend Programs, Locations, Departments, and more.

@@ -1,0 +1,59 @@
+---
+title: "List GL Accounts"
+description: "Retrieve a paginated list of general ledger accounts for the current accounting connection."
+api: "GET https://api.ramp.com/developer/v1/accounting/accounts"
+---
+
+## Response
+
+<ResponseField name="data" type="array">
+  List of general ledger accounts.
+
+  <Expandable title="data[]">
+    <ResponseField name="accounting_connection_id" type="string" required>
+      ID of the accounting connection this account belongs to.
+    </ResponseField>
+    <ResponseField name="classification" type="string">
+      GL account classification. One of: `ANY`, `ASSET`, `CREDCARD`, `EQUITY`, `EXPENSE`, `LIABILITY`, `REVENUE`, `UNKNOWN`.
+    </ResponseField>
+    <ResponseField name="code" type="string">
+      Account code from the ERP system.
+    </ResponseField>
+    <ResponseField name="created_at" type="string (date)">
+      ISO 8601 timestamp when the account was created.
+    </ResponseField>
+    <ResponseField name="gl_account_category_info" type="object">
+      <Expandable title="gl_account_category_info">
+        <ResponseField name="id" type="string" />
+        <ResponseField name="name" type="string" />
+        <ResponseField name="ramp_id" type="string" />
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="id" type="string">
+      The account's external (ERP) ID.
+    </ResponseField>
+    <ResponseField name="is_active" type="boolean" required>
+      Whether the account is currently active.
+    </ResponseField>
+    <ResponseField name="name" type="string" required>
+      Display name of the GL account.
+    </ResponseField>
+    <ResponseField name="provider_name" type="string" required>
+      Name of the accounting provider (ERP).
+    </ResponseField>
+    <ResponseField name="ramp_id" type="string" required>
+      Ramp's internal ID for this account.
+    </ResponseField>
+    <ResponseField name="updated_at" type="string (date)">
+      ISO 8601 timestamp when the account was last updated.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="page" type="object">
+  <Expandable title="page">
+    <ResponseField name="next" type="string">
+      Cursor for the next page of results.
+    </ResponseField>
+  </Expandable>
+</ResponseField>

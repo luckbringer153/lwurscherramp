@@ -1,0 +1,38 @@
+---
+title: "List Accounting Vendors"
+description: "List all vendors for the current accounting connection."
+api: "GET https://api.ramp.com/developer/v1/accounting/vendors"
+---
+
+<Note>
+  These are accounting (COA) vendors used to tag transactions. For bill pay vendors, see the [Vendors](/api-reference/vendors/list) section.
+</Note>
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="data[]">
+    <ResponseField name="accounting_connection_id" type="string" required />
+    <ResponseField name="id" type="string" />
+    <ResponseField name="ramp_id" type="string" required />
+    <ResponseField name="name" type="string" required />
+    <ResponseField name="code" type="string" />
+    <ResponseField name="is_active" type="boolean" required />
+    <ResponseField name="is_synced" type="boolean" required />
+    <ResponseField name="provider_name" type="string" required />
+    <ResponseField name="created_at" type="string (date)" required />
+    <ResponseField name="updated_at" type="string (date)" required />
+    <ResponseField name="vendor_category_info" type="object">
+      <Expandable title="vendor_category_info">
+        <ResponseField name="id" type="string" />
+        <ResponseField name="name" type="string" />
+        <ResponseField name="ramp_id" type="string" />
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+<ResponseField name="page" type="object">
+  <Expandable title="page">
+    <ResponseField name="next" type="string" />
+  </Expandable>
+</ResponseField>

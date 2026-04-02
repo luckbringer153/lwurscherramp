@@ -1,0 +1,45 @@
+---
+title: "Update GL Account"
+description: "Update the name or code of a general ledger account."
+api: "PATCH https://api.ramp.com/developer/v1/accounting/accounts/{gl_account_id}"
+---
+
+## Path Parameters
+
+<ParamField path="gl_account_id" type="string" required>
+  The Ramp ID of the GL account to update.
+</ParamField>
+
+## Request
+
+<ParamField body="name" type="string">
+  Updated display name.
+</ParamField>
+<ParamField body="code" type="string">
+  Updated account code.
+</ParamField>
+<ParamField body="reactivate" type="boolean">
+  Set to `true` to reactivate a previously deactivated account.
+</ParamField>
+
+## Response
+
+<ResponseField name="accounting_connection_id" type="string" required />
+<ResponseField name="classification" type="string">
+  One of: `ANY`, `ASSET`, `CREDCARD`, `EQUITY`, `EXPENSE`, `LIABILITY`, `REVENUE`, `UNKNOWN`.
+</ResponseField>
+<ResponseField name="code" type="string" />
+<ResponseField name="created_at" type="string (date)" />
+<ResponseField name="gl_account_category_info" type="object">
+  <Expandable title="gl_account_category_info">
+    <ResponseField name="id" type="string" />
+    <ResponseField name="name" type="string" />
+    <ResponseField name="ramp_id" type="string" />
+  </Expandable>
+</ResponseField>
+<ResponseField name="id" type="string" />
+<ResponseField name="is_active" type="boolean" required />
+<ResponseField name="name" type="string" required />
+<ResponseField name="provider_name" type="string" required />
+<ResponseField name="ramp_id" type="string" required />
+<ResponseField name="updated_at" type="string (date)" />

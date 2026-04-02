@@ -1,0 +1,43 @@
+---
+title: "Update Accounting Connection"
+description: "Update settings for an API-based accounting connection."
+api: "PATCH https://api.ramp.com/developer/v1/accounting/connection/{connection_id}"
+---
+
+Restricted to API-based accounting connections.
+
+## Path Parameters
+
+<ParamField path="connection_id" type="string" required>
+  The ID of the accounting connection to update.
+</ParamField>
+
+## Request
+
+<ParamField body="settings" type="object">
+  <Expandable title="settings">
+    <ParamField body="reimbursement_sync_button_enabled" type="boolean" />
+    <ParamField body="transaction_sync_button_enabled" type="boolean" />
+    <ParamField body="transaction_accounting_vendor_creation_on_sync_enabled" type="boolean" />
+    <ParamField body="vendor_credits_enabled" type="boolean" />
+  </Expandable>
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string" required />
+<ResponseField name="connection_type" type="string" required />
+<ResponseField name="remote_provider_name" type="string" required />
+<ResponseField name="status" type="string" required />
+<ResponseField name="is_active" type="boolean" required />
+<ResponseField name="is_ready_to_migrate" type="boolean" required />
+<ResponseField name="created_at" type="string (date)" required />
+<ResponseField name="last_linked_at" type="string (date)" required />
+<ResponseField name="settings" type="object">
+  <Expandable title="settings">
+    <ResponseField name="reimbursement_sync_button_enabled" type="boolean" />
+    <ResponseField name="transaction_sync_button_enabled" type="boolean" />
+    <ResponseField name="transaction_accounting_vendor_creation_on_sync_enabled" type="boolean" />
+    <ResponseField name="vendor_credits_enabled" type="boolean" />
+  </Expandable>
+</ResponseField>

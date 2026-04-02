@@ -1,0 +1,17 @@
+---
+title: "Upload Accounting Vendors"
+description: "Upload up to 500 accounting vendors in a single batch."
+api: "POST https://api.ramp.com/developer/v1/accounting/vendors"
+---
+
+Upload up to 500 vendors in an all-or-nothing batch.
+
+## Request
+
+<ParamField body="vendors" type="array" required>
+  <Expandable title="vendors[]">
+    <ParamField body="id" type="string" required>Your ERP's unique ID for this vendor.</ParamField>
+    <ParamField body="name" type="string" required>Vendor name.</ParamField>
+    <ParamField body="code" type="string">Vendor code from the ERP system.</ParamField>
+  </Expandable>
+</ParamField>

@@ -1,0 +1,16 @@
+---
+title: "Post Ready to Sync"
+description: "Mark a list of objects as ready to sync."
+api: "POST https://api.ramp.com/developer/v1/accounting/ready-to-sync"
+---
+
+Mark accounting objects as ready to sync by providing their IDs.
+
+## Request
+
+<ParamField body="object_ids" type="array" required>
+  List of object IDs to mark as ready to sync.
+</ParamField>
+<ParamField body="object_type" type="string" required>
+  The type of objects. Currently only `TRANSACTION` is supported.
+</ParamField>

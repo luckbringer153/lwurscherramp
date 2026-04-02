@@ -1,0 +1,38 @@
+---
+title: "Update Custom Field"
+description: "Update a custom accounting field's name or display name."
+api: "PATCH https://api.ramp.com/developer/v1/accounting/fields/{field_id}"
+---
+
+## Path Parameters
+
+<ParamField path="field_id" type="string" required>
+  The ID of the custom accounting field to update.
+</ParamField>
+
+## Request
+
+<ParamField body="name" type="string">
+  Updated name.
+</ParamField>
+<ParamField body="display_name" type="string">
+  Updated display name shown in the Ramp UI.
+</ParamField>
+<ParamField body="is_splittable" type="boolean">
+  Whether this field can be split across multiple values.
+</ParamField>
+
+## Response
+
+<ResponseField name="accounting_connection_id" type="string" required />
+<ResponseField name="id" type="string" />
+<ResponseField name="ramp_id" type="string" />
+<ResponseField name="name" type="string" />
+<ResponseField name="display_name" type="string" required />
+<ResponseField name="input_type" type="string" required />
+<ResponseField name="is_active" type="boolean" />
+<ResponseField name="is_splittable" type="boolean" />
+<ResponseField name="is_required_for" type="array" />
+<ResponseField name="provider_name" type="string" required />
+<ResponseField name="created_at" type="string (date)" />
+<ResponseField name="updated_at" type="string (date)" />

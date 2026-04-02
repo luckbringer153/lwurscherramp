@@ -1,0 +1,33 @@
+---
+title: "Upload Field Options"
+description: "Upload up to 500 new options for a custom accounting field."
+api: "POST https://api.ramp.com/developer/v1/accounting/field-options"
+---
+
+Upload up to 500 field options in an all-or-nothing batch. If any option is malformed or already exists, the entire batch is discarded.
+
+<Warning>
+  Ensure options do not already exist on Ramp. To update an existing option, use [Update Field Option](/api-reference/accounting/field-options/update) instead.
+</Warning>
+
+## Request
+
+<ParamField body="field_id" type="string" required>
+  The `ramp_id` of the custom accounting field to add options to.
+</ParamField>
+<ParamField body="options" type="array" required>
+  <Expandable title="options[]">
+    <ParamField body="id" type="string" required>
+      Your ERP's unique identifier for this option.
+    </ParamField>
+    <ParamField body="value" type="string" required>
+      Display value of the option.
+    </ParamField>
+    <ParamField body="display_name" type="string">
+      Optional display name override.
+    </ParamField>
+    <ParamField body="code" type="string">
+      Option code from the ERP system.
+    </ParamField>
+  </Expandable>
+</ParamField>

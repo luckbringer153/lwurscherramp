@@ -1,0 +1,43 @@
+---
+title: "Update Field Option"
+description: "Update a custom accounting field option."
+api: "PATCH https://api.ramp.com/developer/v1/accounting/field-options/{field_option_id}"
+---
+
+## Path Parameters
+
+<ParamField path="field_option_id" type="string" required>
+  The ID of the field option to update.
+</ParamField>
+
+## Request
+
+<ParamField body="value" type="string">
+  Updated display value.
+</ParamField>
+<ParamField body="display_name" type="string">
+  Updated display name.
+</ParamField>
+<ParamField body="code" type="string">
+  Updated code.
+</ParamField>
+<ParamField body="visibility" type="string">
+  `HIDDEN` or `VISIBLE`.
+</ParamField>
+<ParamField body="reactivate" type="boolean">
+  Set to `true` to reactivate a deactivated option.
+</ParamField>
+
+## Response
+
+<ResponseField name="accounting_connection_id" type="string" required />
+<ResponseField name="id" type="string" />
+<ResponseField name="ramp_id" type="string" />
+<ResponseField name="value" type="string" />
+<ResponseField name="display_name" type="string" />
+<ResponseField name="code" type="string" />
+<ResponseField name="is_active" type="boolean" />
+<ResponseField name="visibility" type="string" />
+<ResponseField name="provider_name" type="string" required />
+<ResponseField name="created_at" type="string (date)" />
+<ResponseField name="updated_at" type="string (date)" />

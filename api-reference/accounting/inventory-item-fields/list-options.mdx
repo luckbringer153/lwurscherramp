@@ -1,0 +1,22 @@
+---
+title: "List Inventory Item Options"
+description: "List options for the inventory item accounting field."
+api: "GET https://api.ramp.com/developer/v1/accounting/inventory-item/options"
+---
+
+## Response
+
+<ResponseField name="data" type="array">
+  <Expandable title="data[]">
+    <ResponseField name="accounting_connection_id" type="string" required />
+    <ResponseField name="id" type="string" required />
+    <ResponseField name="ramp_id" type="string" required />
+    <ResponseField name="name" type="string" required />
+    <ResponseField name="is_active" type="boolean" required />
+  </Expandable>
+</ResponseField>
+<ResponseField name="page" type="object">
+  <Expandable title="page">
+    <ResponseField name="next" type="string" />
+  </Expandable>
+</ResponseField>

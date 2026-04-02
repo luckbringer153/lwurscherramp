@@ -1,0 +1,35 @@
+---
+title: "Post Sync Status"
+description: "Notify Ramp of sync results for a batch of accounting objects."
+api: "POST https://api.ramp.com/developer/v1/accounting/syncs"
+---
+
+Notify Ramp of sync results. An idempotency key is required to ensure subsequent requests are properly handled.
+
+## Request
+
+<ParamField body="idempotency_key" type="string" required>
+  A unique key to prevent duplicate sync notifications.
+</ParamField>
+<ParamField body="sync_type" type="string" required>
+  The type of sync. One of: `BILL_PAYMENT_SYNC`, `BILL_SYNC`, `BROKERAGE_ORDER_SYNC`, `REIMBURSEMENT_SYNC`, `STATEMENT_CREDIT_SYNC`, `TRANSACTION_SYNC`, `TRANSFER_SYNC`, `WALLET_TRANSFER_SYNC`.
+</ParamField>
+<ParamField body="successful_syncs" type="array">
+  Objects that were successfully synced.
+  <Expandable title="successful_syncs[]">
+    <ParamField body="id" type="string" required>Ramp object ID.</ParamField>
+    <ParamField body="reference_id" type="string" required>Your ERP's ID for this object.</ParamField>
+    <ParamField body="deep_link_url" type="string">Link to the object in your ERP.</ParamField>
+  </Expandable>
+</ParamField>
+<ParamField body="failed_syncs" type="array">
+  Objects that failed to sync.
+  <Expandable title="failed_syncs[]">
+    <ParamField body="id" type="string" required>Ramp object ID.</ParamField>
+    <ParamField body="error" type="object" required>
+      <Expandable title="error">
+        <ParamField body="message" type="string" required>Error message describing why the sync failed.</ParamField>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>

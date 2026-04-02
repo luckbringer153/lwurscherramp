@@ -1,0 +1,13 @@
+---
+title: "Delete Field Option"
+description: "Deactivate a custom accounting field option."
+api: "DELETE https://api.ramp.com/developer/v1/accounting/field-options/{field_option_id}"
+---
+
+Marks the option as inactive (`is_active: false`), removing it from cardholder selection. The record is retained and can be reactivated via [Update Field Option](/api-reference/accounting/field-options/update).
+
+## Path Parameters
+
+<ParamField path="field_option_id" type="string" required>
+  The ID of the field option to delete.
+</ParamField>

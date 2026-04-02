@@ -1,0 +1,29 @@
+---
+title: "Get Accounting Vendor"
+description: "Fetch a specific accounting vendor by ID."
+api: "GET https://api.ramp.com/developer/v1/accounting/vendors/{vendor_id}"
+---
+
+## Path Parameters
+
+<ParamField path="vendor_id" type="string" required>The Ramp ID of the accounting vendor.</ParamField>
+
+## Response
+
+<ResponseField name="accounting_connection_id" type="string" required />
+<ResponseField name="id" type="string" />
+<ResponseField name="ramp_id" type="string" required />
+<ResponseField name="name" type="string" required />
+<ResponseField name="code" type="string" />
+<ResponseField name="is_active" type="boolean" required />
+<ResponseField name="is_synced" type="boolean" required />
+<ResponseField name="provider_name" type="string" required />
+<ResponseField name="created_at" type="string (date)" required />
+<ResponseField name="updated_at" type="string (date)" required />
+<ResponseField name="vendor_category_info" type="object">
+  <Expandable title="vendor_category_info">
+    <ResponseField name="id" type="string" />
+    <ResponseField name="name" type="string" />
+    <ResponseField name="ramp_id" type="string" />
+  </Expandable>
+</ResponseField>

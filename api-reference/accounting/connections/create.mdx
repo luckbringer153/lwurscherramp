@@ -1,0 +1,33 @@
+---
+title: "Create Accounting Connection"
+description: "Register a new API-based accounting connection between Ramp and your ERP."
+api: "POST https://api.ramp.com/developer/v1/accounting/connection"
+---
+
+A connection is required to use Ramp's accounting API functionality. If a Universal CSV connection already exists, it will be upgraded to an API-based connection.
+
+## Request
+
+<ParamField body="remote_provider_name" type="string" required>
+  The name of your ERP or accounting system (e.g., `"QuickBooks"`, `"NetSuite"`).
+</ParamField>
+<ParamField body="reactivate" type="boolean">
+  Set to `true` to reactivate a previously disconnected connection.
+</ParamField>
+<ParamField body="settings" type="object">
+  Optional connection settings.
+  <Expandable title="settings">
+    <ParamField body="reimbursement_sync_button_enabled" type="boolean">
+      Enable manual sync button for reimbursements.
+    </ParamField>
+    <ParamField body="transaction_sync_button_enabled" type="boolean">
+      Enable manual sync button for transactions.
+    </ParamField>
+    <ParamField body="transaction_accounting_vendor_creation_on_sync_enabled" type="boolean">
+      When enabled, transactions missing a mapped accounting vendor will require vendor creation before sync.
+    </ParamField>
+    <ParamField body="vendor_credits_enabled" type="boolean">
+      Enable vendor credits for this connection.
+    </ParamField>
+  </Expandable>
+</ParamField>
